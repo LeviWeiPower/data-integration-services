@@ -1,0 +1,892 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aimspeed.gatherer.repository.mysql.content.ContentDataMySqlBeanMapper">
+
+	<!--实体映射-->
+	<resultMap id="BaseResultMap" type="com.aimspeed.gatherer.entity.bean.mysql.content.ContentDataMySqlBean">
+		<!---->
+		<id column="id" jdbcType="INTEGER" property="id" />
+		<!--采集者的唯一序列号-->
+		<id column="sequence" jdbcType="VARCHAR" property="sequence" />
+		<!--爬虫人物名-->
+		<id column="crawler_name" jdbcType="VARCHAR" property="crawlerName" />
+		<!--数据分类（避免数据混乱）-->
+		<id column="data_classify" jdbcType="VARCHAR" property="dataClassify" />
+		<!--内容类别-->
+		<id column="content_classify" jdbcType="VARCHAR" property="contentClassify" />
+		<!--内容地址-->
+		<id column="content_url" jdbcType="VARCHAR" property="contentUrl" />
+		<!--内容数据-->
+		<id column="content" jdbcType="LONGVARCHAR" property="content" />
+		<!--数据uuid-->
+		<id column="data_uuid" jdbcType="VARCHAR" property="dataUuid" />
+		<!--数据链uuid，有关联的数据-->
+		<id column="data_chain_uuid" jdbcType="VARCHAR" property="dataChainUuid" />
+		<!--是否删除 N非删除 Y删除-->
+		<id column="is_delete" jdbcType="CHAR" property="isDelete" />
+		<!--更新时间-->
+		<id column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+		<!--创建人-->
+		<id column="creator" jdbcType="VARCHAR" property="creator" />
+		<!--创建时间-->
+		<id column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+		<!--更新人-->
+		<id column="updator" jdbcType="VARCHAR" property="updator" />
+	</resultMap>
+
+
+	<!-- 通用的字段 -->
+	<sql id="Base_Column_List">
+		 id,	sequence,	crawler_name,	data_classify,	content_classify,	content_url,	content,	data_uuid,	data_chain_uuid,	is_delete,	update_time,	creator,	create_time,	updator
+	</sql>
+
+	<!-- 根据对象的不为null的值作为条件进行查找，并且确定值找出一个值 -->
+	<select id="selectOnlyOfSelective" resultMap="BaseResultMap" parameterType="com.aimspeed.gatherer.entity.bean.mysql.content.ContentDataMySqlBean">
+		 SELECT
+		 <include refid="Base_Column_List" />
+		 FROM content_data
+		 WHERE 1 = 1 
+			<if test="id != null">
+				 and id = #{id, jdbcType=INTEGER}
+			</if>
+			<if test="sequence != null">
+				 and sequence = #{sequence, jdbcType=VARCHAR}
+			</if>
+			<if test="crawlerName != null">
+				 and crawler_name = #{crawlerName, jdbcType=VARCHAR}
+			</if>
+			<if test="dataClassify != null">
+				 and data_classify = #{dataClassify, jdbcType=VARCHAR}
+			</if>
+			<if test="contentClassify != null">
+				 and content_classify = #{contentClassify, jdbcType=VARCHAR}
+			</if>
+			<if test="contentUrl != null">
+				 and content_url = #{contentUrl, jdbcType=VARCHAR}
+			</if>
+			<if test="content != null">
+				 and content = #{content, jdbcType=LONGVARCHAR}
+			</if>
+			<if test="dataUuid != null">
+				 and data_uuid = #{dataUuid, jdbcType=VARCHAR}
+			</if>
+			<if test="dataChainUuid != null">
+				 and data_chain_uuid = #{dataChainUuid, jdbcType=VARCHAR}
+			</if>
+			<if test="isDelete != null">
+				 and is_delete = #{isDelete, jdbcType=CHAR}
+			</if>
+			<if test="updateTime != null">
+				 and update_time = #{updateTime, jdbcType=TIMESTAMP}
+			</if>
+			<if test="creator != null">
+				 and creator = #{creator, jdbcType=VARCHAR}
+			</if>
+			<if test="createTime != null">
+				 and create_time = #{createTime, jdbcType=TIMESTAMP}
+			</if>
+			<if test="updator != null">
+				 and updator = #{updator, jdbcType=VARCHAR}
+			</if>
+
+	</select>
+
+	<!-- 根据对象的不为null的值作为条件进行查找 -->
+	<select id="selectSelective" resultMap="BaseResultMap" parameterType="com.aimspeed.gatherer.entity.bean.mysql.content.ContentDataMySqlBean">
+		 SELECT
+		 <include refid="Base_Column_List" />
+		 FROM content_data
+		 WHERE 1 = 1 
+			<if test="id != null">
+				 and id = #{id, jdbcType=INTEGER}
+			</if>
+			<if test="sequence != null">
+				 and sequence = #{sequence, jdbcType=VARCHAR}
+			</if>
+			<if test="crawlerName != null">
+				 and crawler_name = #{crawlerName, jdbcType=VARCHAR}
+			</if>
+			<if test="dataClassify != null">
+				 and data_classify = #{dataClassify, jdbcType=VARCHAR}
+			</if>
+			<if test="contentClassify != null">
+				 and content_classify = #{contentClassify, jdbcType=VARCHAR}
+			</if>
+			<if test="contentUrl != null">
+				 and content_url = #{contentUrl, jdbcType=VARCHAR}
+			</if>
+			<if test="content != null">
+				 and content = #{content, jdbcType=LONGVARCHAR}
+			</if>
+			<if test="dataUuid != null">
+				 and data_uuid = #{dataUuid, jdbcType=VARCHAR}
+			</if>
+			<if test="dataChainUuid != null">
+				 and data_chain_uuid = #{dataChainUuid, jdbcType=VARCHAR}
+			</if>
+			<if test="isDelete != null">
+				 and is_delete = #{isDelete, jdbcType=CHAR}
+			</if>
+			<if test="updateTime != null">
+				 and update_time = #{updateTime, jdbcType=TIMESTAMP}
+			</if>
+			<if test="creator != null">
+				 and creator = #{creator, jdbcType=VARCHAR}
+			</if>
+			<if test="createTime != null">
+				 and create_time = #{createTime, jdbcType=TIMESTAMP}
+			</if>
+			<if test="updator != null">
+				 and updator = #{updator, jdbcType=VARCHAR}
+			</if>
+
+	</select>
+
+	<!-- 动态分页，筛选条件 - 默认为最新时间排序 -->
+	<select id="selectPageSelective" resultMap="BaseResultMap" parameterType="com.aimspeed.mysql.vo.MySqlPageVo" >
+		 SELECT
+		 <include refid="Base_Column_List" />
+		 FROM content_data
+		 WHERE 1 = 1 
+			<if test="pageVo.filtrate != null">
+				<foreach item="value" index="key" collection="pageVo.filtrate.entrySet()" >
+					 <if test="value != null and value != '' ">
+						 and ${key} = #{value}
+					 </if>
+				</foreach>
+			 </if>
+
+			<if test="pageVo.likeFiltrate != null">
+				<foreach item="value" index="key" collection="pageVo.likeFiltrate.entrySet()" >
+					 <if test="value != null and value != '' ">
+						 and ${key} like CONCAT('%',#{value},'%')
+					 </if>
+				</foreach>
+			 </if>
+
+			<!-- 排序字段 -->
+			<if test="null != pageVo.orderField ">
+				ORDER BY
+				${pageVo.orderField}
+				<!-- 排序规则 -->
+				<choose>
+					<when test="null != pageVo.orderingRule ">
+					${pageVo.orderingRule}
+					</when>
+					<otherwise>
+					DESC
+					</otherwise>
+				</choose>
+			</if>
+
+		LIMIT #{pageVo.curPageCountSize},#{pageVo.pageSize}
+	</select>
+
+	<!-- 根据对象的不为null的值作为条件进行查找 -->
+	<select id="selectDataCountSize" resultType="java.lang.Integer">
+		 SELECT
+		 count(id)
+		 FROM content_data
+		 WHERE 1 = 1 
+		 <if test="condition != null">
+			 <foreach item="value" index="key" collection="condition.entrySet()" >
+					 <if test="value != null and value != '' ">
+						 and ${key} = #{value}
+					 </if>
+			 </foreach>
+		 </if>
+
+			<if test="likeCondition != null">
+				<foreach item="value" index="key" collection="likeCondition.entrySet()" >
+					 <if test="value != null and value != '' ">
+						 and ${key} like CONCAT('%',#{value},'%')
+					 </if>
+				</foreach>
+			 </if>
+
+	</select>
+
+	<!-- 根据Id进行查询 -->
+	<select id="selectOfId" resultMap="BaseResultMap" parameterType="com.aimspeed.gatherer.entity.bean.mysql.content.ContentDataMySqlBean">
+		 SELECT
+		 <include refid="Base_Column_List" />
+		 FROM content_data
+		 WHERE 1 = 1 
+		 <if test="id != null">
+			 and id = #{id, jdbcType=INTEGER}
+		 </if>
+
+	</select>
+
+	<!-- 根据多Id进行查询 -->
+	<select id="selectOfIds" resultMap="BaseResultMap" parameterType="com.aimspeed.gatherer.entity.bean.mysql.content.ContentDataMySqlBean">
+		 SELECT
+		 <include refid="Base_Column_List" />
+		 FROM content_data
+		 WHERE 1 = 1 
+		 <if	test="ids != null and ids.size > 0">
+			 and id in 
+			 <foreach collection ="ids" item="id" index= "index" open="(" separator="," close=")">
+				 #{id}
+			 </foreach>
+		 </if>
+
+	</select>
+
+	<!-- 根据Id范围进查询 -->
+	<select id="selectOfIdScopes" resultMap="BaseResultMap" parameterType="com.aimspeed.gatherer.entity.bean.mysql.content.ContentDataMySqlBean">
+		 SELECT
+		 <include refid="Base_Column_List" />
+		 FROM content_data
+		 WHERE 1 = 1 
+		 <if test="lessId != null">
+			 and id <![CDATA[ > ]]> #{lessId, jdbcType=INTEGER}
+		 </if>
+		 <if test="largeId != null">
+			 and id <![CDATA[ < ]]> #{largeId, jdbcType=INTEGER}
+		 </if>
+
+	</select>
+
+	<!-- 根据多条件值进行查询 -->
+	<select id="selectSelectiveMany" resultMap="BaseResultMap" parameterType="com.aimspeed.gatherer.entity.bean.mysql.content.ContentDataMySqlBean">
+		 SELECT
+		 <include refid="Base_Column_List" />
+		 FROM content_data
+		 WHERE 1 = 1 
+		 <foreach collection ="batchField" item="bean" index= "index" >
+			<if test="id != null">
+				 and id = #{bean.id, jdbcType=INTEGER}
+			</if>
+			<if test="sequence != null">
+				 and sequence = #{bean.sequence, jdbcType=VARCHAR}
+			</if>
+			<if test="crawlerName != null">
+				 and crawler_name = #{bean.crawlerName, jdbcType=VARCHAR}
+			</if>
+			<if test="dataClassify != null">
+				 and data_classify = #{bean.dataClassify, jdbcType=VARCHAR}
+			</if>
+			<if test="contentClassify != null">
+				 and content_classify = #{bean.contentClassify, jdbcType=VARCHAR}
+			</if>
+			<if test="contentUrl != null">
+				 and content_url = #{bean.contentUrl, jdbcType=VARCHAR}
+			</if>
+			<if test="content != null">
+				 and content = #{bean.content, jdbcType=LONGVARCHAR}
+			</if>
+			<if test="dataUuid != null">
+				 and data_uuid = #{bean.dataUuid, jdbcType=VARCHAR}
+			</if>
+			<if test="dataChainUuid != null">
+				 and data_chain_uuid = #{bean.dataChainUuid, jdbcType=VARCHAR}
+			</if>
+			<if test="isDelete != null">
+				 and is_delete = #{bean.isDelete, jdbcType=CHAR}
+			</if>
+			<if test="updateTime != null">
+				 and update_time = #{bean.updateTime, jdbcType=TIMESTAMP}
+			</if>
+			<if test="creator != null">
+				 and creator = #{bean.creator, jdbcType=VARCHAR}
+			</if>
+			<if test="createTime != null">
+				 and create_time = #{bean.createTime, jdbcType=TIMESTAMP}
+			</if>
+			<if test="updator != null">
+				 and updator = #{bean.updator, jdbcType=VARCHAR}
+			</if>
+
+		 </foreach>
+
+	</select>
+
+	<!-- 根据条件进行查询去重 -->
+	<select id="selectSelectiveOfDistince" resultMap="BaseResultMap" parameterType="com.aimspeed.gatherer.entity.bean.mysql.content.ContentDataMySqlBean">
+		 SELECT
+		 DISTINCT <include refid="Base_Column_List" />
+		 FROM content_data
+		 WHERE 1 = 1 
+			<if test="id != null">
+				 and id = #{id, jdbcType=INTEGER}
+			</if>
+			<if test="sequence != null">
+				 and sequence = #{sequence, jdbcType=VARCHAR}
+			</if>
+			<if test="crawlerName != null">
+				 and crawler_name = #{crawlerName, jdbcType=VARCHAR}
+			</if>
+			<if test="dataClassify != null">
+				 and data_classify = #{dataClassify, jdbcType=VARCHAR}
+			</if>
+			<if test="contentClassify != null">
+				 and content_classify = #{contentClassify, jdbcType=VARCHAR}
+			</if>
+			<if test="contentUrl != null">
+				 and content_url = #{contentUrl, jdbcType=VARCHAR}
+			</if>
+			<if test="content != null">
+				 and content = #{content, jdbcType=LONGVARCHAR}
+			</if>
+			<if test="dataUuid != null">
+				 and data_uuid = #{dataUuid, jdbcType=VARCHAR}
+			</if>
+			<if test="dataChainUuid != null">
+				 and data_chain_uuid = #{dataChainUuid, jdbcType=VARCHAR}
+			</if>
+			<if test="isDelete != null">
+				 and is_delete = #{isDelete, jdbcType=CHAR}
+			</if>
+			<if test="updateTime != null">
+				 and update_time = #{updateTime, jdbcType=TIMESTAMP}
+			</if>
+			<if test="creator != null">
+				 and creator = #{creator, jdbcType=VARCHAR}
+			</if>
+			<if test="createTime != null">
+				 and create_time = #{createTime, jdbcType=TIMESTAMP}
+			</if>
+			<if test="updator != null">
+				 and updator = #{updator, jdbcType=VARCHAR}
+			</if>
+
+	</select>
+
+	<!-- 根据多条件值进行去重查询 -->
+	<select id="selectSelectiveManyOfDistince" resultMap="BaseResultMap" parameterType="com.aimspeed.gatherer.entity.bean.mysql.content.ContentDataMySqlBean">
+		 SELECT
+		 DISTINCT <include refid="Base_Column_List" />
+		 FROM content_data
+		 WHERE 1 = 1 
+		 <foreach collection ="batchField" item="bean" index= "index" >
+			<if test="id != null">
+				 and id = #{bean.id, jdbcType=INTEGER}
+			</if>
+			<if test="sequence != null">
+				 and sequence = #{bean.sequence, jdbcType=VARCHAR}
+			</if>
+			<if test="crawlerName != null">
+				 and crawler_name = #{bean.crawlerName, jdbcType=VARCHAR}
+			</if>
+			<if test="dataClassify != null">
+				 and data_classify = #{bean.dataClassify, jdbcType=VARCHAR}
+			</if>
+			<if test="contentClassify != null">
+				 and content_classify = #{bean.contentClassify, jdbcType=VARCHAR}
+			</if>
+			<if test="contentUrl != null">
+				 and content_url = #{bean.contentUrl, jdbcType=VARCHAR}
+			</if>
+			<if test="content != null">
+				 and content = #{bean.content, jdbcType=LONGVARCHAR}
+			</if>
+			<if test="dataUuid != null">
+				 and data_uuid = #{bean.dataUuid, jdbcType=VARCHAR}
+			</if>
+			<if test="dataChainUuid != null">
+				 and data_chain_uuid = #{bean.dataChainUuid, jdbcType=VARCHAR}
+			</if>
+			<if test="isDelete != null">
+				 and is_delete = #{bean.isDelete, jdbcType=CHAR}
+			</if>
+			<if test="updateTime != null">
+				 and update_time = #{bean.updateTime, jdbcType=TIMESTAMP}
+			</if>
+			<if test="creator != null">
+				 and creator = #{bean.creator, jdbcType=VARCHAR}
+			</if>
+			<if test="createTime != null">
+				 and create_time = #{bean.createTime, jdbcType=TIMESTAMP}
+			</if>
+			<if test="updator != null">
+				 and updator = #{bean.updator, jdbcType=VARCHAR}
+			</if>
+
+		 </foreach>
+
+	</select>
+
+	<!-- 根据对象中不为null的值进行删除 -->
+	<delete id="deleteSelective" parameterType="com.aimspeed.gatherer.entity.bean.mysql.content.ContentDataMySqlBean">
+		 DELETE FROM content_data
+		 WHERE 1 = 1 
+			<if test="id != null">
+				 and id = #{id, jdbcType=INTEGER}
+			</if>
+			<if test="sequence != null">
+				 and sequence = #{sequence, jdbcType=VARCHAR}
+			</if>
+			<if test="crawlerName != null">
+				 and crawler_name = #{crawlerName, jdbcType=VARCHAR}
+			</if>
+			<if test="dataClassify != null">
+				 and data_classify = #{dataClassify, jdbcType=VARCHAR}
+			</if>
+			<if test="contentClassify != null">
+				 and content_classify = #{contentClassify, jdbcType=VARCHAR}
+			</if>
+			<if test="contentUrl != null">
+				 and content_url = #{contentUrl, jdbcType=VARCHAR}
+			</if>
+			<if test="content != null">
+				 and content = #{content, jdbcType=LONGVARCHAR}
+			</if>
+			<if test="dataUuid != null">
+				 and data_uuid = #{dataUuid, jdbcType=VARCHAR}
+			</if>
+			<if test="dataChainUuid != null">
+				 and data_chain_uuid = #{dataChainUuid, jdbcType=VARCHAR}
+			</if>
+			<if test="isDelete != null">
+				 and is_delete = #{isDelete, jdbcType=CHAR}
+			</if>
+			<if test="updateTime != null">
+				 and update_time = #{updateTime, jdbcType=TIMESTAMP}
+			</if>
+			<if test="creator != null">
+				 and creator = #{creator, jdbcType=VARCHAR}
+			</if>
+			<if test="createTime != null">
+				 and create_time = #{createTime, jdbcType=TIMESTAMP}
+			</if>
+			<if test="updator != null">
+				 and updator = #{updator, jdbcType=VARCHAR}
+			</if>
+	</delete>
+
+	<!-- 根据对象中不为null的值进行删除 -->
+	<delete id="deleteSelectiveOfId" parameterType="com.aimspeed.gatherer.entity.bean.mysql.content.ContentDataMySqlBean">
+		 DELETE FROM content_data
+		 WHERE 1 = 1 
+		 <if test="id != null">
+			 and id = #{id, jdbcType=INTEGER}
+		 </if>
+
+	</delete>
+	<!-- 根据对象中不为null的值进行删除 -->
+	<delete id="deleteSelectiveOfIds" parameterType="com.aimspeed.gatherer.entity.bean.mysql.content.ContentDataMySqlBean">
+		 DELETE FROM content_data
+		 WHERE 1 = 1 
+		 <if	test="ids != null and ids.size > 0">
+			 and id in 
+			 <foreach collection ="ids" item="id" index= "index" open="(" separator="," close=")">
+				 #{id}
+			 </foreach>
+		 </if>
+
+	</delete>
+
+
+	<!-- 添加 （匹配有值的字段）-->
+	<insert id="insertSelective" parameterType="com.aimspeed.gatherer.entity.bean.mysql.content.ContentDataMySqlBean">
+		 INSERT INTO content_data
+		 <trim prefix="(" suffix=")" suffixOverrides="," >
+			<if test="id != null">
+				 id,
+			</if>
+			<if test="sequence != null">
+				 sequence,
+			</if>
+			<if test="crawlerName != null">
+				 crawler_name,
+			</if>
+			<if test="dataClassify != null">
+				 data_classify,
+			</if>
+			<if test="contentClassify != null">
+				 content_classify,
+			</if>
+			<if test="contentUrl != null">
+				 content_url,
+			</if>
+			<if test="content != null">
+				 content,
+			</if>
+			<if test="dataUuid != null">
+				 data_uuid,
+			</if>
+			<if test="dataChainUuid != null">
+				 data_chain_uuid,
+			</if>
+			<if test="isDelete != null">
+				 is_delete,
+			</if>
+			<if test="updateTime != null">
+				 update_time,
+			</if>
+			<if test="creator != null">
+				 creator,
+			</if>
+			<if test="createTime != null">
+				 create_time,
+			</if>
+			<if test="updator != null">
+				 updator,
+			</if>
+
+		 </trim>
+		 <trim prefix="values (" suffix=")" suffixOverrides="," >
+			<if test="id!=null">
+				 #{id},
+			</if>
+			<if test="sequence!=null">
+				 #{sequence},
+			</if>
+			<if test="crawlerName!=null">
+				 #{crawlerName},
+			</if>
+			<if test="dataClassify!=null">
+				 #{dataClassify},
+			</if>
+			<if test="contentClassify!=null">
+				 #{contentClassify},
+			</if>
+			<if test="contentUrl!=null">
+				 #{contentUrl},
+			</if>
+			<if test="content!=null">
+				 #{content},
+			</if>
+			<if test="dataUuid!=null">
+				 #{dataUuid},
+			</if>
+			<if test="dataChainUuid!=null">
+				 #{dataChainUuid},
+			</if>
+			<if test="isDelete!=null">
+				 #{isDelete},
+			</if>
+			<if test="updateTime!=null">
+				 #{updateTime},
+			</if>
+			<if test="creator!=null">
+				 #{creator},
+			</if>
+			<if test="createTime!=null">
+				 #{createTime},
+			</if>
+			<if test="updator!=null">
+				 #{updator},
+			</if>
+		 </trim>
+	</insert>
+
+	 <!-- 批量添加数据，添加所有字段的数据-->
+	 <insert id="batchInsert" parameterType="com.aimspeed.gatherer.entity.bean.mysql.content.ContentDataMySqlBean">
+		 INSERT INTO content_data(sequence,	crawler_name,	data_classify,	content_classify,	content_url,	content,	data_uuid,	data_chain_uuid,	is_delete,	update_time,	creator,	create_time,	updator)
+		 VALUES
+		 <foreach collection ="batchField" item="bean" index= "index" separator =",">
+			 (
+				 #{bean.sequence},
+				 #{bean.crawlerName},
+				 #{bean.dataClassify},
+				 #{bean.contentClassify},
+				 #{bean.contentUrl},
+				 #{bean.content},
+				 #{bean.dataUuid},
+				 #{bean.dataChainUuid},
+				 #{bean.isDelete},
+				 #{bean.updateTime},
+				 #{bean.creator},
+				 #{bean.createTime},
+				 #{bean.updator}
+			 )
+		</foreach >
+	</insert>
+
+	<!-- 批量添加数据，添加动态字段的数据，建议每次100条 -->
+	<insert id="batchInsertSelective" parameterType="com.aimspeed.gatherer.entity.bean.mysql.content.ContentDataMySqlBean">
+		 <foreach collection ="batchField" item="bean" index= "index" separator =",">
+			 INSERT INTO content_data
+			 <trim prefix="(" suffix=")" suffixOverrides="," >
+				<if test="bean.id != null">
+					 id,
+				</if>
+				<if test="bean.sequence != null">
+					 sequence,
+				</if>
+				<if test="bean.crawlerName != null">
+					 crawler_name,
+				</if>
+				<if test="bean.dataClassify != null">
+					 data_classify,
+				</if>
+				<if test="bean.contentClassify != null">
+					 content_classify,
+				</if>
+				<if test="bean.contentUrl != null">
+					 content_url,
+				</if>
+				<if test="bean.content != null">
+					 content,
+				</if>
+				<if test="bean.dataUuid != null">
+					 data_uuid,
+				</if>
+				<if test="bean.dataChainUuid != null">
+					 data_chain_uuid,
+				</if>
+				<if test="bean.isDelete != null">
+					 is_delete,
+				</if>
+				<if test="bean.updateTime != null">
+					 update_time,
+				</if>
+				<if test="bean.creator != null">
+					 creator,
+				</if>
+				<if test="bean.createTime != null">
+					 create_time,
+				</if>
+				<if test="bean.updator != null">
+					 updator,
+				</if>
+
+			 </trim>
+			 <trim prefix="values (" suffix=")" suffixOverrides="," >
+				<if test="bean.id!=null">
+					 #{bean.id},
+				</if>
+				<if test="bean.sequence!=null">
+					 #{bean.sequence},
+				</if>
+				<if test="bean.crawlerName!=null">
+					 #{bean.crawlerName},
+				</if>
+				<if test="bean.dataClassify!=null">
+					 #{bean.dataClassify},
+				</if>
+				<if test="bean.contentClassify!=null">
+					 #{bean.contentClassify},
+				</if>
+				<if test="bean.contentUrl!=null">
+					 #{bean.contentUrl},
+				</if>
+				<if test="bean.content!=null">
+					 #{bean.content},
+				</if>
+				<if test="bean.dataUuid!=null">
+					 #{bean.dataUuid},
+				</if>
+				<if test="bean.dataChainUuid!=null">
+					 #{bean.dataChainUuid},
+				</if>
+				<if test="bean.isDelete!=null">
+					 #{bean.isDelete},
+				</if>
+				<if test="bean.updateTime!=null">
+					 #{bean.updateTime},
+				</if>
+				<if test="bean.creator!=null">
+					 #{bean.creator},
+				</if>
+				<if test="bean.createTime!=null">
+					 #{bean.createTime},
+				</if>
+				<if test="bean.updator!=null">
+					 #{bean.updator},
+				</if>
+			 </trim>
+		</foreach >	</insert>
+
+	<!-- 动态更新-->
+	<update id="updateSelective" parameterType="com.aimspeed.gatherer.entity.bean.mysql.content.ContentDataMySqlBean">
+		 UPDATE content_data
+ 		 <set> 
+			<if test="updateRecord != null and updateRecord.sequence != null">
+				 sequence = #{updateRecord.sequence},
+			</if>
+			<if test="updateRecord != null and updateRecord.crawlerName != null">
+				 crawler_name = #{updateRecord.crawlerName},
+			</if>
+			<if test="updateRecord != null and updateRecord.dataClassify != null">
+				 data_classify = #{updateRecord.dataClassify},
+			</if>
+			<if test="updateRecord != null and updateRecord.contentClassify != null">
+				 content_classify = #{updateRecord.contentClassify},
+			</if>
+			<if test="updateRecord != null and updateRecord.contentUrl != null">
+				 content_url = #{updateRecord.contentUrl},
+			</if>
+			<if test="updateRecord != null and updateRecord.content != null">
+				 content = #{updateRecord.content},
+			</if>
+			<if test="updateRecord != null and updateRecord.dataUuid != null">
+				 data_uuid = #{updateRecord.dataUuid},
+			</if>
+			<if test="updateRecord != null and updateRecord.dataChainUuid != null">
+				 data_chain_uuid = #{updateRecord.dataChainUuid},
+			</if>
+			<if test="updateRecord != null and updateRecord.isDelete != null">
+				 is_delete = #{updateRecord.isDelete},
+			</if>
+			<if test="updateRecord != null and updateRecord.updateTime != null">
+				 update_time = #{updateRecord.updateTime},
+			</if>
+			<if test="updateRecord != null and updateRecord.creator != null">
+				 creator = #{updateRecord.creator},
+			</if>
+			<if test="updateRecord != null and updateRecord.createTime != null">
+				 create_time = #{updateRecord.createTime},
+			</if>
+			<if test="updateRecord != null and updateRecord.updator != null">
+				 updator = #{updateRecord.updator},
+			</if>
+
+ 		 </set>
+		 WHERE 1 = 1 
+			<if test="conditionRecord != null and conditionRecord.id != null">
+				 and id = #{conditionRecord.id, jdbcType=INTEGER}
+			</if>
+			<if test="conditionRecord != null and conditionRecord.sequence != null">
+				 and sequence = #{conditionRecord.sequence, jdbcType=VARCHAR}
+			</if>
+			<if test="conditionRecord != null and conditionRecord.crawlerName != null">
+				 and crawler_name = #{conditionRecord.crawlerName, jdbcType=VARCHAR}
+			</if>
+			<if test="conditionRecord != null and conditionRecord.dataClassify != null">
+				 and data_classify = #{conditionRecord.dataClassify, jdbcType=VARCHAR}
+			</if>
+			<if test="conditionRecord != null and conditionRecord.contentClassify != null">
+				 and content_classify = #{conditionRecord.contentClassify, jdbcType=VARCHAR}
+			</if>
+			<if test="conditionRecord != null and conditionRecord.contentUrl != null">
+				 and content_url = #{conditionRecord.contentUrl, jdbcType=VARCHAR}
+			</if>
+			<if test="conditionRecord != null and conditionRecord.content != null">
+				 and content = #{conditionRecord.content, jdbcType=LONGVARCHAR}
+			</if>
+			<if test="conditionRecord != null and conditionRecord.dataUuid != null">
+				 and data_uuid = #{conditionRecord.dataUuid, jdbcType=VARCHAR}
+			</if>
+			<if test="conditionRecord != null and conditionRecord.dataChainUuid != null">
+				 and data_chain_uuid = #{conditionRecord.dataChainUuid, jdbcType=VARCHAR}
+			</if>
+			<if test="conditionRecord != null and conditionRecord.isDelete != null">
+				 and is_delete = #{conditionRecord.isDelete, jdbcType=CHAR}
+			</if>
+			<if test="conditionRecord != null and conditionRecord.updateTime != null">
+				 and update_time = #{conditionRecord.updateTime, jdbcType=TIMESTAMP}
+			</if>
+			<if test="conditionRecord != null and conditionRecord.creator != null">
+				 and creator = #{conditionRecord.creator, jdbcType=VARCHAR}
+			</if>
+			<if test="conditionRecord != null and conditionRecord.createTime != null">
+				 and create_time = #{conditionRecord.createTime, jdbcType=TIMESTAMP}
+			</if>
+			<if test="conditionRecord != null and conditionRecord.updator != null">
+				 and updator = #{conditionRecord.updator, jdbcType=VARCHAR}
+			</if>
+	</update>
+
+
+	<!-- 根据批量Id进行更新 -->
+	<update id="batchUpdateOfIds" parameterType="com.aimspeed.gatherer.entity.bean.mysql.content.ContentDataMySqlBean">
+		 UPDATE content_data
+ 		 <set> 
+			<if test="updateRecord != null and updateRecord.sequence != null">
+				 sequence = #{updateRecord.sequence},
+			</if>
+			<if test="updateRecord != null and updateRecord.crawlerName != null">
+				 crawler_name = #{updateRecord.crawlerName},
+			</if>
+			<if test="updateRecord != null and updateRecord.dataClassify != null">
+				 data_classify = #{updateRecord.dataClassify},
+			</if>
+			<if test="updateRecord != null and updateRecord.contentClassify != null">
+				 content_classify = #{updateRecord.contentClassify},
+			</if>
+			<if test="updateRecord != null and updateRecord.contentUrl != null">
+				 content_url = #{updateRecord.contentUrl},
+			</if>
+			<if test="updateRecord != null and updateRecord.content != null">
+				 content = #{updateRecord.content},
+			</if>
+			<if test="updateRecord != null and updateRecord.dataUuid != null">
+				 data_uuid = #{updateRecord.dataUuid},
+			</if>
+			<if test="updateRecord != null and updateRecord.dataChainUuid != null">
+				 data_chain_uuid = #{updateRecord.dataChainUuid},
+			</if>
+			<if test="updateRecord != null and updateRecord.isDelete != null">
+				 is_delete = #{updateRecord.isDelete},
+			</if>
+			<if test="updateRecord != null and updateRecord.updateTime != null">
+				 update_time = #{updateRecord.updateTime},
+			</if>
+			<if test="updateRecord != null and updateRecord.creator != null">
+				 creator = #{updateRecord.creator},
+			</if>
+			<if test="updateRecord != null and updateRecord.createTime != null">
+				 create_time = #{updateRecord.createTime},
+			</if>
+			<if test="updateRecord != null and updateRecord.updator != null">
+				 updator = #{updateRecord.updator},
+			</if>
+
+ 		 </set>
+		 WHERE 1 = 1 
+			 <if	test="ids != null and ids.size > 0">
+				 and id in 
+				 <foreach collection ="ids" item="id" index= "index" open="(" separator="," close=")">
+					 #{id}
+				 </foreach>
+			 </if>
+	</update>
+
+
+	<!-- 根据Id进行更新 -->
+	<update id="updateSelectiveOfId" parameterType="com.aimspeed.gatherer.entity.bean.mysql.content.ContentDataMySqlBean">
+		 UPDATE content_data
+ 		 <set> 
+			<if test="updateRecord != null and updateRecord.sequence != null">
+				 sequence = #{updateRecord.sequence},
+			</if>
+			<if test="updateRecord != null and updateRecord.crawlerName != null">
+				 crawler_name = #{updateRecord.crawlerName},
+			</if>
+			<if test="updateRecord != null and updateRecord.dataClassify != null">
+				 data_classify = #{updateRecord.dataClassify},
+			</if>
+			<if test="updateRecord != null and updateRecord.contentClassify != null">
+				 content_classify = #{updateRecord.contentClassify},
+			</if>
+			<if test="updateRecord != null and updateRecord.contentUrl != null">
+				 content_url = #{updateRecord.contentUrl},
+			</if>
+			<if test="updateRecord != null and updateRecord.content != null">
+				 content = #{updateRecord.content},
+			</if>
+			<if test="updateRecord != null and updateRecord.dataUuid != null">
+				 data_uuid = #{updateRecord.dataUuid},
+			</if>
+			<if test="updateRecord != null and updateRecord.dataChainUuid != null">
+				 data_chain_uuid = #{updateRecord.dataChainUuid},
+			</if>
+			<if test="updateRecord != null and updateRecord.isDelete != null">
+				 is_delete = #{updateRecord.isDelete},
+			</if>
+			<if test="updateRecord != null and updateRecord.updateTime != null">
+				 update_time = #{updateRecord.updateTime},
+			</if>
+			<if test="updateRecord != null and updateRecord.creator != null">
+				 creator = #{updateRecord.creator},
+			</if>
+			<if test="updateRecord != null and updateRecord.createTime != null">
+				 create_time = #{updateRecord.createTime},
+			</if>
+			<if test="updateRecord != null and updateRecord.updator != null">
+				 updator = #{updateRecord.updator},
+			</if>
+
+ 		 </set>
+		 WHERE 1 = 1 		 <if test="updateRecord != null and updateRecord.id != null">
+			 and id = #{updateRecord.id, jdbcType=INTEGER}
+		 </if>
+
+	</update>
+
+
+</mapper>

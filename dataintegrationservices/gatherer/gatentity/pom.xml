@@ -1,0 +1,51 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>com.aimspeed.gatherer</groupId>
+    <artifactId>gatherer</artifactId>
+    <version>1.0-SNAPSHOT</version>
+  </parent>
+  <artifactId>gatentity</artifactId>
+  <packaging>jar</packaging>
+  <description>实体类</description>
+  
+  <dependencies>
+	  	<!-- 公共代码 -->
+	  	<dependency>
+	  	  <groupId>com.aimspeed.gatherer</groupId>
+		  <artifactId>gatcommon</artifactId>
+		  <version>1.0-SNAPSHOT</version>
+	  	</dependency>
+	  	
+  	
+	  	<!-- https://mvnrepository.com/artifact/javax.persistence/persistence-api -->
+		<dependency>
+		    <groupId>javax.persistence</groupId>
+		    <artifactId>persistence-api</artifactId>
+		</dependency>
+		
+  		<!-- Redis -->
+  		<dependency>
+  			<groupId>com.aimspeed.plugins</groupId>
+  			<artifactId>redis</artifactId>
+    		<version>1.0-SNAPSHOT</version>
+  		</dependency>
+  		
+  		<!-- Mysql -->
+  		<dependency>
+  			<groupId>com.aimspeed.plugins</groupId>
+  			<artifactId>mysql</artifactId>
+    		<version>1.0-SNAPSHOT</version>
+  		</dependency>
+  		
+  		<!-- MongoDB -->
+  		<dependency>
+  			<groupId>com.aimspeed.plugins</groupId>
+  			<artifactId>mongodb</artifactId>
+    		<version>1.0-SNAPSHOT</version>
+  		</dependency>
+	
+	  
+  </dependencies>
+  
+</project>

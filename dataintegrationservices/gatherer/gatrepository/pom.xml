@@ -1,0 +1,44 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>com.aimspeed.gatherer</groupId>
+    <artifactId>gatherer</artifactId>
+    <version>1.0-SNAPSHOT</version>
+  </parent>
+  <artifactId>gatrepository</artifactId>
+  <packaging>jar</packaging>
+  <description>数据库</description>
+  
+  <dependencies>
+	  	<!-- 实体 -->
+	  	<dependency>
+	  	  <groupId>com.aimspeed.gatherer</groupId>
+		  <artifactId>gatentity</artifactId>
+		  <version>1.0-SNAPSHOT</version>
+	  	</dependency>
+	  	
+		<!-- 
+			web支持: 1、web mvc; 2、restful; 3、jackjson支持; 4、aop ........ 
+		-->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+	  	
+	  	<!-- 添加MySQL数据库驱动依赖包. -->
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+		</dependency>
+		
+		<!-- 阿里连接池 -->
+		<dependency>
+			<groupId>com.alibaba</groupId>
+			<artifactId>druid</artifactId>
+		</dependency>
+		
+		
+	  
+	</dependencies>
+  
+</project>

@@ -1,0 +1,16 @@
+.div-browser{
+	width: 500px;
+	height: 600px;
+	border: 3px solid;
+	overflow: auto;/* 鍔ㄦ�佷笅鎷夋潯 */
+	word-break: break-all;/* 瀛楃鎹㈣ */
+}
+.browser {
+    margin: auto;
+    width: 700px;
+    height: 800px;
+    border: 3px solid;
+    overflow: auto;
+    word-break: break-all;
+}
+			

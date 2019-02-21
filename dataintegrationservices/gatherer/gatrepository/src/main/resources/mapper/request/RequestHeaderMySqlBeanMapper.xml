@@ -1,0 +1,668 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aimspeed.gatherer.repository.mysql.request.RequestHeaderMySqlBeanMapper">
+
+	<!--实体映射-->
+	<resultMap id="BaseResultMap" type="com.aimspeed.gatherer.entity.bean.mysql.request.RequestHeaderMySqlBean">
+		<!---->
+		<id column="id" jdbcType="INTEGER" property="id" />
+		<!--采集者的唯一序列号-->
+		<id column="sequence" jdbcType="VARCHAR" property="sequence" />
+		<!--请求包头的key-->
+		<id column="header_key" jdbcType="VARCHAR" property="headerKey" />
+		<!--请求包头value-->
+		<id column="header_value" jdbcType="VARCHAR" property="headerValue" />
+		<!--是否删除 N非删除 Y删除-->
+		<id column="is_delete" jdbcType="CHAR" property="isDelete" />
+		<!--创建人-->
+		<id column="creator" jdbcType="VARCHAR" property="creator" />
+		<!--创建时间-->
+		<id column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+		<!--更新人-->
+		<id column="updator" jdbcType="VARCHAR" property="updator" />
+		<!--更新时间-->
+		<id column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+	</resultMap>
+
+
+	<!-- 通用的字段 -->
+	<sql id="Base_Column_List">
+		 id,	sequence,	header_key,	header_value,	is_delete,	creator,	create_time,	updator,	update_time
+	</sql>
+
+	<!-- 根据对象的不为null的值作为条件进行查找，并且确定值找出一个值 -->
+	<select id="selectOnlyOfSelective" resultMap="BaseResultMap" parameterType="com.aimspeed.gatherer.entity.bean.mysql.request.RequestHeaderMySqlBean">
+		 SELECT
+		 <include refid="Base_Column_List" />
+		 FROM request_header
+		 WHERE 1 = 1 
+			<if test="id != null">
+				 and id = #{id, jdbcType=INTEGER}
+			</if>
+			<if test="sequence != null">
+				 and sequence = #{sequence, jdbcType=VARCHAR}
+			</if>
+			<if test="headerKey != null">
+				 and header_key = #{headerKey, jdbcType=VARCHAR}
+			</if>
+			<if test="headerValue != null">
+				 and header_value = #{headerValue, jdbcType=VARCHAR}
+			</if>
+			<if test="isDelete != null">
+				 and is_delete = #{isDelete, jdbcType=CHAR}
+			</if>
+			<if test="creator != null">
+				 and creator = #{creator, jdbcType=VARCHAR}
+			</if>
+			<if test="createTime != null">
+				 and create_time = #{createTime, jdbcType=TIMESTAMP}
+			</if>
+			<if test="updator != null">
+				 and updator = #{updator, jdbcType=VARCHAR}
+			</if>
+			<if test="updateTime != null">
+				 and update_time = #{updateTime, jdbcType=TIMESTAMP}
+			</if>
+
+	</select>
+
+	<!-- 根据对象的不为null的值作为条件进行查找 -->
+	<select id="selectSelective" resultMap="BaseResultMap" parameterType="com.aimspeed.gatherer.entity.bean.mysql.request.RequestHeaderMySqlBean">
+		 SELECT
+		 <include refid="Base_Column_List" />
+		 FROM request_header
+		 WHERE 1 = 1 
+			<if test="id != null">
+				 and id = #{id, jdbcType=INTEGER}
+			</if>
+			<if test="sequence != null">
+				 and sequence = #{sequence, jdbcType=VARCHAR}
+			</if>
+			<if test="headerKey != null">
+				 and header_key = #{headerKey, jdbcType=VARCHAR}
+			</if>
+			<if test="headerValue != null">
+				 and header_value = #{headerValue, jdbcType=VARCHAR}
+			</if>
+			<if test="isDelete != null">
+				 and is_delete = #{isDelete, jdbcType=CHAR}
+			</if>
+			<if test="creator != null">
+				 and creator = #{creator, jdbcType=VARCHAR}
+			</if>
+			<if test="createTime != null">
+				 and create_time = #{createTime, jdbcType=TIMESTAMP}
+			</if>
+			<if test="updator != null">
+				 and updator = #{updator, jdbcType=VARCHAR}
+			</if>
+			<if test="updateTime != null">
+				 and update_time = #{updateTime, jdbcType=TIMESTAMP}
+			</if>
+
+	</select>
+
+	<!-- 动态分页，筛选条件 - 默认为最新时间排序 -->
+	<select id="selectPageSelective" resultMap="BaseResultMap" parameterType="com.aimspeed.mysql.vo.MySqlPageVo" >
+		 SELECT
+		 <include refid="Base_Column_List" />
+		 FROM request_header
+		 WHERE 1 = 1 
+			<if test="pageVo.filtrate != null">
+				<foreach item="value" index="key" collection="pageVo.filtrate.entrySet()" >
+					 <if test="value != null and value != '' ">
+						 and ${key} = #{value}
+					 </if>
+				</foreach>
+			 </if>
+
+			<if test="pageVo.likeFiltrate != null">
+				<foreach item="value" index="key" collection="pageVo.likeFiltrate.entrySet()" >
+					 <if test="value != null and value != '' ">
+						 and ${key} like CONCAT('%',#{value},'%')
+					 </if>
+				</foreach>
+			 </if>
+
+			<!-- 排序字段 -->
+			<if test="null != pageVo.orderField ">
+				ORDER BY
+				${pageVo.orderField}
+				<!-- 排序规则 -->
+				<choose>
+					<when test="null != pageVo.orderingRule ">
+					${pageVo.orderingRule}
+					</when>
+					<otherwise>
+					DESC
+					</otherwise>
+				</choose>
+			</if>
+
+		LIMIT #{pageVo.curPageCountSize},#{pageVo.pageSize}
+	</select>
+
+	<!-- 根据对象的不为null的值作为条件进行查找 -->
+	<select id="selectDataCountSize" resultType="java.lang.Integer">
+		 SELECT
+		 count(id)
+		 FROM request_header
+		 WHERE 1 = 1 
+		 <if test="condition != null">
+			 <foreach item="value" index="key" collection="condition.entrySet()" >
+					 <if test="value != null and value != '' ">
+						 and ${key} = #{value}
+					 </if>
+			 </foreach>
+		 </if>
+
+			<if test="likeCondition != null">
+				<foreach item="value" index="key" collection="likeCondition.entrySet()" >
+					 <if test="value != null and value != '' ">
+						 and ${key} like CONCAT('%',#{value},'%')
+					 </if>
+				</foreach>
+			 </if>
+
+	</select>
+
+	<!-- 根据Id进行查询 -->
+	<select id="selectOfId" resultMap="BaseResultMap" parameterType="com.aimspeed.gatherer.entity.bean.mysql.request.RequestHeaderMySqlBean">
+		 SELECT
+		 <include refid="Base_Column_List" />
+		 FROM request_header
+		 WHERE 1 = 1 
+		 <if test="id != null">
+			 and id = #{id, jdbcType=INTEGER}
+		 </if>
+
+	</select>
+
+	<!-- 根据多Id进行查询 -->
+	<select id="selectOfIds" resultMap="BaseResultMap" parameterType="com.aimspeed.gatherer.entity.bean.mysql.request.RequestHeaderMySqlBean">
+		 SELECT
+		 <include refid="Base_Column_List" />
+		 FROM request_header
+		 WHERE 1 = 1 
+		 <if	test="ids != null and ids.size > 0">
+			 and id in 
+			 <foreach collection ="ids" item="id" index= "index" open="(" separator="," close=")">
+				 #{id}
+			 </foreach>
+		 </if>
+
+	</select>
+
+	<!-- 根据Id范围进查询 -->
+	<select id="selectOfIdScopes" resultMap="BaseResultMap" parameterType="com.aimspeed.gatherer.entity.bean.mysql.request.RequestHeaderMySqlBean">
+		 SELECT
+		 <include refid="Base_Column_List" />
+		 FROM request_header
+		 WHERE 1 = 1 
+		 <if test="lessId != null">
+			 and id <![CDATA[ > ]]> #{lessId, jdbcType=INTEGER}
+		 </if>
+		 <if test="largeId != null">
+			 and id <![CDATA[ < ]]> #{largeId, jdbcType=INTEGER}
+		 </if>
+
+	</select>
+
+	<!-- 根据多条件值进行查询 -->
+	<select id="selectSelectiveMany" resultMap="BaseResultMap" parameterType="com.aimspeed.gatherer.entity.bean.mysql.request.RequestHeaderMySqlBean">
+		 SELECT
+		 <include refid="Base_Column_List" />
+		 FROM request_header
+		 WHERE 1 = 1 
+		 <foreach collection ="batchField" item="bean" index= "index" >
+			<if test="id != null">
+				 and id = #{bean.id, jdbcType=INTEGER}
+			</if>
+			<if test="sequence != null">
+				 and sequence = #{bean.sequence, jdbcType=VARCHAR}
+			</if>
+			<if test="headerKey != null">
+				 and header_key = #{bean.headerKey, jdbcType=VARCHAR}
+			</if>
+			<if test="headerValue != null">
+				 and header_value = #{bean.headerValue, jdbcType=VARCHAR}
+			</if>
+			<if test="isDelete != null">
+				 and is_delete = #{bean.isDelete, jdbcType=CHAR}
+			</if>
+			<if test="creator != null">
+				 and creator = #{bean.creator, jdbcType=VARCHAR}
+			</if>
+			<if test="createTime != null">
+				 and create_time = #{bean.createTime, jdbcType=TIMESTAMP}
+			</if>
+			<if test="updator != null">
+				 and updator = #{bean.updator, jdbcType=VARCHAR}
+			</if>
+			<if test="updateTime != null">
+				 and update_time = #{bean.updateTime, jdbcType=TIMESTAMP}
+			</if>
+
+		 </foreach>
+
+	</select>
+
+	<!-- 根据条件进行查询去重 -->
+	<select id="selectSelectiveOfDistince" resultMap="BaseResultMap" parameterType="com.aimspeed.gatherer.entity.bean.mysql.request.RequestHeaderMySqlBean">
+		 SELECT
+		 DISTINCT <include refid="Base_Column_List" />
+		 FROM request_header
+		 WHERE 1 = 1 
+			<if test="id != null">
+				 and id = #{id, jdbcType=INTEGER}
+			</if>
+			<if test="sequence != null">
+				 and sequence = #{sequence, jdbcType=VARCHAR}
+			</if>
+			<if test="headerKey != null">
+				 and header_key = #{headerKey, jdbcType=VARCHAR}
+			</if>
+			<if test="headerValue != null">
+				 and header_value = #{headerValue, jdbcType=VARCHAR}
+			</if>
+			<if test="isDelete != null">
+				 and is_delete = #{isDelete, jdbcType=CHAR}
+			</if>
+			<if test="creator != null">
+				 and creator = #{creator, jdbcType=VARCHAR}
+			</if>
+			<if test="createTime != null">
+				 and create_time = #{createTime, jdbcType=TIMESTAMP}
+			</if>
+			<if test="updator != null">
+				 and updator = #{updator, jdbcType=VARCHAR}
+			</if>
+			<if test="updateTime != null">
+				 and update_time = #{updateTime, jdbcType=TIMESTAMP}
+			</if>
+
+	</select>
+
+	<!-- 根据多条件值进行去重查询 -->
+	<select id="selectSelectiveManyOfDistince" resultMap="BaseResultMap" parameterType="com.aimspeed.gatherer.entity.bean.mysql.request.RequestHeaderMySqlBean">
+		 SELECT
+		 DISTINCT <include refid="Base_Column_List" />
+		 FROM request_header
+		 WHERE 1 = 1 
+		 <foreach collection ="batchField" item="bean" index= "index" >
+			<if test="id != null">
+				 and id = #{bean.id, jdbcType=INTEGER}
+			</if>
+			<if test="sequence != null">
+				 and sequence = #{bean.sequence, jdbcType=VARCHAR}
+			</if>
+			<if test="headerKey != null">
+				 and header_key = #{bean.headerKey, jdbcType=VARCHAR}
+			</if>
+			<if test="headerValue != null">
+				 and header_value = #{bean.headerValue, jdbcType=VARCHAR}
+			</if>
+			<if test="isDelete != null">
+				 and is_delete = #{bean.isDelete, jdbcType=CHAR}
+			</if>
+			<if test="creator != null">
+				 and creator = #{bean.creator, jdbcType=VARCHAR}
+			</if>
+			<if test="createTime != null">
+				 and create_time = #{bean.createTime, jdbcType=TIMESTAMP}
+			</if>
+			<if test="updator != null">
+				 and updator = #{bean.updator, jdbcType=VARCHAR}
+			</if>
+			<if test="updateTime != null">
+				 and update_time = #{bean.updateTime, jdbcType=TIMESTAMP}
+			</if>
+
+		 </foreach>
+
+	</select>
+
+	<!-- 根据对象中不为null的值进行删除 -->
+	<delete id="deleteSelective" parameterType="com.aimspeed.gatherer.entity.bean.mysql.request.RequestHeaderMySqlBean">
+		 DELETE FROM request_header
+		 WHERE 1 = 1 
+			<if test="id != null">
+				 and id = #{id, jdbcType=INTEGER}
+			</if>
+			<if test="sequence != null">
+				 and sequence = #{sequence, jdbcType=VARCHAR}
+			</if>
+			<if test="headerKey != null">
+				 and header_key = #{headerKey, jdbcType=VARCHAR}
+			</if>
+			<if test="headerValue != null">
+				 and header_value = #{headerValue, jdbcType=VARCHAR}
+			</if>
+			<if test="isDelete != null">
+				 and is_delete = #{isDelete, jdbcType=CHAR}
+			</if>
+			<if test="creator != null">
+				 and creator = #{creator, jdbcType=VARCHAR}
+			</if>
+			<if test="createTime != null">
+				 and create_time = #{createTime, jdbcType=TIMESTAMP}
+			</if>
+			<if test="updator != null">
+				 and updator = #{updator, jdbcType=VARCHAR}
+			</if>
+			<if test="updateTime != null">
+				 and update_time = #{updateTime, jdbcType=TIMESTAMP}
+			</if>
+	</delete>
+
+	<!-- 根据对象中不为null的值进行删除 -->
+	<delete id="deleteSelectiveOfId" parameterType="com.aimspeed.gatherer.entity.bean.mysql.request.RequestHeaderMySqlBean">
+		 DELETE FROM request_header
+		 WHERE 1 = 1 
+		 <if test="id != null">
+			 and id = #{id, jdbcType=INTEGER}
+		 </if>
+
+	</delete>
+	<!-- 根据对象中不为null的值进行删除 -->
+	<delete id="deleteSelectiveOfIds" parameterType="com.aimspeed.gatherer.entity.bean.mysql.request.RequestHeaderMySqlBean">
+		 DELETE FROM request_header
+		 WHERE 1 = 1 
+		 <if	test="ids != null and ids.size > 0">
+			 and id in 
+			 <foreach collection ="ids" item="id" index= "index" open="(" separator="," close=")">
+				 #{id}
+			 </foreach>
+		 </if>
+
+	</delete>
+
+
+	<!-- 添加 （匹配有值的字段）-->
+	<insert id="insertSelective" parameterType="com.aimspeed.gatherer.entity.bean.mysql.request.RequestHeaderMySqlBean">
+		 INSERT INTO request_header
+		 <trim prefix="(" suffix=")" suffixOverrides="," >
+			<if test="id != null">
+				 id,
+			</if>
+			<if test="sequence != null">
+				 sequence,
+			</if>
+			<if test="headerKey != null">
+				 header_key,
+			</if>
+			<if test="headerValue != null">
+				 header_value,
+			</if>
+			<if test="isDelete != null">
+				 is_delete,
+			</if>
+			<if test="creator != null">
+				 creator,
+			</if>
+			<if test="createTime != null">
+				 create_time,
+			</if>
+			<if test="updator != null">
+				 updator,
+			</if>
+			<if test="updateTime != null">
+				 update_time,
+			</if>
+
+		 </trim>
+		 <trim prefix="values (" suffix=")" suffixOverrides="," >
+			<if test="id!=null">
+				 #{id},
+			</if>
+			<if test="sequence!=null">
+				 #{sequence},
+			</if>
+			<if test="headerKey!=null">
+				 #{headerKey},
+			</if>
+			<if test="headerValue!=null">
+				 #{headerValue},
+			</if>
+			<if test="isDelete!=null">
+				 #{isDelete},
+			</if>
+			<if test="creator!=null">
+				 #{creator},
+			</if>
+			<if test="createTime!=null">
+				 #{createTime},
+			</if>
+			<if test="updator!=null">
+				 #{updator},
+			</if>
+			<if test="updateTime!=null">
+				 #{updateTime},
+			</if>
+		 </trim>
+	</insert>
+
+	 <!-- 批量添加数据，添加所有字段的数据-->
+	 <insert id="batchInsert" parameterType="com.aimspeed.gatherer.entity.bean.mysql.request.RequestHeaderMySqlBean">
+		 INSERT INTO request_header(<include refid="Base_Column_List" />)
+		 VALUES
+		 <foreach collection ="batchField" item="bean" index= "index" separator =",">
+			 (
+				 #{bean.id},
+				 #{bean.sequence},
+				 #{bean.headerKey},
+				 #{bean.headerValue},
+				 #{bean.isDelete},
+				 #{bean.creator},
+				 #{bean.createTime},
+				 #{bean.updator},
+				 #{bean.updateTime}
+			 )
+		</foreach >
+	</insert>
+
+	<!-- 批量添加数据，添加动态字段的数据，建议每次100条 -->
+	<insert id="batchInsertSelective" parameterType="com.aimspeed.gatherer.entity.bean.mysql.request.RequestHeaderMySqlBean">
+		 <foreach collection ="batchField" item="bean" index= "index" separator =",">
+			 INSERT INTO request_header
+			 <trim prefix="(" suffix=")" suffixOverrides="," >
+				<if test="bean.id != null">
+					 id,
+				</if>
+				<if test="bean.sequence != null">
+					 sequence,
+				</if>
+				<if test="bean.headerKey != null">
+					 header_key,
+				</if>
+				<if test="bean.headerValue != null">
+					 header_value,
+				</if>
+				<if test="bean.isDelete != null">
+					 is_delete,
+				</if>
+				<if test="bean.creator != null">
+					 creator,
+				</if>
+				<if test="bean.createTime != null">
+					 create_time,
+				</if>
+				<if test="bean.updator != null">
+					 updator,
+				</if>
+				<if test="bean.updateTime != null">
+					 update_time,
+				</if>
+
+			 </trim>
+			 <trim prefix="values (" suffix=")" suffixOverrides="," >
+				<if test="bean.id!=null">
+					 #{bean.id},
+				</if>
+				<if test="bean.sequence!=null">
+					 #{bean.sequence},
+				</if>
+				<if test="bean.headerKey!=null">
+					 #{bean.headerKey},
+				</if>
+				<if test="bean.headerValue!=null">
+					 #{bean.headerValue},
+				</if>
+				<if test="bean.isDelete!=null">
+					 #{bean.isDelete},
+				</if>
+				<if test="bean.creator!=null">
+					 #{bean.creator},
+				</if>
+				<if test="bean.createTime!=null">
+					 #{bean.createTime},
+				</if>
+				<if test="bean.updator!=null">
+					 #{bean.updator},
+				</if>
+				<if test="bean.updateTime!=null">
+					 #{bean.updateTime},
+				</if>
+			 </trim>
+		</foreach >	</insert>
+
+	<!-- 动态更新-->
+	<update id="updateSelective" parameterType="com.aimspeed.gatherer.entity.bean.mysql.request.RequestHeaderMySqlBean">
+		 UPDATE request_header
+ 		 <set> 
+			<if test="updateRecord != null and updateRecord.sequence != null">
+				 sequence = #{updateRecord.sequence},
+			</if>
+			<if test="updateRecord != null and updateRecord.headerKey != null">
+				 header_key = #{updateRecord.headerKey},
+			</if>
+			<if test="updateRecord != null and updateRecord.headerValue != null">
+				 header_value = #{updateRecord.headerValue},
+			</if>
+			<if test="updateRecord != null and updateRecord.isDelete != null">
+				 is_delete = #{updateRecord.isDelete},
+			</if>
+			<if test="updateRecord != null and updateRecord.creator != null">
+				 creator = #{updateRecord.creator},
+			</if>
+			<if test="updateRecord != null and updateRecord.createTime != null">
+				 create_time = #{updateRecord.createTime},
+			</if>
+			<if test="updateRecord != null and updateRecord.updator != null">
+				 updator = #{updateRecord.updator},
+			</if>
+			<if test="updateRecord != null and updateRecord.updateTime != null">
+				 update_time = #{updateRecord.updateTime},
+			</if>
+
+ 		 </set>
+		 WHERE 1 = 1 
+			<if test="conditionRecord != null and conditionRecord.id != null">
+				 and id = #{conditionRecord.id, jdbcType=INTEGER}
+			</if>
+			<if test="conditionRecord != null and conditionRecord.sequence != null">
+				 and sequence = #{conditionRecord.sequence, jdbcType=VARCHAR}
+			</if>
+			<if test="conditionRecord != null and conditionRecord.headerKey != null">
+				 and header_key = #{conditionRecord.headerKey, jdbcType=VARCHAR}
+			</if>
+			<if test="conditionRecord != null and conditionRecord.headerValue != null">
+				 and header_value = #{conditionRecord.headerValue, jdbcType=VARCHAR}
+			</if>
+			<if test="conditionRecord != null and conditionRecord.isDelete != null">
+				 and is_delete = #{conditionRecord.isDelete, jdbcType=CHAR}
+			</if>
+			<if test="conditionRecord != null and conditionRecord.creator != null">
+				 and creator = #{conditionRecord.creator, jdbcType=VARCHAR}
+			</if>
+			<if test="conditionRecord != null and conditionRecord.createTime != null">
+				 and create_time = #{conditionRecord.createTime, jdbcType=TIMESTAMP}
+			</if>
+			<if test="conditionRecord != null and conditionRecord.updator != null">
+				 and updator = #{conditionRecord.updator, jdbcType=VARCHAR}
+			</if>
+			<if test="conditionRecord != null and conditionRecord.updateTime != null">
+				 and update_time = #{conditionRecord.updateTime, jdbcType=TIMESTAMP}
+			</if>
+	</update>
+
+
+	<!-- 根据批量Id进行更新 -->
+	<update id="batchUpdateOfIds" parameterType="com.aimspeed.gatherer.entity.bean.mysql.request.RequestHeaderMySqlBean">
+		 UPDATE request_header
+ 		 <set> 
+			<if test="updateRecord != null and updateRecord.sequence != null">
+				 sequence = #{updateRecord.sequence},
+			</if>
+			<if test="updateRecord != null and updateRecord.headerKey != null">
+				 header_key = #{updateRecord.headerKey},
+			</if>
+			<if test="updateRecord != null and updateRecord.headerValue != null">
+				 header_value = #{updateRecord.headerValue},
+			</if>
+			<if test="updateRecord != null and updateRecord.isDelete != null">
+				 is_delete = #{updateRecord.isDelete},
+			</if>
+			<if test="updateRecord != null and updateRecord.creator != null">
+				 creator = #{updateRecord.creator},
+			</if>
+			<if test="updateRecord != null and updateRecord.createTime != null">
+				 create_time = #{updateRecord.createTime},
+			</if>
+			<if test="updateRecord != null and updateRecord.updator != null">
+				 updator = #{updateRecord.updator},
+			</if>
+			<if test="updateRecord != null and updateRecord.updateTime != null">
+				 update_time = #{updateRecord.updateTime},
+			</if>
+
+ 		 </set>
+		 WHERE 1 = 1 
+			 <if	test="ids != null and ids.size > 0">
+				 and id in 
+				 <foreach collection ="ids" item="id" index= "index" open="(" separator="," close=")">
+					 #{id}
+				 </foreach>
+			 </if>
+	</update>
+
+
+	<!-- 根据Id进行更新 -->
+	<update id="updateSelectiveOfId" parameterType="com.aimspeed.gatherer.entity.bean.mysql.request.RequestHeaderMySqlBean">
+		 UPDATE request_header
+ 		 <set> 
+			<if test="updateRecord != null and updateRecord.sequence != null">
+				 sequence = #{updateRecord.sequence},
+			</if>
+			<if test="updateRecord != null and updateRecord.headerKey != null">
+				 header_key = #{updateRecord.headerKey},
+			</if>
+			<if test="updateRecord != null and updateRecord.headerValue != null">
+				 header_value = #{updateRecord.headerValue},
+			</if>
+			<if test="updateRecord != null and updateRecord.isDelete != null">
+				 is_delete = #{updateRecord.isDelete},
+			</if>
+			<if test="updateRecord != null and updateRecord.creator != null">
+				 creator = #{updateRecord.creator},
+			</if>
+			<if test="updateRecord != null and updateRecord.createTime != null">
+				 create_time = #{updateRecord.createTime},
+			</if>
+			<if test="updateRecord != null and updateRecord.updator != null">
+				 updator = #{updateRecord.updator},
+			</if>
+			<if test="updateRecord != null and updateRecord.updateTime != null">
+				 update_time = #{updateRecord.updateTime},
+			</if>
+
+ 		 </set>
+		 WHERE 1 = 1 		 <if test="updateRecord != null and updateRecord.id != null">
+			 and id = #{updateRecord.id, jdbcType=INTEGER}
+		 </if>
+
+	</update>
+
+
+</mapper>

@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>dataintegrationservices</artifactId>
+        <groupId>com.aimspeed</groupId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+    
+	<groupId>com.aimspeed.gatherer</groupId>
+    <artifactId>gatherer</artifactId>
+    <packaging>pom</packaging>
+
+    <description>这是一个数据采集的子项目</description>
+
+    <modules>
+    	<module>gatcommon</module>
+    	<module>gatrepository</module>
+    	<module>gatentity</module>
+    	<module>gatservice</module>
+    	<module>gatcontroller</module>
+    	<module>gatweb</module>
+    </modules>
+    
+    <properties>
+		<httpclient.version>4.5.5</httpclient.version>
+		<jsoup.version>1.8.3</jsoup.version>
+		<commons.httpclient.version>3.0.1</commons.httpclient.version>
+    </properties>
+    
+    <!-- 所有项目共需jar -->
+    <dependencies>
+    	<dependency>
+    		<!-- 主公共模块 -->
+	    	<artifactId>common</artifactId>
+	        <groupId>com.aimspeed.plugins</groupId>
+	        <version>1.0-SNAPSHOT</version>
+    	</dependency>
+    
+    </dependencies>
+    
+    <!-- 控制导入的jar -->
+    <dependencyManagement>
+    	
+    	<dependencies>
+    		<!-- https://mvnrepository.com/artifact/org.apache.httpcomponents/httpclient -->
+			<dependency>
+			    <groupId>org.apache.httpcomponents</groupId>
+			    <artifactId>httpclient</artifactId>
+			    <version>${httpclient.version}</version>
+			</dependency>
+	  	
+		  	<!-- https://mvnrepository.com/artifact/commons-httpclient/commons-httpclient -->
+			<dependency>
+			    <groupId>commons-httpclient</groupId>
+			    <artifactId>commons-httpclient</artifactId>
+			    <version>${commons.httpclient.version}</version>
+			</dependency>
+		  	
+		  	<!-- https://mvnrepository.com/artifact/org.jsoup/jsoup -->
+			<dependency>
+			    <groupId>org.jsoup</groupId>
+			    <artifactId>jsoup</artifactId>
+			    <version>${jsoup.version}</version>
+			</dependency>
+    	
+    	</dependencies>
+    	
+    </dependencyManagement>
+    
+    
+</project>

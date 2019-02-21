@@ -1,0 +1,419 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.aimspeed</groupId>
+    <artifactId>dataintegrationservices</artifactId>
+    <version>1.0-SNAPSHOT</version>
+
+    <!-- 所有的子项目 -->
+    <modules>
+        <module>gatherer</module>
+        <module>common</module>
+        <module>web</module>
+        <module>operations-center</module>
+        <module>operationscenter</module>
+        <module>plugins</module>
+    </modules>
+
+    <packaging>pom</packaging>
+    <description>这是顶级的父级项目</description>
+
+    <!-- 版本变量控制 -->
+    <properties>
+        <!-- 源码编码 -->
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+        <!-- Maven编译版本 -->
+        <maven.compiler.version>3.1</maven.compiler.version>
+
+        <!-- 指定一下jdk的版本 ，这里我们使用jdk 1.8 ,默认是1.6 -->
+        <java.version>1.8</java.version>
+		
+		<!-- Spring Framework版本 -->
+        <springframework.version>5.0.6.RELEASE</springframework.version>
+		
+        <!-- SpringBoot版本 -->
+        <springboot.version>2.0.2.RELEASE</springboot.version>
+
+        <!-- SpringCloud版本 -->
+        <springcloud.version>Finchley.SR1</springcloud.version>
+
+        <!-- 日志版本 -->
+        <logback.version>1.1.11</logback.version>
+        <slf4j.version>1.7.25</slf4j.version>
+
+        <!-- tomcat支持版本 -->
+        <tomcat.juli.version>8.5.8</tomcat.juli.version>
+        <tomcat.embed.jasper.version>8.5.23</tomcat.embed.jasper.version>
+
+        <!-- MyBatis版本 -->
+        <mybatis.version>1.3.2</mybatis.version>
+
+        <!-- Mysql连接 -->
+        <mysql.connector.version>5.1.38</mysql.connector.version>
+
+        <!-- 阿里连接池 -->
+        <mysql.pool.druid.version>1.1.9</mysql.pool.druid.version>
+
+        <!-- Redis连接版本 -->
+        <jedis.version>2.9.0</jedis.version>
+
+    </properties>
+
+    <!-- 子项目必备，子项目就不必引入了 -->
+    <dependencies>
+        <!--日志 logback+slf4j -->
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-core</artifactId>
+            <version>${logback.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>${logback.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-access</artifactId>
+            <version>${logback.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>${slf4j.version}</version>
+        </dependency>
+
+    </dependencies>
+
+    <!-- 对于子节点的可选 -->
+    <dependencyManagement>
+        <dependencies>
+            <!-- =============================== Spring Cloud =============================== -->
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>${springcloud.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+            <!-- =============================== Spring Boot =============================== -->
+            <!-- web支持: 1、web mvc; 2、restful; 3、jackjson支持; 4、aop ........ -->
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-web</artifactId>
+                <version>${springboot.version}</version>
+            </dependency>
+
+            <!-- tomcat 的支持.-->
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-tomcat</artifactId>
+                <version>${springboot.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.tomcat</groupId>
+                <artifactId>tomcat-juli</artifactId>
+                <version>${tomcat.juli.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.tomcat.embed</groupId>
+                <artifactId>tomcat-embed-jasper</artifactId>
+                <version>${tomcat.embed.jasper.version}</version>
+            </dependency>
+
+            <!--
+                spring-boot-starter-web: MVC,AOP的依赖包....
+             -->
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-web</artifactId>
+                <version>${springboot.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-aop</artifactId>
+                <version>${springboot.version}</version>
+            </dependency>
+
+            <!-- 测试用例 -->
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-test</artifactId>
+                <scope>test</scope>
+                <version>${springboot.version}</version>
+            </dependency>
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-test</artifactId>
+	            <scope>test</scope>
+	            <version>${springframework.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-test</artifactId>
+	            <scope>test</scope>
+	            <version>${springboot.version}</version>
+			</dependency>
+
+            <!-- spring boot devtools 依赖包. -->
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-devtools</artifactId>
+                <optional>true</optional>
+                <version>${springboot.version}</version>
+            </dependency>
+            <!-- =============================== Servlet Jsp =============================== -->
+            <!-- servlet 依赖. -->
+            <dependency>
+                <groupId>javax.servlet</groupId>
+                <artifactId>javax.servlet-api</artifactId>
+                <version>3.1.0</version>
+            </dependency>
+
+
+            <!-- Jsp -->
+            <dependency>
+                <groupId>javax.servlet</groupId>
+                <artifactId>jsp-api</artifactId>
+                <version>2.0</version>
+            </dependency>
+            <!-- JSTL是一个不断完善的开放源代码的JSP标签库 -->
+            <dependency>
+                <groupId>javax.servlet</groupId>
+                <artifactId>jstl</artifactId>
+                <version>1.2</version>
+            </dependency>
+            <dependency>
+                <groupId>taglibs</groupId>
+                <artifactId>standard</artifactId>
+                <version>1.1.2</version>
+            </dependency>
+            <dependency>
+                <groupId>commons-fileupload</groupId>
+                <artifactId>commons-fileupload</artifactId>
+                <version>1.3.1</version>
+            </dependency>
+
+            <!-- =============================== MySql数据库 =============================== -->
+            <!-- 添加MySQL数据库驱动依赖包. -->
+            <dependency>
+                <groupId>mysql</groupId>
+                <artifactId>mysql-connector-java</artifactId>
+                <version>${mysql.connector.version}</version>
+            </dependency>
+
+            <!-- 阿里连接池 -->
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>druid</artifactId>
+                <version>${mysql.pool.druid.version}</version>
+            </dependency>
+
+            <!-- =============================== MyBatis =============================== -->
+
+            <!--
+                spring-boot mybatis依赖：
+                请不要使用1.0.0版本，因为还不支持拦截器插件，
+             -->
+            <dependency>
+                <groupId>org.mybatis.spring.boot</groupId>
+                <artifactId>mybatis-spring-boot-starter</artifactId>
+                <version>${mybatis.version}</version>
+            </dependency>
+
+            <!-- =============================== Json =============================== -->
+            <dependency>
+                <groupId>org.json</groupId>
+                <artifactId>json</artifactId>
+                <version>20131018</version>
+            </dependency>
+
+            <!-- 添加fastjson 依赖包. -->
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>fastjson</artifactId>
+                <version>1.2.15</version>
+            </dependency>
+			
+            <!-- =============================== Redis =============================== -->
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-data-redis</artifactId>
+                <version>${springboot.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>redis.clients</groupId>
+                        <artifactId>jedis</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>io.lettuce</groupId>
+                        <artifactId>lettuce-core</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+            <dependency>
+                <groupId>redis.clients</groupId>
+                <artifactId>jedis</artifactId>
+                <version>${jedis.version}</version>
+            </dependency>
+
+            <!-- =============================== MongoDB =============================== -->
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-data-mongodb</artifactId>
+                <version>${springboot.version}</version>
+            </dependency>
+
+
+            <!-- =============================== 常用工具 =============================== -->
+            <!-- BeanUtils 提供了对于JavaBean进行各种操作， 比如对象,属性复制等等。-->
+            <dependency>
+                <groupId>commons-beanutils</groupId>
+                <artifactId>commons-beanutils</artifactId>
+                <version>1.9.2</version>
+            </dependency>
+
+            <!-- 注解API -->
+            <dependency>
+                <groupId>javax.persistence</groupId>
+                <artifactId>persistence-api</artifactId>
+                <version>1.0.2</version>
+            </dependency>
+
+            <!-- Codec 提供了一些公共的编解码实现，比如Base64, Hex, MD5,Phonetic and URLs等等。-->
+            <dependency>
+                <groupId>commons-codec</groupId>
+                <artifactId>commons-codec</artifactId>
+                <version>1.10</version>
+            </dependency>
+
+            <!-- Collections 对java.util的扩展封装。-->
+            <dependency>
+                <groupId>commons-collections</groupId>
+                <artifactId>commons-collections</artifactId>
+                <version>3.2.2</version>
+            </dependency>
+
+            <!-- IO 对java.io的扩展 操作文件非常方便。-->
+            <dependency>
+                <groupId>commons-io</groupId>
+                <artifactId>commons-io</artifactId>
+                <version>2.5</version>
+            </dependency>
+
+            <!-- Lang 主要是一些公共的工具集合，比如对字符、数组的操作等等。-->
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-lang3</artifactId>
+                <version>3.4</version>
+            </dependency>
+            
+            <!-- freemarker -->
+	        <dependency>
+	            <groupId>org.freemarker</groupId>
+	            <artifactId>freemarker</artifactId>
+	            <version>2.3.26-incubating</version>
+	        </dependency>
+
+            <!-- Logging 提供的是一个Java 的日志接口,同时兼顾轻量级和不依赖于具体的日志实现工具。-->
+            <dependency>
+                <groupId>commons-logging</groupId>
+                <artifactId>commons-logging</artifactId>
+                <version>1.2</version>
+            </dependency>
+
+            <!-- junrar 文件压缩和解压缩  -->
+            <dependency>
+                <groupId>com.github.junrar</groupId>
+                <artifactId>junrar</artifactId>
+                <version>0.7</version>
+            </dependency>
+
+            <!-- 定时任务 -->
+            <dependency>
+                <groupId>org.quartz-scheduler</groupId>
+                <artifactId>quartz</artifactId>
+                <version>2.2.3</version>
+            </dependency>
+
+            <!-- POI -->
+            <dependency>
+                <groupId>org.apache.poi</groupId>
+                <artifactId>poi</artifactId>
+                <version>3.9</version>
+            </dependency>
+            <!-- 提供了对office的word、excel、visio及ppt的操作。 -->
+            <dependency>
+                <groupId>org.apache.poi</groupId>
+                <artifactId>poi-ooxml</artifactId>
+                <version>3.9</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.poi</groupId>
+                <artifactId>poi-scratchpad</artifactId>
+                <version>3.9</version>
+            </dependency>
+			
+			<!-- Solr -->
+			<dependency>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-starter-data-solr</artifactId>
+				<version>${springboot.version}</version>
+			</dependency>
+
+        </dependencies>
+    </dependencyManagement>
+
+    <!-- 构建节点. -->
+    <build>
+
+        <!-- 所有子项目都必备的插件 -->
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>${maven.compiler.version}</version>
+                <configuration>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
+                    <encoding>${project.build.sourceEncoding}</encoding>
+                </configuration>
+            </plugin>
+        </plugins>
+
+        <!-- 子节点的可选 -->
+        <pluginManagement>
+
+            <plugins>
+                <!-- 这是spring boot devtool plugin 热部署插件 -->
+                <plugin>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-maven-plugin</artifactId>
+                    <configuration>
+                        <!-- fork :  如果没有该项配置，肯呢个devtools不会起作用，即应用不会restart -->
+                        <fork>true</fork>
+                    </configuration>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-surefire-plugin</artifactId>
+                    <configuration>
+                        <testFailureIgnore>true</testFailureIgnore>
+                    </configuration>
+                </plugin>
+
+            </plugins>
+        </pluginManagement>
+    </build>
+
+
+</project>
