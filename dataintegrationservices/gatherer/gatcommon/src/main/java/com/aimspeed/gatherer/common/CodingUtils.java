@@ -12,10 +12,8 @@ public class CodingUtils {
 	/**
 	 * 从字符串中查找是否包含编码
 	 * @author AimSpeed
-	 * @Title getCodingOfContains 
 	 * @param string
 	 * @return String 
-	 * @date 2018年3月27日
 	 */
 	public static String getCodingOfContains(String string){
 		

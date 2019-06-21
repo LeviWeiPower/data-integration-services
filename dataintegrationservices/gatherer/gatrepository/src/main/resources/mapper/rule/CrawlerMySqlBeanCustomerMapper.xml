@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aimspeed.gatherer.entity.bean.mysql.rule.CrawlerMySqlBeanMapper">
+
+	<!--实体映射-->
+	<resultMap id="BaseResultCustomerMap" type="com.aimspeed.gatherer.entity.bean.mysql.rule.CrawlerMySqlBean">
+		<!---->
+		<id column="id" jdbcType="INTEGER" property="id" />
+		<!--采集者的唯一序列号-->
+		<id column="sequence" jdbcType="VARCHAR" property="sequence" />
+		<!--名称-->
+		<id column="name" jdbcType="VARCHAR" property="name" />
+		<!--地址-->
+		<id column="url" jdbcType="VARCHAR" property="url" />
+		<!--域名-->
+		<id column="main_url" jdbcType="VARCHAR" property="mainUrl" />
+		<!--数据分类（避免数据混乱）-->
+		<id column="data_classify" jdbcType="VARCHAR" property="dataClassify" />
+		<!--层级，从主链接页开始算，从0开始，没有填默认为0-->
+		<id column="hierarchy" jdbcType="INTEGER" property="hierarchy" />
+		<!--请求方式，没有则为get-->
+		<id column="method" jdbcType="VARCHAR" property="method" />
+		<!--编码，默认utf8-->
+		<id column="coding" jdbcType="VARCHAR" property="coding" />
+		<!--每分钟请求次数，默认为60次-->
+		<id column="request_num" jdbcType="INTEGER" property="requestNum" />
+		<!--是否开启运行中，'N' 否，'Y'是，默认为'N'-->
+		<id column="is_start" jdbcType="CHAR" property="isStart" />
+		<!--是否删除 N非删除 Y删除-->
+		<id column="is_delete" jdbcType="CHAR" property="isDelete" />
+		<!--创建人-->
+		<id column="creator" jdbcType="VARCHAR" property="creator" />
+		<!--创建时间-->
+		<id column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+		<!--更新人-->
+		<id column="updator" jdbcType="VARCHAR" property="updator" />
+		<!--更新时间-->
+		<id column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+	</resultMap>
+
+
+</mapper>

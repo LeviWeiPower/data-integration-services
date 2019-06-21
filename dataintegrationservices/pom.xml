@@ -11,11 +11,9 @@
     <!-- 所有的子项目 -->
     <modules>
         <module>gatherer</module>
-        <module>common</module>
-        <module>web</module>
-        <module>operations-center</module>
         <module>operationscenter</module>
-        <module>plugins</module>
+        <!-- <module>plugins</module> -->
+        <module>server</module>
     </modules>
 
     <packaging>pom</packaging>
@@ -40,6 +38,13 @@
 
         <!-- SpringCloud版本 -->
         <springcloud.version>Finchley.SR1</springcloud.version>
+        
+        <!-- Feign版本 -->
+        <springcloud.openfeign.version>2.0.1.RELEASE</springcloud.openfeign.version>
+        <openfeign.version>3.3.0</openfeign.version>
+        
+        <!-- Eureka版本 -->
+        <eureka.version>2.0.1.RELEASE</eureka.version>
 
         <!-- 日志版本 -->
         <logback.version>1.1.11</logback.version>
@@ -102,14 +107,64 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
-
+            
+            <!-- Feign -->
+			<dependency>
+			    <groupId>org.springframework.cloud</groupId>
+			    <artifactId>spring-cloud-starter-openfeign</artifactId>
+			    <version>${springcloud.openfeign.version}</version>
+			</dependency>
+			
+			<dependency>
+			    <groupId>io.github.openfeign.form</groupId>
+			    <artifactId>feign-form</artifactId>
+			    <version>${openfeign.version}</version>
+			</dependency>
+			<dependency>
+			    <groupId>io.github.openfeign.form</groupId>
+			    <artifactId>feign-form-spring</artifactId>
+			    <version>${openfeign.version}</version>
+			</dependency>
+			
+			<!-- Eureka服务端 -->
+			<dependency>  
+	        	<groupId>org.springframework.cloud</groupId>  
+	        	<artifactId>spring-cloud-starter-netflix-eureka-server</artifactId>
+	        	<version>${eureka.version}</version>
+	   	 	</dependency>  
+	   	 	
+			<!-- Eureka客户端 -->
+			<dependency>
+	            <groupId>org.springframework.cloud</groupId>
+	            <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
+	        	<version>${eureka.version}</version>
+	        </dependency>
+			
+			
             <!-- =============================== Spring Boot =============================== -->
+            
+            <!-- 从SpringBoot导入依赖项管理 -->
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-dependencies</artifactId>
+                <version>${springboot.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            
             <!-- web支持: 1、web mvc; 2、restful; 3、jackjson支持; 4、aop ........ -->
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-starter-web</artifactId>
                 <version>${springboot.version}</version>
             </dependency>
+            
+            <!-- SpringBoot启动，不是Web的方式 -->
+			<dependency>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-starter</artifactId>
+                <version>${springboot.version}</version>
+			</dependency>
 
             <!-- tomcat 的支持.-->
             <dependency>
@@ -128,9 +183,7 @@
                 <version>${tomcat.embed.jasper.version}</version>
             </dependency>
 
-            <!--
-                spring-boot-starter-web: MVC,AOP的依赖包....
-             -->
+            <!-- spring-boot-starter-web: MVC,AOP的依赖包.... -->
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-starter-web</artifactId>
@@ -170,6 +223,14 @@
                 <optional>true</optional>
                 <version>${springboot.version}</version>
             </dependency>
+            
+            <!-- 认证 -->   	 	
+	   	 	<dependency> 
+		        <groupId>org.springframework.boot</groupId> 
+		        <artifactId>spring-boot-starter-security</artifactId>  
+                <version>${springboot.version}</version>
+			</dependency>
+            
             <!-- =============================== Servlet Jsp =============================== -->
             <!-- servlet 依赖. -->
             <dependency>
@@ -219,10 +280,7 @@
 
             <!-- =============================== MyBatis =============================== -->
 
-            <!--
-                spring-boot mybatis依赖：
-                请不要使用1.0.0版本，因为还不支持拦截器插件，
-             -->
+            <!-- spring-boot mybatis依赖：请不要使用1.0.0版本，因为还不支持拦截器插件 -->
             <dependency>
                 <groupId>org.mybatis.spring.boot</groupId>
                 <artifactId>mybatis-spring-boot-starter</artifactId>
@@ -371,28 +429,26 @@
 
         </dependencies>
     </dependencyManagement>
-
+	
     <!-- 构建节点. -->
     <build>
-
-        <!-- 所有子项目都必备的插件 -->
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>${maven.compiler.version}</version>
-                <configuration>
-                    <source>${java.version}</source>
-                    <target>${java.version}</target>
-                    <encoding>${project.build.sourceEncoding}</encoding>
-                </configuration>
-            </plugin>
-        </plugins>
 
         <!-- 子节点的可选 -->
         <pluginManagement>
 
             <plugins>
+            	<!-- 项目编译插件，所有子项目都必备的插件 -->
+            	<plugin>
+	                <groupId>org.apache.maven.plugins</groupId>
+	                <artifactId>maven-compiler-plugin</artifactId>
+	                <version>${maven.compiler.version}</version>
+	                <configuration>
+	                    <source>${java.version}</source>
+	                    <target>${java.version}</target>
+	                    <encoding>${project.build.sourceEncoding}</encoding>
+	                </configuration>
+	            </plugin>
+            	
                 <!-- 这是spring boot devtool plugin 热部署插件 -->
                 <plugin>
                     <groupId>org.springframework.boot</groupId>
@@ -402,7 +458,17 @@
                         <fork>true</fork>
                     </configuration>
                 </plugin>
-
+				
+				<!-- war打包部署使用 -->
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-war-plugin</artifactId>
+					<configuration>
+						<warName>operationscenter</warName>
+					</configuration>
+				</plugin>
+				
+				<!-- 测试运行器（Test Runner），兼容JUnit 3、JUnit 4以及TestNG -->
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-surefire-plugin</artifactId>

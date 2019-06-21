@@ -1,47 +1,77 @@
 package com.aimspeed.gatherer.entity.bean.mysql.content;
 
-import com.aimspeed.gatherer.entity.bean.mysql.BaseMySqlBean;
+import com.aimspeed.mysql.BaseMySqlBean;
 
 /**
  * 执行过的URL
  * @author AimSpeed
+ * @date 2019年04月11日
  */
 public class ExecutedUrlMySqlBean extends BaseMySqlBean {
 
 	/**
-	 * @date 2018年6月20日 上午12:07:06
-	 * @reason 修改原因
-	 */ 
-	private static final long serialVersionUID = -4795775306237835120L;
-
-	/****/
+	 * 
+	 */
 	private Integer id;
 
-	/**采集者的唯一序列号**/
+	/**
+	 * 采集者的唯一序列号
+	 */
 	private String sequence;
 
-	/**执行过的URL**/
+	/**
+	 * 当前的这个URL的父URL盐值（来源）
+	 */
+	private String parentUrlSalting;
+
+	/**
+	 * 执行过的URL
+	 */
 	private String executedUrl;
 
-	/**请求方式**/
+	/**
+	 * URL的MD5盐值
+	 */
+	private String urlSalting;
+
+	/**
+	 * 请求方式
+	 */
 	private String method;
 
-	/**数据包中的最后更新时间**/
+	/**
+	 * 页面盐值编码，用于识别页面数据是否改变过，如果改变了则重新抓取数据。
+	 */
+	private String pageSalting;
+
+	/**
+	 * 数据包中的最后更新时间
+	 */
 	private String lastUpdateTime;
 
-	/**是否删除 N非删除 Y删除**/
+	/**
+	 * 是否删除 N非删除 Y删除
+	 */
 	private String isDelete;
 
-	/**创建人**/
+	/**
+	 * 创建人
+	 */
 	private String creator;
 
-	/**创建时间**/
+	/**
+	 * 创建时间
+	 */
 	private java.util.Date createTime;
 
-	/**更新人**/
+	/**
+	 * 更新人
+	 */
 	private String updator;
 
-	/**更新时间**/
+	/**
+	 * 更新时间
+	 */
 	private java.util.Date updateTime;
 
 
@@ -62,6 +92,14 @@ public class ExecutedUrlMySqlBean extends BaseMySqlBean {
 		return this.sequence;
 	}
 
+	public void setParentUrlSalting(String parentUrlSalting){
+		this.parentUrlSalting = parentUrlSalting;
+	}
+
+	public String getParentUrlSalting(){
+		return this.parentUrlSalting;
+	}
+
 	public void setExecutedUrl(String executedUrl){
 		this.executedUrl = executedUrl;
 	}
@@ -70,12 +108,28 @@ public class ExecutedUrlMySqlBean extends BaseMySqlBean {
 		return this.executedUrl;
 	}
 
+	public void setUrlSalting(String urlSalting){
+		this.urlSalting = urlSalting;
+	}
+
+	public String getUrlSalting(){
+		return this.urlSalting;
+	}
+
 	public void setMethod(String method){
 		this.method = method;
 	}
 
 	public String getMethod(){
 		return this.method;
+	}
+
+	public void setPageSalting(String pageSalting){
+		this.pageSalting = pageSalting;
+	}
+
+	public String getPageSalting(){
+		return this.pageSalting;
 	}
 
 	public void setLastUpdateTime(String lastUpdateTime){

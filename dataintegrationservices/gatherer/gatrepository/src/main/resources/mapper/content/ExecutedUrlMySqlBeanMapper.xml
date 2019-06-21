@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.aimspeed.gatherer.repository.mysql.content.ExecutedUrlMySqlBeanMapper">
+<mapper namespace="com.aimspeed.gatherer.entity.bean.mysql.content.ExecutedUrlMySqlBeanMapper">
 
 	<!--实体映射-->
 	<resultMap id="BaseResultMap" type="com.aimspeed.gatherer.entity.bean.mysql.content.ExecutedUrlMySqlBean">
@@ -9,10 +9,16 @@
 		<id column="id" jdbcType="INTEGER" property="id" />
 		<!--采集者的唯一序列号-->
 		<id column="sequence" jdbcType="VARCHAR" property="sequence" />
+		<!--当前的这个URL的父URL盐值（来源）-->
+		<id column="parent_url_salting" jdbcType="VARCHAR" property="parentUrlSalting" />
 		<!--执行过的URL-->
 		<id column="executed_url" jdbcType="LONGVARCHAR" property="executedUrl" />
+		<!--URL的MD5盐值-->
+		<id column="url_salting" jdbcType="VARCHAR" property="urlSalting" />
 		<!--请求方式-->
 		<id column="method" jdbcType="VARCHAR" property="method" />
+		<!--页面盐值编码，用于识别页面数据是否改变过，如果改变了则重新抓取数据。-->
+		<id column="page_salting" jdbcType="VARCHAR" property="pageSalting" />
 		<!--数据包中的最后更新时间-->
 		<id column="last_update_time" jdbcType="VARCHAR" property="lastUpdateTime" />
 		<!--是否删除 N非删除 Y删除-->
@@ -30,7 +36,7 @@
 
 	<!-- 通用的字段 -->
 	<sql id="Base_Column_List">
-		 id,	sequence,	executed_url,	method,	last_update_time,	is_delete,	creator,	create_time,	updator,	update_time
+		 id,	sequence,	parent_url_salting,	executed_url,	url_salting,	method,	page_salting,	last_update_time,	is_delete,	creator,	create_time,	updator,	update_time
 	</sql>
 
 	<!-- 根据对象的不为null的值作为条件进行查找，并且确定值找出一个值 -->
@@ -45,11 +51,20 @@
 			<if test="sequence != null">
 				 and sequence = #{sequence, jdbcType=VARCHAR}
 			</if>
+			<if test="parentUrlSalting != null">
+				 and parent_url_salting = #{parentUrlSalting, jdbcType=VARCHAR}
+			</if>
 			<if test="executedUrl != null">
 				 and executed_url = #{executedUrl, jdbcType=LONGVARCHAR}
 			</if>
+			<if test="urlSalting != null">
+				 and url_salting = #{urlSalting, jdbcType=VARCHAR}
+			</if>
 			<if test="method != null">
 				 and method = #{method, jdbcType=VARCHAR}
+			</if>
+			<if test="pageSalting != null">
+				 and page_salting = #{pageSalting, jdbcType=VARCHAR}
 			</if>
 			<if test="lastUpdateTime != null">
 				 and last_update_time = #{lastUpdateTime, jdbcType=VARCHAR}
@@ -84,11 +99,20 @@
 			<if test="sequence != null">
 				 and sequence = #{sequence, jdbcType=VARCHAR}
 			</if>
+			<if test="parentUrlSalting != null">
+				 and parent_url_salting = #{parentUrlSalting, jdbcType=VARCHAR}
+			</if>
 			<if test="executedUrl != null">
 				 and executed_url = #{executedUrl, jdbcType=LONGVARCHAR}
 			</if>
+			<if test="urlSalting != null">
+				 and url_salting = #{urlSalting, jdbcType=VARCHAR}
+			</if>
 			<if test="method != null">
 				 and method = #{method, jdbcType=VARCHAR}
+			</if>
+			<if test="pageSalting != null">
+				 and page_salting = #{pageSalting, jdbcType=VARCHAR}
 			</if>
 			<if test="lastUpdateTime != null">
 				 and last_update_time = #{lastUpdateTime, jdbcType=VARCHAR}
@@ -112,26 +136,41 @@
 	</select>
 
 	<!-- 动态分页，筛选条件 - 默认为最新时间排序 -->
-	<select id="selectPageSelective" resultMap="BaseResultMap" parameterType="com.aimspeed.mysql.vo.MySqlPageVo" >
+	<select id="selectPageSelective" resultMap="BaseResultMap" parameterType="com.aimspeed.mysql.vo.PageVo" >
 		 SELECT
 		 <include refid="Base_Column_List" />
 		 FROM executed_url
-		 WHERE 1 = 1 
-			<if test="pageVo.filtrate != null">
-				<foreach item="value" index="key" collection="pageVo.filtrate.entrySet()" >
+		 <where> 
+			 1 = 1 
+			 <if test="pageVo.filtrate != null and pageVo.filtrate.size > 0">
+				 <foreach item="value" index="key" collection="pageVo.filtrate.entrySet()" >
 					 <if test="value != null and value != '' ">
 						 and ${key} = #{value}
 					 </if>
-				</foreach>
+				 </foreach>
 			 </if>
 
-			<if test="pageVo.likeFiltrate != null">
-				<foreach item="value" index="key" collection="pageVo.likeFiltrate.entrySet()" >
-					 <if test="value != null and value != '' ">
-						 and ${key} like CONCAT('%',#{value},'%')
-					 </if>
-				</foreach>
+			 <if test="pageVo.likeFiltrate != null and pageVo.likeFiltrate.size > 0">
+				 <!-- 一个的情况下不用括号 -->
+				 <if test="pageVo.likeFiltrate != null and pageVo.likeFiltrate.size == 1">
+					 <foreach item="value" index="key" collection="pageVo.likeFiltrate.entrySet()" >
+						 <if test="value != null and value != '' ">
+							 or ${key} like CONCAT('%',#{value},'%')
+						 </if>
+					 </foreach>
+				 </if>
+
+				 <!-- 2个或2个以上需要括号，第一个不需要加or -->
+				 <if test="pageVo.likeFiltrate != null and pageVo.likeFiltrate.size > 1">
+					 <foreach item="value" index="key" collection="pageVo.likeFiltrate.entrySet()" open="(" close=")" separator=" or ">
+						 <if test="value != null and value != '' ">
+							 ${key} like CONCAT('%',#{value},'%')
+						 </if>
+					 </foreach>
+				 </if>
 			 </if>
+
+		 </where> 
 
 			<!-- 排序字段 -->
 			<if test="null != pageVo.orderField ">
@@ -156,22 +195,26 @@
 		 SELECT
 		 count(id)
 		 FROM executed_url
-		 WHERE 1 = 1 
-		 <if test="condition != null">
-			 <foreach item="value" index="key" collection="condition.entrySet()" >
+		 <where> 
+
+			 <if test="likeCondition != null">
+				 <foreach item="value" index="key" collection="likeCondition.entrySet()" >
+					 <if test="value != null and value != '' ">
+						 or ${key} like CONCAT('%',#{value},'%')
+					 </if>
+				 </foreach>
+			 </if>
+
+			 <if test="condition != null">
+				 <foreach item="value" index="key" collection="condition.entrySet()" >
 					 <if test="value != null and value != '' ">
 						 and ${key} = #{value}
 					 </if>
-			 </foreach>
-		 </if>
-
-			<if test="likeCondition != null">
-				<foreach item="value" index="key" collection="likeCondition.entrySet()" >
-					 <if test="value != null and value != '' ">
-						 and ${key} like CONCAT('%',#{value},'%')
-					 </if>
-				</foreach>
+				 </foreach>
 			 </if>
+
+			 and 1 = 1
+		 </where> 
 
 	</select>
 
@@ -230,11 +273,20 @@
 			<if test="sequence != null">
 				 and sequence = #{bean.sequence, jdbcType=VARCHAR}
 			</if>
+			<if test="parentUrlSalting != null">
+				 and parent_url_salting = #{bean.parentUrlSalting, jdbcType=VARCHAR}
+			</if>
 			<if test="executedUrl != null">
 				 and executed_url = #{bean.executedUrl, jdbcType=LONGVARCHAR}
 			</if>
+			<if test="urlSalting != null">
+				 and url_salting = #{bean.urlSalting, jdbcType=VARCHAR}
+			</if>
 			<if test="method != null">
 				 and method = #{bean.method, jdbcType=VARCHAR}
+			</if>
+			<if test="pageSalting != null">
+				 and page_salting = #{bean.pageSalting, jdbcType=VARCHAR}
 			</if>
 			<if test="lastUpdateTime != null">
 				 and last_update_time = #{bean.lastUpdateTime, jdbcType=VARCHAR}
@@ -271,11 +323,20 @@
 			<if test="sequence != null">
 				 and sequence = #{sequence, jdbcType=VARCHAR}
 			</if>
+			<if test="parentUrlSalting != null">
+				 and parent_url_salting = #{parentUrlSalting, jdbcType=VARCHAR}
+			</if>
 			<if test="executedUrl != null">
 				 and executed_url = #{executedUrl, jdbcType=LONGVARCHAR}
 			</if>
+			<if test="urlSalting != null">
+				 and url_salting = #{urlSalting, jdbcType=VARCHAR}
+			</if>
 			<if test="method != null">
 				 and method = #{method, jdbcType=VARCHAR}
+			</if>
+			<if test="pageSalting != null">
+				 and page_salting = #{pageSalting, jdbcType=VARCHAR}
 			</if>
 			<if test="lastUpdateTime != null">
 				 and last_update_time = #{lastUpdateTime, jdbcType=VARCHAR}
@@ -311,11 +372,20 @@
 			<if test="sequence != null">
 				 and sequence = #{bean.sequence, jdbcType=VARCHAR}
 			</if>
+			<if test="parentUrlSalting != null">
+				 and parent_url_salting = #{bean.parentUrlSalting, jdbcType=VARCHAR}
+			</if>
 			<if test="executedUrl != null">
 				 and executed_url = #{bean.executedUrl, jdbcType=LONGVARCHAR}
 			</if>
+			<if test="urlSalting != null">
+				 and url_salting = #{bean.urlSalting, jdbcType=VARCHAR}
+			</if>
 			<if test="method != null">
 				 and method = #{bean.method, jdbcType=VARCHAR}
+			</if>
+			<if test="pageSalting != null">
+				 and page_salting = #{bean.pageSalting, jdbcType=VARCHAR}
 			</if>
 			<if test="lastUpdateTime != null">
 				 and last_update_time = #{bean.lastUpdateTime, jdbcType=VARCHAR}
@@ -350,11 +420,20 @@
 			<if test="sequence != null">
 				 and sequence = #{sequence, jdbcType=VARCHAR}
 			</if>
+			<if test="parentUrlSalting != null">
+				 and parent_url_salting = #{parentUrlSalting, jdbcType=VARCHAR}
+			</if>
 			<if test="executedUrl != null">
 				 and executed_url = #{executedUrl, jdbcType=LONGVARCHAR}
 			</if>
+			<if test="urlSalting != null">
+				 and url_salting = #{urlSalting, jdbcType=VARCHAR}
+			</if>
 			<if test="method != null">
 				 and method = #{method, jdbcType=VARCHAR}
+			</if>
+			<if test="pageSalting != null">
+				 and page_salting = #{pageSalting, jdbcType=VARCHAR}
 			</if>
 			<if test="lastUpdateTime != null">
 				 and last_update_time = #{lastUpdateTime, jdbcType=VARCHAR}
@@ -399,8 +478,9 @@
 	</delete>
 
 
-	<!-- 添加 （匹配有值的字段）-->
-	<insert id="insertSelective" parameterType="com.aimspeed.gatherer.entity.bean.mysql.content.ExecutedUrlMySqlBean">
+	<!-- 添加 （匹配有值的字段）并且返回添加之后的数据记录Id（直接调用回对应的插入类.id），
+		  如果这个类没有id字段，那么请把Xml中的[useGeneratedKeys=true keyProperty=id keyColumn=id]这段代码删除-->
+	<insert id="insertSelective" parameterType="com.aimspeed.gatherer.entity.bean.mysql.content.ExecutedUrlMySqlBean" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
 		 INSERT INTO executed_url
 		 <trim prefix="(" suffix=")" suffixOverrides="," >
 			<if test="id != null">
@@ -409,11 +489,20 @@
 			<if test="sequence != null">
 				 sequence,
 			</if>
+			<if test="parentUrlSalting != null">
+				 parent_url_salting,
+			</if>
 			<if test="executedUrl != null">
 				 executed_url,
 			</if>
+			<if test="urlSalting != null">
+				 url_salting,
+			</if>
 			<if test="method != null">
 				 method,
+			</if>
+			<if test="pageSalting != null">
+				 page_salting,
 			</if>
 			<if test="lastUpdateTime != null">
 				 last_update_time,
@@ -442,11 +531,20 @@
 			<if test="sequence!=null">
 				 #{sequence},
 			</if>
+			<if test="parentUrlSalting!=null">
+				 #{parentUrlSalting},
+			</if>
 			<if test="executedUrl!=null">
 				 #{executedUrl},
 			</if>
+			<if test="urlSalting!=null">
+				 #{urlSalting},
+			</if>
 			<if test="method!=null">
 				 #{method},
+			</if>
+			<if test="pageSalting!=null">
+				 #{pageSalting},
 			</if>
 			<if test="lastUpdateTime!=null">
 				 #{lastUpdateTime},
@@ -471,14 +569,16 @@
 
 	 <!-- 批量添加数据，添加所有字段的数据-->
 	 <insert id="batchInsert" parameterType="com.aimspeed.gatherer.entity.bean.mysql.content.ExecutedUrlMySqlBean">
-		 INSERT INTO executed_url(<include refid="Base_Column_List" />)
+		 INSERT INTO executed_url(sequence,parent_url_salting,executed_url,url_salting,method,page_salting,last_update_time,is_delete,creator,create_time,updator,update_time)
 		 VALUES
 		 <foreach collection ="batchField" item="bean" index= "index" separator =",">
 			 (
-				 #{bean.id},
 				 #{bean.sequence},
+				 #{bean.parentUrlSalting},
 				 #{bean.executedUrl},
+				 #{bean.urlSalting},
 				 #{bean.method},
+				 #{bean.pageSalting},
 				 #{bean.lastUpdateTime},
 				 #{bean.isDelete},
 				 #{bean.creator},
@@ -500,11 +600,20 @@
 				<if test="bean.sequence != null">
 					 sequence,
 				</if>
+				<if test="bean.parentUrlSalting != null">
+					 parent_url_salting,
+				</if>
 				<if test="bean.executedUrl != null">
 					 executed_url,
 				</if>
+				<if test="bean.urlSalting != null">
+					 url_salting,
+				</if>
 				<if test="bean.method != null">
 					 method,
+				</if>
+				<if test="bean.pageSalting != null">
+					 page_salting,
 				</if>
 				<if test="bean.lastUpdateTime != null">
 					 last_update_time,
@@ -533,11 +642,20 @@
 				<if test="bean.sequence!=null">
 					 #{bean.sequence},
 				</if>
+				<if test="bean.parentUrlSalting!=null">
+					 #{bean.parentUrlSalting},
+				</if>
 				<if test="bean.executedUrl!=null">
 					 #{bean.executedUrl},
 				</if>
+				<if test="bean.urlSalting!=null">
+					 #{bean.urlSalting},
+				</if>
 				<if test="bean.method!=null">
 					 #{bean.method},
+				</if>
+				<if test="bean.pageSalting!=null">
+					 #{bean.pageSalting},
 				</if>
 				<if test="bean.lastUpdateTime!=null">
 					 #{bean.lastUpdateTime},
@@ -567,11 +685,20 @@
 			<if test="updateRecord != null and updateRecord.sequence != null">
 				 sequence = #{updateRecord.sequence},
 			</if>
+			<if test="updateRecord != null and updateRecord.parentUrlSalting != null">
+				 parent_url_salting = #{updateRecord.parentUrlSalting},
+			</if>
 			<if test="updateRecord != null and updateRecord.executedUrl != null">
 				 executed_url = #{updateRecord.executedUrl},
 			</if>
+			<if test="updateRecord != null and updateRecord.urlSalting != null">
+				 url_salting = #{updateRecord.urlSalting},
+			</if>
 			<if test="updateRecord != null and updateRecord.method != null">
 				 method = #{updateRecord.method},
+			</if>
+			<if test="updateRecord != null and updateRecord.pageSalting != null">
+				 page_salting = #{updateRecord.pageSalting},
 			</if>
 			<if test="updateRecord != null and updateRecord.lastUpdateTime != null">
 				 last_update_time = #{updateRecord.lastUpdateTime},
@@ -600,11 +727,20 @@
 			<if test="conditionRecord != null and conditionRecord.sequence != null">
 				 and sequence = #{conditionRecord.sequence, jdbcType=VARCHAR}
 			</if>
+			<if test="conditionRecord != null and conditionRecord.parentUrlSalting != null">
+				 and parent_url_salting = #{conditionRecord.parentUrlSalting, jdbcType=VARCHAR}
+			</if>
 			<if test="conditionRecord != null and conditionRecord.executedUrl != null">
 				 and executed_url = #{conditionRecord.executedUrl, jdbcType=LONGVARCHAR}
 			</if>
+			<if test="conditionRecord != null and conditionRecord.urlSalting != null">
+				 and url_salting = #{conditionRecord.urlSalting, jdbcType=VARCHAR}
+			</if>
 			<if test="conditionRecord != null and conditionRecord.method != null">
 				 and method = #{conditionRecord.method, jdbcType=VARCHAR}
+			</if>
+			<if test="conditionRecord != null and conditionRecord.pageSalting != null">
+				 and page_salting = #{conditionRecord.pageSalting, jdbcType=VARCHAR}
 			</if>
 			<if test="conditionRecord != null and conditionRecord.lastUpdateTime != null">
 				 and last_update_time = #{conditionRecord.lastUpdateTime, jdbcType=VARCHAR}
@@ -634,11 +770,20 @@
 			<if test="updateRecord != null and updateRecord.sequence != null">
 				 sequence = #{updateRecord.sequence},
 			</if>
+			<if test="updateRecord != null and updateRecord.parentUrlSalting != null">
+				 parent_url_salting = #{updateRecord.parentUrlSalting},
+			</if>
 			<if test="updateRecord != null and updateRecord.executedUrl != null">
 				 executed_url = #{updateRecord.executedUrl},
 			</if>
+			<if test="updateRecord != null and updateRecord.urlSalting != null">
+				 url_salting = #{updateRecord.urlSalting},
+			</if>
 			<if test="updateRecord != null and updateRecord.method != null">
 				 method = #{updateRecord.method},
+			</if>
+			<if test="updateRecord != null and updateRecord.pageSalting != null">
+				 page_salting = #{updateRecord.pageSalting},
 			</if>
 			<if test="updateRecord != null and updateRecord.lastUpdateTime != null">
 				 last_update_time = #{updateRecord.lastUpdateTime},
@@ -677,11 +822,20 @@
 			<if test="updateRecord != null and updateRecord.sequence != null">
 				 sequence = #{updateRecord.sequence},
 			</if>
+			<if test="updateRecord != null and updateRecord.parentUrlSalting != null">
+				 parent_url_salting = #{updateRecord.parentUrlSalting},
+			</if>
 			<if test="updateRecord != null and updateRecord.executedUrl != null">
 				 executed_url = #{updateRecord.executedUrl},
 			</if>
+			<if test="updateRecord != null and updateRecord.urlSalting != null">
+				 url_salting = #{updateRecord.urlSalting},
+			</if>
 			<if test="updateRecord != null and updateRecord.method != null">
 				 method = #{updateRecord.method},
+			</if>
+			<if test="updateRecord != null and updateRecord.pageSalting != null">
+				 page_salting = #{updateRecord.pageSalting},
 			</if>
 			<if test="updateRecord != null and updateRecord.lastUpdateTime != null">
 				 last_update_time = #{updateRecord.lastUpdateTime},
@@ -703,7 +857,8 @@
 			</if>
 
  		 </set>
-		 WHERE 1 = 1 		 <if test="updateRecord != null and updateRecord.id != null">
+		 WHERE 1 = 1 
+		 <if test="updateRecord != null and updateRecord.id != null">
 			 and id = #{updateRecord.id, jdbcType=INTEGER}
 		 </if>
 

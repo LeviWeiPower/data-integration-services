@@ -1,0 +1,11 @@
+var login = {
+		
+		
+}
+
+$(function(){
+	
+	
+	
+});
+

@@ -35,8 +35,6 @@
 	     		 onclick='extract_rule.getTemplatePageHtml();' value="true" style="display:inline;">确定</button>
 		</div>
         
-        
-        
     </div>
 
 	<!-- HTML展示区 -->

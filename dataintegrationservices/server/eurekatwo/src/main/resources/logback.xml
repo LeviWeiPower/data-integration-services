@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>  
+  	<!-- 
+  		将不同的日志级别，记录到不同的日志文件中，并写到不同的路径中，
+		未来如需搭建日志监控系统，则使用Flume提取相应的数据即可。  		
+  	 -->
+  	 
+	<!-- 定义日志文件的存储地址 勿在 LogBack 的配置中使用相对路径 -->
+	<property name="log_home" value="/home" />
+	
+	<!-- 定义异步输出的队列深度，默认是256 -->
+	<property name="queue_size" value="512" />
+	
+	<!-- ============================== 控制台输出配置  ====================================== -->
+	
+	<!-- 控制台输出 -->
+	<appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+		
+		<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+			<!-- 格式化输出：%d表示日期，%thread表示线程名，%-5level：级别从左显示5个字符宽度%msg：日志消息，%n是换行符 -->
+			<pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{50} - %msg%n</pattern>
+		</encoder>
+	</appender>
+	
+	<!-- 异步输出 -->  
+    <appender name ="async_console" class= "ch.qos.logback.classic.AsyncAppender">  
+		<!-- 不丢失日志.默认的,如果队列的80%已满,则会丢弃TRACT、DEBUG、INFO级别的日志 -->  
+		<discardingThreshold >0</discardingThreshold>  
+		<!-- 定义异步输出的队列深度，默认是256 -->  
+		<!-- <queueSize>512</queueSize> -->  
+		<queueSize>${queue_size}</queueSize>  
+		<!-- 添加附加的appender,最多只能添加一个 -->  
+         <appender-ref ref ="console"/>  
+    </appender> 
+    
+	<!-- ============================== 文件输出配置  ====================================== -->
+	
+	<!-- ==================== info日志 ==================== --> 
+	<!-- 按照每天生成日志文件，信息记录日志 -->
+	<appender name="info_file" class="ch.qos.logback.core.rolling.RollingFileAppender">
+	
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<!--日志文件输出的文件名-->
+			<FileNamePattern>${log_home}/info/log-info-%d{yyyy-MM-dd}.log</FileNamePattern>
+			<!--日志文件保留天数-->
+			<MaxHistory>30</MaxHistory>
+		</rollingPolicy>
+		
+		<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+			<!-- 格式化输出：%d表示日期，%thread表示线程名，%-5level：级别从左显示5个字符宽度%msg：日志消息，%n是换行符 -->
+			<pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{50} - %msg%n</pattern>
+			<charset>utf-8</charset>
+		</encoder>
+		
+		<!-- 日志文件最大的大小 -->
+		<triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+			<MaxFileSize>10MB</MaxFileSize>
+		</triggeringPolicy>
+		
+		<!-- 此日志文件只记录error级别的 -->
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>info</level>
+        </filter>
+	</appender>
+	<!-- 异步输出 -->  
+    <appender name ="async_info" class= "ch.qos.logback.classic.AsyncAppender">  
+		<!-- 不丢失日志.默认的,如果队列的80%已满,则会丢弃TRACT、DEBUG、INFO级别的日志 -->  
+		<discardingThreshold >0</discardingThreshold>  
+		<!-- 定义异步输出的队列深度，默认是256 -->  
+		<!-- <queueSize>512</queueSize> -->  
+		<queueSize>${queue_size}</queueSize>  
+		<!-- 添加附加的appender,最多只能添加一个 -->  
+         <appender-ref ref ="info_file"/>  
+    </appender>
+    
+    <!-- ==================== warn日志 ==================== --> 
+	<!-- 按照每天生成日志文件，warn日志 -->
+	<appender name="warn_file" class="ch.qos.logback.core.rolling.RollingFileAppender">
+	
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<!--日志文件输出的文件名-->
+			<FileNamePattern>${log_home}/warn/log-warn-%d{yyyy-MM-dd}.log</FileNamePattern>
+			<!--日志文件保留天数-->
+			<MaxHistory>30</MaxHistory>
+		</rollingPolicy>
+		
+		<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+			<!-- 格式化输出：%d表示日期，%thread表示线程名，%-5level：级别从左显示5个字符宽度%msg：日志消息，%n是换行符 -->
+			<pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{50} - %msg%n</pattern>
+			<charset>utf-8</charset>
+		</encoder>
+		
+		<!-- 日志文件最大的大小 -->
+		<triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+			<MaxFileSize>10MB</MaxFileSize>
+		</triggeringPolicy>
+		
+		<!-- 此日志文件只记录error级别的 -->
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>info</level>
+        </filter>
+	</appender>
+	<!-- 异步输出 -->  
+    <appender name ="async_warn" class= "ch.qos.logback.classic.AsyncAppender">  
+		<!-- 不丢失日志.默认的,如果队列的80%已满,则会丢弃TRACT、DEBUG、INFO级别的日志 -->  
+		<discardingThreshold >0</discardingThreshold>  
+		<!-- 定义异步输出的队列深度，默认是256 -->  
+		<!-- <queueSize>512</queueSize> -->  
+		<queueSize>${queue_size}</queueSize>  
+		<!-- 添加附加的appender,最多只能添加一个 -->  
+         <appender-ref ref ="warn_file"/>  
+    </appender>
+    
+	<!-- ==================== 错误日志 ==================== --> 
+	<!-- 按照每天生成日志文件，错误日志 -->
+	<appender name="error_file" class="ch.qos.logback.core.rolling.RollingFileAppender">
+	
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<!--日志文件输出的文件名-->
+			<FileNamePattern>${log_home}/error/log-error-%d{yyyy-MM-dd}.log</FileNamePattern>
+			<!--日志文件保留天数-->
+			<MaxHistory>30</MaxHistory>
+		</rollingPolicy>
+		
+		<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+			<!-- 格式化输出：%d表示日期，%thread表示线程名，%-5level：级别从左显示5个字符宽度%msg：日志消息，%n是换行符 -->
+			<pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{50} - %msg%n</pattern>
+			<charset>utf-8</charset>
+		</encoder>
+		
+		<!-- 日志文件最大的大小 -->
+		<triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+			<MaxFileSize>10MB</MaxFileSize>
+		</triggeringPolicy>
+		
+		<!-- 此日志文件只记录error级别的 -->
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>error</level>
+        </filter>
+	</appender>
+	<!-- 异步输出 -->  
+    <appender name ="async_error" class= "ch.qos.logback.classic.AsyncAppender">  
+		<!-- 不丢失日志.默认的,如果队列的80%已满,则会丢弃TRACT、DEBUG、INFO级别的日志 -->  
+		<discardingThreshold >0</discardingThreshold>  
+		<!-- 定义异步输出的队列深度，默认是256 -->  
+		<!-- <queueSize>512</queueSize> -->  
+		<queueSize>${queue_size}</queueSize>  
+		<!-- 添加附加的appender,最多只能添加一个 -->  
+         <appender-ref ref ="error_file"/>  
+    </appender> 
+	
+	
+	<!-- ============================== 启用配置  ====================================== -->
+	
+	<!-- 生产环境下，将此级别配置为适合的级别，以免日志文件太多或影响程序性能 -->
+    <!--这里改level 生产环境改成error 开发环境为debug-->
+	<!-- 日志输出级别 -->
+    <root level="debug">  
+    	<appender-ref ref="console" />
+    	
+    	<!-- 部署时打开注释，开发时不需要。 -->
+    	<!-- <appender-ref ref="info_file" />
+    	<appender-ref ref="warn_file" />
+    	<appender-ref ref="error_file" /> -->
+    </root>  
+    
+    <!-- 对于类路径以 com.example.logback 开头的Logger,输出级别设置为warn,并且只输出到控制台 -->
+    <!-- 这个logger没有指定appender，它会继承root节点中定义的那些appender -->
+    <logger name="com.example.logback" level="warn"/>
+  	
+  	
+</configuration>   

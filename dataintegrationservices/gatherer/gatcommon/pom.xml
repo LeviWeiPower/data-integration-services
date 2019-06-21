@@ -9,7 +9,30 @@
   <packaging>jar</packaging>
   <description>项目的公共模块</description>
   
+  <dependencies>
   
+  	<!-- 公共项目 -->
+  	<dependency>
+	    <groupId>com.aimspeed.plugins</groupId>
+	  	<artifactId>common</artifactId>
+    	<version>0.0.1-SNAPSHOT</version>
+  	</dependency>
+  	
+  	<!-- https://mvnrepository.com/artifact/net.sourceforge.htmlunit/htmlunit -->
+  	<!-- 依赖commons-logging -->
+    <dependency>
+        <groupId>net.sourceforge.htmlunit</groupId>
+        <artifactId>htmlunit</artifactId>
+    </dependency>
+    
+    <!-- https://mvnrepository.com/artifact/commons-logging/commons-logging -->
+	<dependency>
+	    <groupId>commons-logging</groupId>
+	    <artifactId>commons-logging</artifactId>
+	</dependency>
+    	    
+	    
+  </dependencies>
   
   
   

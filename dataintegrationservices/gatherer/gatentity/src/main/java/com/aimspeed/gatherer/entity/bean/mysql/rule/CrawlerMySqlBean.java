@@ -1,65 +1,92 @@
 package com.aimspeed.gatherer.entity.bean.mysql.rule;
 
-import com.aimspeed.gatherer.entity.bean.mysql.BaseMySqlBean;
+import com.aimspeed.mysql.BaseMySqlBean;
 
 /**
- * 
  * 基础规则表
- * 
+ * @author AimSpeed
+ * @date 2019年04月11日
  */
 public class CrawlerMySqlBean extends BaseMySqlBean {
 
 	/**
-	 * @reason 修改原因
-	 */ 
-	private static final long serialVersionUID = 8366040704316112785L;
-
-	/****/
+	 * 
+	 */
 	private Integer id;
 
-	/**采集者的唯一序列号**/
+	/**
+	 * 采集者的唯一序列号
+	 */
 	private String sequence;
 
-	/**名称**/
+	/**
+	 * 名称
+	 */
 	private String name;
 
-	/**地址**/
+	/**
+	 * 地址
+	 */
 	private String url;
 
-	/**域名**/
+	/**
+	 * 域名
+	 */
 	private String mainUrl;
 
-	/**数据分类（避免数据混乱）**/
+	/**
+	 * 数据分类（避免数据混乱）
+	 */
 	private String dataClassify;
 
-	/**层级，从主链接页开始算，从0开始，没有填默认为0**/
+	/**
+	 * 层级，从主链接页开始算，从0开始，没有填默认为0
+	 */
 	private Integer hierarchy;
 
-	/**请求方式，没有则为get**/
+	/**
+	 * 请求方式，没有则为get
+	 */
 	private String method;
 
-	/**编码，默认utf8**/
+	/**
+	 * 编码，默认utf8
+	 */
 	private String coding;
 
-	/**每分钟请求次数，默认为60次**/
+	/**
+	 * 每分钟请求次数，默认为60次
+	 */
 	private Integer requestNum;
 
-	/**是否开启运行中，'N' 否，'Y'是，默认为'N'**/
+	/**
+	 * 是否开启运行中，'N' 否，'Y'是，默认为'N'
+	 */
 	private String isStart;
 
-	/**是否删除 N非删除 Y删除**/
+	/**
+	 * 是否删除 N非删除 Y删除
+	 */
 	private String isDelete;
 
-	/**创建人**/
+	/**
+	 * 创建人
+	 */
 	private String creator;
 
-	/**创建时间**/
+	/**
+	 * 创建时间
+	 */
 	private java.util.Date createTime;
 
-	/**更新人**/
+	/**
+	 * 更新人
+	 */
 	private String updator;
 
-	/**更新时间**/
+	/**
+	 * 更新时间
+	 */
 	private java.util.Date updateTime;
 
 

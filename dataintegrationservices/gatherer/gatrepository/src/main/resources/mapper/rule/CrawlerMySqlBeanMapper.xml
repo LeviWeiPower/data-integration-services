@@ -160,26 +160,41 @@
 	</select>
 
 	<!-- 动态分页，筛选条件 - 默认为最新时间排序 -->
-	<select id="selectPageSelective" resultMap="BaseResultMap" parameterType="com.aimspeed.mysql.vo.MySqlPageVo" >
+	<select id="selectPageSelective" resultMap="BaseResultMap" parameterType="com.aimspeed.mysql.vo.PageVo" >
 		 SELECT
 		 <include refid="Base_Column_List" />
 		 FROM crawler
-		 WHERE 1 = 1 
-			<if test="pageVo.filtrate != null">
-				<foreach item="value" index="key" collection="pageVo.filtrate.entrySet()" >
+		 <where> 
+			 1 = 1 
+			 <if test="pageVo.filtrate != null and pageVo.filtrate.size > 0">
+				 <foreach item="value" index="key" collection="pageVo.filtrate.entrySet()" >
 					 <if test="value != null and value != '' ">
 						 and ${key} = #{value}
 					 </if>
-				</foreach>
+				 </foreach>
 			 </if>
 
-			<if test="pageVo.likeFiltrate != null">
-				<foreach item="value" index="key" collection="pageVo.likeFiltrate.entrySet()" >
-					 <if test="value != null and value != '' ">
-						 and ${key} like CONCAT('%',#{value},'%')
-					 </if>
-				</foreach>
+			 <if test="pageVo.likeFiltrate != null and pageVo.likeFiltrate.size > 0">
+				 <!-- 一个的情况下不用括号 -->
+				 <if test="pageVo.likeFiltrate != null and pageVo.likeFiltrate.size == 1">
+					 <foreach item="value" index="key" collection="pageVo.likeFiltrate.entrySet()" >
+						 <if test="value != null and value != '' ">
+							 or ${key} like CONCAT('%',#{value},'%')
+						 </if>
+					 </foreach>
+				 </if>
+
+				 <!-- 2个或2个以上需要括号，第一个不需要加or -->
+				 <if test="pageVo.likeFiltrate != null and pageVo.likeFiltrate.size > 1">
+					 <foreach item="value" index="key" collection="pageVo.likeFiltrate.entrySet()" open="(" close=")" separator=" or ">
+						 <if test="value != null and value != '' ">
+							 ${key} like CONCAT('%',#{value},'%')
+						 </if>
+					 </foreach>
+				 </if>
 			 </if>
+
+		 </where> 
 
 			<!-- 排序字段 -->
 			<if test="null != pageVo.orderField ">
@@ -204,22 +219,26 @@
 		 SELECT
 		 count(id)
 		 FROM crawler
-		 WHERE 1 = 1 
-		 <if test="condition != null">
-			 <foreach item="value" index="key" collection="condition.entrySet()" >
+		 <where> 
+
+			 <if test="likeCondition != null">
+				 <foreach item="value" index="key" collection="likeCondition.entrySet()" >
+					 <if test="value != null and value != '' ">
+						 or ${key} like CONCAT('%',#{value},'%')
+					 </if>
+				 </foreach>
+			 </if>
+
+			 <if test="condition != null">
+				 <foreach item="value" index="key" collection="condition.entrySet()" >
 					 <if test="value != null and value != '' ">
 						 and ${key} = #{value}
 					 </if>
-			 </foreach>
-		 </if>
-
-			<if test="likeCondition != null">
-				<foreach item="value" index="key" collection="likeCondition.entrySet()" >
-					 <if test="value != null and value != '' ">
-						 and ${key} like CONCAT('%',#{value},'%')
-					 </if>
-				</foreach>
+				 </foreach>
 			 </if>
+
+			 and 1 = 1
+		 </where> 
 
 	</select>
 
@@ -519,7 +538,8 @@
 	</delete>
 
 
-	<!-- 添加 （匹配有值的字段）-->
+	<!-- 添加 （匹配有值的字段）并且返回添加之后的数据记录Id（直接调用回对应的插入类.id），
+		  如果这个类没有id字段，那么请把Xml中的[useGeneratedKeys=true keyProperty=id keyColumn=id]这段代码删除-->
 	<insert id="insertSelective" parameterType="com.aimspeed.gatherer.entity.bean.mysql.rule.CrawlerMySqlBean" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
 		 INSERT INTO crawler
 		 <trim prefix="(" suffix=")" suffixOverrides="," >
@@ -627,11 +647,10 @@
 
 	 <!-- 批量添加数据，添加所有字段的数据-->
 	 <insert id="batchInsert" parameterType="com.aimspeed.gatherer.entity.bean.mysql.rule.CrawlerMySqlBean">
-		 INSERT INTO crawler(<include refid="Base_Column_List" />)
+		 INSERT INTO crawler(sequence,name,url,main_url,data_classify,hierarchy,method,coding,request_num,is_start,is_delete,creator,create_time,updator,update_time)
 		 VALUES
 		 <foreach collection ="batchField" item="bean" index= "index" separator =",">
 			 (
-				 #{bean.id},
 				 #{bean.sequence},
 				 #{bean.name},
 				 #{bean.url},
@@ -973,7 +992,8 @@
 			</if>
 
  		 </set>
-		 WHERE 1 = 1 		 <if test="updateRecord != null and updateRecord.id != null">
+		 WHERE 1 = 1 
+		 <if test="updateRecord != null and updateRecord.id != null">
 			 and id = #{updateRecord.id, jdbcType=INTEGER}
 		 </if>
 

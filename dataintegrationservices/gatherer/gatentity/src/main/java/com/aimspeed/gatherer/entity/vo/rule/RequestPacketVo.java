@@ -12,8 +12,6 @@ import com.aimspeed.gatherer.entity.bean.mysql.request.RequestParamMySqlBean;
  */
 public class RequestPacketVo {
 	
-	
-	
 	/**
 	 * 请求包头信息
 	 */

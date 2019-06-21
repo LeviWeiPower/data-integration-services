@@ -112,7 +112,7 @@
 	</select>
 
 	<!-- 动态分页，筛选条件 - 默认为最新时间排序 -->
-	<select id="selectPageSelective" resultMap="BaseResultMap" parameterType="com.aimspeed.mysql.vo.MySqlPageVo" >
+	<select id="selectPageSelective" resultMap="BaseResultMap" parameterType="com.aimspeed.mysql.vo.PageVo" >
 		 SELECT
 		 <include refid="Base_Column_List" />
 		 FROM extract_rule

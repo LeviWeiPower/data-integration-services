@@ -1,0 +1,67 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>com.aimspeed.server</groupId>
+    <artifactId>server</artifactId>
+    <version>1.0-SNAPSHOT</version>
+  </parent>
+  <artifactId>eurekatwo</artifactId>
+  	
+  	<!-- 在父类已经引入了，所以也不需要parent了 -->
+  	<!-- <dependencyManagement>
+        <dependencies>
+            <dependency>
+                Import dependency management from Spring Boot
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-dependencies</artifactId>
+                <version>${springboot.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+        </dependencies>
+    </dependencyManagement> -->
+  
+  	<dependencies>  
+  		
+  		<!-- Eureka -->
+    	<dependency>  
+        	<groupId>org.springframework.cloud</groupId>  
+        	<artifactId>spring-cloud-starter-netflix-eureka-server</artifactId>
+   	 	</dependency>  
+
+		<!-- 认证 -->   	 	
+   	 	<dependency> 
+	        <groupId>org.springframework.boot</groupId> 
+	        <artifactId>spring-boot-starter-security</artifactId>  
+		</dependency>
+		
+  	</dependencies>  
+  	
+  	<build>
+  		<plugins>
+  			<!-- 这是spring boot devtool plugin 热部署插件 -->
+			<plugin>
+	            <groupId>org.springframework.boot</groupId>
+	            <artifactId>spring-boot-maven-plugin</artifactId>
+	            <configuration>
+	          		<!-- fork :  如果没有该项配置，肯呢个devtools不会起作用，即应用不会restart -->
+	                <fork>true</fork>
+	                <executable>true</executable>
+	            </configuration>
+	        </plugin>
+	        
+	        <!-- war部署使用-->
+	        <plugin>
+	            <groupId>org.apache.maven.plugins</groupId>
+	            <artifactId>maven-war-plugin</artifactId>
+	            <configuration>
+	                <warName>eureka_two</warName>
+	            </configuration>
+	        </plugin>
+	        
+  		</plugins>
+  	</build>
+  
+  
+</project>

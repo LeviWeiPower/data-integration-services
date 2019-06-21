@@ -1,6 +1,6 @@
 package com.aimspeed.gatherer.entity.bean.mysql.rule;
 
-import com.aimspeed.gatherer.entity.bean.mysql.BaseMySqlBean;
+import com.aimspeed.mysql.BaseMySqlBean;
 
 /**
  * 公共父级规则
@@ -9,7 +9,6 @@ import com.aimspeed.gatherer.entity.bean.mysql.BaseMySqlBean;
 public class CommonRuleMySqlBean extends BaseMySqlBean {
 
 	/**
-	 * @date 2018年6月20日 上午12:08:01
 	 * @reason 修改原因
 	 */ 
 	private static final long serialVersionUID = -962416588178810968L;

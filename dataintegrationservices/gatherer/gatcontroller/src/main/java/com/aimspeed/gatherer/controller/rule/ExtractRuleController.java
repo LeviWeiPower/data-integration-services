@@ -11,9 +11,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.aimspeed.common.vo.ResultVo;
 import com.aimspeed.gatherer.controller.BaseController;
 import com.aimspeed.gatherer.entity.bean.mysql.rule.ExtractRuleMySqlBean;
-import com.aimspeed.gatherer.entity.vo.result.ResultVo;
 import com.aimspeed.gatherer.entity.vo.rule.ExtractRuleVo;
 import com.aimspeed.gatherer.service.rule.ExtractRuleService;
 
@@ -21,7 +21,7 @@ import com.aimspeed.gatherer.service.rule.ExtractRuleService;
  * 提取规则
  * @author AimSpeed
  */
-@Controller()
+@Controller
 @RequestMapping("/extract")
 public class ExtractRuleController extends BaseController<ExtractRuleMySqlBean>{
 
@@ -38,11 +38,9 @@ public class ExtractRuleController extends BaseController<ExtractRuleMySqlBean>{
 	/**
 	 * 跳转到信息采集页面
 	 * @author AimSpeed
-	 * @Title addBaseRuleView 
 	 * @param request
 	 * @param response
 	 * @return String 
-	 * @date 2018年3月27日
 	 */
 	@RequestMapping(value="/addExtractPage",method = {RequestMethod.GET,RequestMethod.POST})
 	public String addBaseRuleView(HttpServletRequest request,HttpServletResponse response){
@@ -52,13 +50,11 @@ public class ExtractRuleController extends BaseController<ExtractRuleMySqlBean>{
 	/**
 	 * 根据url获取到html
 	 * @author AimSpeed
-	 * @Title getTemplatePageHtml 
 	 * @param request
 	 * @param response
 	 * @param sequence
 	 * @param templateUrl
 	 * @return ResultVo 
-	 * @date 2018年3月27日
 	 */
 	@RequestMapping(value="/getTemplatePageHtml",method = {RequestMethod.GET,RequestMethod.POST})
 	@ResponseBody
@@ -72,12 +68,10 @@ public class ExtractRuleController extends BaseController<ExtractRuleMySqlBean>{
 	/**
 	 * 保存配置的提取规则
 	 * @author AimSpeed
-	 * @Title saveExtractRule 
 	 * @param request
 	 * @param response
 	 * @param extractRuleVo
 	 * @return ResultVo 
-	 * @date 2018年3月27日
 	 */
 	@ResponseBody
 	@RequestMapping(value = "/saveExtractRule", method = RequestMethod.POST)

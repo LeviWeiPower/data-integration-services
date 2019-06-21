@@ -12,18 +12,27 @@
   <dependencies>
   	
 	  	<!-- 业务处理层 -->
-	  	<dependency>
+	  	<!-- <dependency>
 	  	  <groupId>com.aimspeed.gatherer</groupId>
 		  <artifactId>gatservice</artifactId>
     	  <version>1.0-SNAPSHOT</version>
+	  	</dependency> --> 
+	  	
+	  	<!-- 核心层（配置、拦截器等） -->
+	  	<dependency>
+	  	  <groupId>com.aimspeed.gatherer</groupId>
+		  <artifactId>gatcore</artifactId>
+    	  <version>1.0-SNAPSHOT</version>
 	  	</dependency>
-		
+	  	
 	    <!-- AOP切面 -->
-	    <dependency>
+	    <!-- <dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-aop</artifactId>
-		</dependency>
-	  
+		</dependency> -->
+		
+		
+	     	  
   	</dependencies>
   
 </project>

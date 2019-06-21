@@ -14,10 +14,10 @@ import org.springframework.stereotype.Service;
 
 import com.aimspeed.common.enums.HttpResponseCurdEnum;
 import com.aimspeed.common.enums.HttpResponseEnum;
+import com.aimspeed.common.vo.ResultVo;
 import com.aimspeed.gatherer.entity.bean.mysql.rule.CommonRuleMySqlBean;
 import com.aimspeed.gatherer.entity.bean.mysql.rule.ExtractRuleMySqlBean;
 import com.aimspeed.gatherer.entity.bean.mysql.user.UserMySqlBean;
-import com.aimspeed.gatherer.entity.vo.result.ResultVo;
 import com.aimspeed.gatherer.entity.vo.rule.ExtractRuleVo;
 import com.aimspeed.gatherer.repository.mysql.rule.CommonRuleMySqlBeanMapper;
 import com.aimspeed.gatherer.repository.mysql.rule.ExtractRuleMySqlBeanMapper;
@@ -47,12 +47,10 @@ public class ExtractRuleServiceImpl extends BaseMySqlServiceImpl<ExtractRuleMySq
     /*
      * 获取到添加提取规则的模板HTML源码
      * @author AimSpeed
-     * @Title getTemplatePageHtml 
      * @param crawlerId
      * @param templateUrl
      * @return
      * @overridden @see com.aimspeed.gatherer.service.rule.ExtractRuleBeanService#getTemplatePageHtml(java.lang.Integer, java.lang.String)
-     * @date 2018年3月27日
      */
 	@Override
 	public ResultVo getTemplatePageHtml(String  sequence,String templateUrl) {
@@ -107,18 +105,16 @@ public class ExtractRuleServiceImpl extends BaseMySqlServiceImpl<ExtractRuleMySq
 			e.printStackTrace();
 		}
 		
-		return new ResultVo(HttpResponseEnum.FAIL.getCode(), HttpResponseEnum.FAIL.getValue());
+		return new ResultVo(HttpResponseEnum.SYSTEM_ERROR.getCode(), HttpResponseEnum.SYSTEM_ERROR.getValue());
 	}
 
 	/*
 	 * 保存配置的提取规则
 	 * @author AimSpeed
-	 * @Title saveExtractRule 
 	 * @param sysUserBean
 	 * @param extractRuleVo
 	 * @return
 	 * @overridden @see com.aimspeed.gatherer.service.rule.ExtractRuleBeanService#saveExtractRule(com.aimspeed.gatherer.entity.bean.system.SysUserBean, com.aimspeed.gatherer.entity.vo.rule.ExtractRuleVo)
-	 * @date 2018年3月27日
 	 */
 	@Override
 	public ResultVo saveExtractRule(UserMySqlBean sysUserBean,ExtractRuleVo extractRuleVo) {

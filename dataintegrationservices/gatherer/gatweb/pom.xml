@@ -11,7 +11,7 @@
   
   <dependencies>
   		
-	  	<!-- 控制层 -->
+	  	<!-- 控制层 --> 
 	  	<dependency>
     	  <groupId>com.aimspeed.gatherer</groupId>
 		  <artifactId>gatcontroller</artifactId>
@@ -19,11 +19,11 @@
 	  	</dependency>
 	  	
 		<!-- 代码生成工具 -->
-		<!-- <dependency>
+		<dependency>
 		  <groupId>com.aimspeed.plugins</groupId>
-		  <artifactId>aimspeed-kluzt</artifactId>
-		  <version>2.0.4</version>
-		</dependency> -->
+		  <artifactId>klutz</artifactId>
+    	  <version>0.0.1-SNAPSHOT</version>
+		</dependency>
 
 		<!-- JSTL（JSP Standard Tag Library，JSP标准标签库)是一个不断完善的开放源代码的JSP标签库，是由apache的jakarta小组来维护的。 -->
 		<dependency>
@@ -72,8 +72,7 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-test</artifactId>
 		</dependency>
-
-
+		
 	</dependencies>
 
 	<!-- 构建节点. -->

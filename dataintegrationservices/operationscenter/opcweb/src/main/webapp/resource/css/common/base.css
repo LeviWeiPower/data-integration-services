@@ -1,0 +1,19 @@
+/* div居中 */
+.div-index-center {
+	margin: auto;
+	text-align: center;
+}
+
+.div-padding-top {
+	padding-top: 20px;
+	
+}
+
+.div-inline{
+	display: inline;
+	
+}
+.div-block{
+	display: block;
+	
+}

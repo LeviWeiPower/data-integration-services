@@ -18,6 +18,6 @@ public class ContentDataController extends BaseController<ContentDataMySqlBean> 
 	public ContentDataController() {
 		super("data/content_");
 	}
-
+	
 	
 }

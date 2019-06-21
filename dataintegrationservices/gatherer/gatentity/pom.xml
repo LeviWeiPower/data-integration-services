@@ -28,21 +28,21 @@
   		<dependency>
   			<groupId>com.aimspeed.plugins</groupId>
   			<artifactId>redis</artifactId>
-    		<version>1.0-SNAPSHOT</version>
+    		<version>0.0.1-SNAPSHOT</version>
   		</dependency>
   		
   		<!-- Mysql -->
   		<dependency>
   			<groupId>com.aimspeed.plugins</groupId>
   			<artifactId>mysql</artifactId>
-    		<version>1.0-SNAPSHOT</version>
+    		<version>0.0.1-SNAPSHOT</version>
   		</dependency>
   		
   		<!-- MongoDB -->
   		<dependency>
   			<groupId>com.aimspeed.plugins</groupId>
   			<artifactId>mongodb</artifactId>
-    		<version>1.0-SNAPSHOT</version>
+    		<version>0.0.1-SNAPSHOT</version>
   		</dependency>
 	
 	  

@@ -1,0 +1,33 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>com.aimspeed</groupId>
+    <artifactId>dataintegrationservices</artifactId>
+    <version>1.0-SNAPSHOT</version>
+  </parent>
+  
+  <groupId>com.aimspeed.operations</groupId>
+  <artifactId>operationscenter</artifactId>
+  <packaging>pom</packaging>
+  <description>数据平台的运营中心，web展示、管理、操作</description>
+  
+  <modules>
+  	<module>opccommon</module>
+  	<module>opccontroller</module>
+  	<module>opcentity</module>
+  	<module>opcrepository</module>
+  	<module>opcservice</module>
+  	<module>opcweb</module>
+  	<module>opcapi</module>
+  	<module>opccore</module>
+  </modules>
+  
+  	<!-- 所有项目共需jar -->
+    <dependencies>
+    
+    </dependencies>
+    
+    
+    
+  
+</project>

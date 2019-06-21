@@ -1,6 +1,6 @@
 package com.aimspeed.gatherer.entity.bean.mysql.rule;
 
-import com.aimspeed.gatherer.entity.bean.mysql.BaseMySqlBean;
+import com.aimspeed.mysql.BaseMySqlBean;
 
 /**
  * 翻页位置
@@ -9,7 +9,6 @@ import com.aimspeed.gatherer.entity.bean.mysql.BaseMySqlBean;
 public class PagingIndexMySqlBean extends BaseMySqlBean {
 
 	/**
-	 * @date 2018年6月20日 上午12:08:08
 	 * @reason 修改原因
 	 */ 
 	private static final long serialVersionUID = 5074948060991913619L;

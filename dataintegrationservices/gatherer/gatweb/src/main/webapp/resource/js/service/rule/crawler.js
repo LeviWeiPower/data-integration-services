@@ -1,4 +1,6 @@
-
+/**
+ * 采集者
+ */
 var crawler = {
 		
 	/**
@@ -60,10 +62,7 @@ var crawler = {
     	
     },
     
-    
-    
-   
-	
+
 }
 
 $(function(){

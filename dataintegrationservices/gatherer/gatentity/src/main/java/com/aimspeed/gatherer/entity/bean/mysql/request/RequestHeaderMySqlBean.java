@@ -1,6 +1,6 @@
 package com.aimspeed.gatherer.entity.bean.mysql.request;
 
-import com.aimspeed.gatherer.entity.bean.mysql.BaseMySqlBean;
+import com.aimspeed.mysql.BaseMySqlBean;
 
 /**
  * 请求包头信息表
@@ -9,7 +9,6 @@ import com.aimspeed.gatherer.entity.bean.mysql.BaseMySqlBean;
 public class RequestHeaderMySqlBean extends BaseMySqlBean {
 
 	/**
-	 * @date 2018年6月20日 上午12:07:25
 	 * @reason 修改原因
 	 */ 
 	private static final long serialVersionUID = 219430595681762561L;

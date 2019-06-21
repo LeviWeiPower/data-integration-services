@@ -19,11 +19,9 @@ public class CookieServiceImpl extends BaseMySqlServiceImpl<CookieMySqlBean> imp
 	/*
 	 * 根据条件进行查找，将查找到的结果的Key和Vlaue值，转换为Map对象
 	 * @author AimSpeed
-	 * @Title cookieToMap
 	 * @param cookieBeans
 	 * @return
 	 * @overridden @see com.aimspeed.gatherer.service.request.CookieBeanService#cookieToMap(java.util.List)
-	 * @date 2018年3月27日
 	 */
 	@Override
 	public Map<String, String> cookieToMap(List<CookieMySqlBean> cookieBeans) {

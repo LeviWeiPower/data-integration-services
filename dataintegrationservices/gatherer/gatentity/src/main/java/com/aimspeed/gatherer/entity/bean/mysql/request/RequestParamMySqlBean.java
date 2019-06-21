@@ -1,6 +1,6 @@
 package com.aimspeed.gatherer.entity.bean.mysql.request;
 
-import com.aimspeed.gatherer.entity.bean.mysql.BaseMySqlBean;
+import com.aimspeed.mysql.BaseMySqlBean;
 
 /**
  * 

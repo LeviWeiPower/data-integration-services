@@ -12,9 +12,9 @@ import org.springframework.stereotype.Service;
 
 import com.aimspeed.common.enums.HttpResponseCurdEnum;
 import com.aimspeed.common.enums.HttpResponseEnum;
+import com.aimspeed.common.vo.ResultVo;
 import com.aimspeed.gatherer.entity.bean.mysql.rule.CrawlerMySqlBean;
 import com.aimspeed.gatherer.entity.bean.mysql.rule.PagingIndexMySqlBean;
-import com.aimspeed.gatherer.entity.vo.result.ResultVo;
 import com.aimspeed.gatherer.service.httpclient.HttpClientResult;
 import com.aimspeed.mysql.BaseMySqlServiceImpl;
 import com.alibaba.fastjson.JSON;
@@ -31,13 +31,11 @@ public class PagingIndexServiceImpl extends BaseMySqlServiceImpl<PagingIndexMySq
 	/*
 	 * 根据模板页面获取下一页的规则
 	 * @author AimSpeed
-	 * @Title getNextPageRule 
 	 * @param loginAccount
 	 * @param sequence
 	 * @param templateUrl
 	 * @return
 	 * @overridden @see com.aimspeed.gatherer.service.rule.PagingIndexBeanService#getNextPageRule(java.lang.String, java.lang.String, java.lang.String)
-	 * @date 2018年3月27日
 	 */
     @Override
 	public ResultVo getNextPageRule(String loginAccount,String sequence,String templateUrl) {

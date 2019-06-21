@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aimspeed.gatherer.entity.bean.mysql.content.ExecutedUrlMySqlBeanMapper">
+
+	<!--实体映射-->
+	<resultMap id="BaseResultCustomerMap" type="com.aimspeed.gatherer.entity.bean.mysql.content.ExecutedUrlMySqlBean">
+		<!---->
+		<id column="id" jdbcType="INTEGER" property="id" />
+		<!--采集者的唯一序列号-->
+		<id column="sequence" jdbcType="VARCHAR" property="sequence" />
+		<!--当前的这个URL的父URL盐值（来源）-->
+		<id column="parent_url_salting" jdbcType="VARCHAR" property="parentUrlSalting" />
+		<!--执行过的URL-->
+		<id column="executed_url" jdbcType="LONGVARCHAR" property="executedUrl" />
+		<!--URL的MD5盐值-->
+		<id column="url_salting" jdbcType="VARCHAR" property="urlSalting" />
+		<!--请求方式-->
+		<id column="method" jdbcType="VARCHAR" property="method" />
+		<!--页面盐值编码，用于识别页面数据是否改变过，如果改变了则重新抓取数据。-->
+		<id column="page_salting" jdbcType="VARCHAR" property="pageSalting" />
+		<!--数据包中的最后更新时间-->
+		<id column="last_update_time" jdbcType="VARCHAR" property="lastUpdateTime" />
+		<!--是否删除 N非删除 Y删除-->
+		<id column="is_delete" jdbcType="CHAR" property="isDelete" />
+		<!--创建人-->
+		<id column="creator" jdbcType="VARCHAR" property="creator" />
+		<!--创建时间-->
+		<id column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+		<!--更新人-->
+		<id column="updator" jdbcType="VARCHAR" property="updator" />
+		<!--更新时间-->
+		<id column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+	</resultMap>
+
+
+</mapper>

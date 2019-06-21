@@ -7,7 +7,7 @@ import com.aimspeed.gatherer.controller.BaseController;
 import com.aimspeed.gatherer.entity.bean.mysql.rule.CommonRuleMySqlBean;
 
 /**
- * 执行过的URL控制层
+ * 公共代码
  * @author AimSpeed
  */
 @Controller

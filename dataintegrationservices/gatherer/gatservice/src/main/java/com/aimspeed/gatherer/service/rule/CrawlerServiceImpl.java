@@ -17,16 +17,16 @@ import com.aimspeed.common.cryptology.irreversible.MD5Arithmetic;
 import com.aimspeed.common.enums.HttpResponseCurdEnum;
 import com.aimspeed.common.enums.HttpResponseEnum;
 import com.aimspeed.common.enums.IsDeleteEnum;
+import com.aimspeed.common.http.HttpRequestUtils;
+import com.aimspeed.common.vo.ResultVo;
 import com.aimspeed.gatherer.common.enums.IsStartEnum;
 import com.aimspeed.gatherer.common.enums.RedisKeyEnum;
-import com.aimspeed.gatherer.common.http.RequestPacketUtil;
 import com.aimspeed.gatherer.entity.bean.mysql.request.CookieMySqlBean;
 import com.aimspeed.gatherer.entity.bean.mysql.request.RequestHeaderMySqlBean;
 import com.aimspeed.gatherer.entity.bean.mysql.request.RequestParamMySqlBean;
 import com.aimspeed.gatherer.entity.bean.mysql.rule.CrawlerMySqlBean;
 import com.aimspeed.gatherer.entity.bean.mysql.rule.ExtractRuleMySqlBean;
 import com.aimspeed.gatherer.entity.bean.mysql.user.UserMySqlBean;
-import com.aimspeed.gatherer.entity.vo.result.ResultVo;
 import com.aimspeed.gatherer.service.action.GathererActionService;
 import com.aimspeed.gatherer.service.httpclient.HttpClientResult;
 import com.aimspeed.gatherer.service.httpclient.HttpClientService;
@@ -34,7 +34,7 @@ import com.aimspeed.gatherer.service.request.CookieService;
 import com.aimspeed.gatherer.service.request.RequestHeaderService;
 import com.aimspeed.gatherer.service.request.RequestParamService;
 import com.aimspeed.mysql.BaseMySqlServiceImpl;
-import com.aimspeed.redis.RedisMapper;
+import com.aimspeed.redis.RedisMapperImpl;
 
 /**
  * @author AimSpeed
@@ -63,7 +63,7 @@ public class CrawlerServiceImpl extends BaseMySqlServiceImpl<CrawlerMySqlBean> i
 	private ApplicationContext applicationContext;
 	
 	@Autowired
-	private RedisMapper redisMapper;
+	private RedisMapperImpl redisMapper;
 
 	@Autowired
 	private RequestParamService requestParamBeanService;
@@ -88,11 +88,11 @@ public class CrawlerServiceImpl extends BaseMySqlServiceImpl<CrawlerMySqlBean> i
         baseRuleStr.setIsDelete(IsDeleteEnum.N.getValue());
         boolean isExists = isExists(baseRuleStr);
 		if(isExists) {
-			return new ResultVo(HttpResponseEnum.FAIL.getCode(), HttpResponseCurdEnum.LOG_EXIST.getValue());
+			return new ResultVo(HttpResponseEnum.SYSTEM_ERROR.getCode(), HttpResponseCurdEnum.LOG_EXIST.getValue());
 		}
 		
 		//提取主网址
-		String mainUrl = RequestPacketUtil.parseUrl2MainUrl(crawlerBean.getUrl());
+		String mainUrl = HttpRequestUtils.parseUrl2MainUrl(crawlerBean.getUrl());
 		
 		
 		//将名称、url、数据分类名称、层级组合在一起加密后形成序列号
@@ -112,7 +112,7 @@ public class CrawlerServiceImpl extends BaseMySqlServiceImpl<CrawlerMySqlBean> i
 		crawlerBean.setUpdator(sysUserBean.getAccount());
 		this.insertSelective(crawlerBean);
 		
-		return new ResultVo(HttpResponseEnum.SUCCESS.getCode(), HttpResponseCurdEnum.SAVE_SUCCESS.getValue(),crawlerBean);
+		return new ResultVo(crawlerBean);
 	}
 
 	/*
@@ -128,7 +128,7 @@ public class CrawlerServiceImpl extends BaseMySqlServiceImpl<CrawlerMySqlBean> i
 		
 		CrawlerMySqlBean baseRule = this.selectOfId(id);
 		if(null == baseRule) {
-			return new ResultVo(HttpResponseEnum.SUCCESS.getCode(), HttpResponseCurdEnum.SAVE_SUCCESS.getValue());
+			return new ResultVo();
 		}
 		crawlerBeanService.logicDelete(baseRule);
 		
@@ -140,7 +140,7 @@ public class CrawlerServiceImpl extends BaseMySqlServiceImpl<CrawlerMySqlBean> i
         extractRule.setSequence(baseRule.getSequence());
         extractRuleMapper.logicDelete(extractRule);
 		
-        return new ResultVo(HttpResponseEnum.SUCCESS.getCode(), HttpResponseEnum.SUCCESS.getValue());
+        return new ResultVo();
 	}
 
 	/*
@@ -182,7 +182,7 @@ public class CrawlerServiceImpl extends BaseMySqlServiceImpl<CrawlerMySqlBean> i
 			//缓存失败则结束线程
 			if(!cache) {
 				ThreadUtils.interruptThread(thread);
-				return new ResultVo(HttpResponseEnum.FAIL.getCode(),"缓存失败，请检查Redis缓存");
+				return new ResultVo(HttpResponseEnum.SYSTEM_ERROR.getCode(),"缓存失败，请检查Redis缓存");
 			}
 			
 		}else {//结束线程运行
@@ -190,16 +190,17 @@ public class CrawlerServiceImpl extends BaseMySqlServiceImpl<CrawlerMySqlBean> i
 
 			log.info("========= 结束采集任务，线程Id：" + threadId);
 			
-			//获取到线程
-			Thread thread = ThreadUtils.getThreadById(threadId);
-			if(null != thread) {
-				//结束线程
-				ThreadUtils.interruptThread(thread);
+			if(null != threadId) {
+				//获取到线程
+				Thread thread = ThreadUtils.getThreadById(threadId);
+				if(null != thread) {
+					//结束线程
+					ThreadUtils.interruptThread(thread);
+				}
+				
+				//在缓存中删除
+				redisMapper.del(threadId + "");
 			}
-			
-			//在缓存中删除
-			redisMapper.del(threadId + "");
-			
 		}
 		
 		CrawlerMySqlBean conditionRecord = new CrawlerMySqlBean();
@@ -211,7 +212,7 @@ public class CrawlerServiceImpl extends BaseMySqlServiceImpl<CrawlerMySqlBean> i
 		updateRecord.setUpdateTime(new Date());
 		
 		Integer len = crawlerBeanService.updateSelective(updateRecord, conditionRecord);
-		return new ResultVo(HttpResponseEnum.SUCCESS.getCode(), HttpResponseCurdEnum.UPDATE_SUCCESS.getValue(),len);
+		return new ResultVo(len);
 	}
 	
 	/*
@@ -268,7 +269,6 @@ public class CrawlerServiceImpl extends BaseMySqlServiceImpl<CrawlerMySqlBean> i
 			reqHeaderMsgBeans = requestHeaderBeanService.selectSelective(reqHeaderMsgBean);
 		
 		}
-
 		
 		//查询请求参数
 		List<RequestParamMySqlBean> requestParamBeans = null;
@@ -325,5 +325,25 @@ public class CrawlerServiceImpl extends BaseMySqlServiceImpl<CrawlerMySqlBean> i
 		}
 		return result;
 	}
+	
+	/*
+	 * 判断是否是异步页面
+	 * @author AimSpeed
+	 * @param sequence
+	 * @param isAsync
+	 * @return
+	 * @overridden @see com.aimspeed.gatherer.service.rule.CrawlerService#isAsync(java.lang.String, java.lang.String)
+	 */
+	/*@Override
+	public ResultVo isAsync(String sequence, String isAsync) {
+		CrawlerMySqlBean conditionRecord = new CrawlerMySqlBean();
+		conditionRecord.setSequence(sequence);
+		
+		CrawlerMySqlBean updateRecord = new CrawlerMySqlBean();
+//		updateRecord.setIsAsync(isAsync);
+		
+		Integer len = crawlerBeanService.updateSelective(updateRecord, conditionRecord);
+		return new ResultVo();
+	}*/
 
 }

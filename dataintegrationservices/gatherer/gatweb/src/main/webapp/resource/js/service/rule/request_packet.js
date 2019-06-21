@@ -1,4 +1,6 @@
-
+/**
+ * 发送包配置
+ */
 var request_packet = {
 	
 	/**

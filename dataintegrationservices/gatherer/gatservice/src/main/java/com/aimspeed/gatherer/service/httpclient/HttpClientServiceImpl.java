@@ -9,8 +9,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import javax.annotation.Resource;
-
 import org.apache.http.HttpEntity;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
@@ -24,13 +22,16 @@ import org.apache.http.entity.ContentType;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.util.EntityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.aimspeed.common.enums.HttpRequestMethodEnum;
 import com.aimspeed.common.file.FileUtils;
+import com.aimspeed.common.http.HttpRequestUtils;
 
 
 
@@ -46,7 +47,7 @@ public class HttpClientServiceImpl implements HttpClientService {
 	/**
 	 * 注入HttpClient实例  
 	 */
-    @Resource(name = "httpClientManagerFactoryBen")  
+	@Autowired
     private CloseableHttpClient client;  
 	
     /*
@@ -60,7 +61,6 @@ public class HttpClientServiceImpl implements HttpClientService {
      * @throws IOException
      * @throws IllegalArgumentException
      * @overridden @see com.aimspeed.gatherer.service.httpclient.HttpClientService#doGet(java.lang.String, java.lang.String, org.apache.http.client.protocol.HttpClientContext)
-     * @date 2018年3月27日
      */
     @Override
     public HttpClientResult doGet(String url,String coding,HttpClientContext httpClientContext) throws URISyntaxException, IOException ,IllegalArgumentException{
@@ -79,7 +79,6 @@ public class HttpClientServiceImpl implements HttpClientService {
      * @throws IOException
      * @throws IllegalArgumentException
      * @overridden @see com.aimspeed.gatherer.service.httpclient.HttpClientService#doGet(java.lang.String, java.lang.String, java.util.Map, org.apache.http.client.protocol.HttpClientContext)
-     * @date 2018年3月27日
      */
     @Override
     public HttpClientResult doGet(String url,String coding,Map<String, String> param,HttpClientContext httpClientContext) throws URISyntaxException, IOException ,IllegalArgumentException{
@@ -100,7 +99,6 @@ public class HttpClientServiceImpl implements HttpClientService {
      * @throws IllegalArgumentException
      * @throws IllegalArgumentException
      * @overridden @see com.aimspeed.gatherer.service.httpclient.HttpClientService#doGet(java.lang.String, java.lang.String, java.util.Map, java.util.Map, org.apache.http.client.protocol.HttpClientContext)
-     * @date 2018年3月27日
      */
     @Override
 	public HttpClientResult doGet(String url, String coding, Map<String, String> params, Map<String, String> headers,
@@ -123,7 +121,6 @@ public class HttpClientServiceImpl implements HttpClientService {
      * @throws IOException
      * @throws IllegalArgumentException
      * @overridden @see com.aimspeed.gatherer.service.httpclient.HttpClientService#doGet(java.lang.String, java.lang.String, java.util.Map, java.util.Map, java.util.Map, org.apache.http.client.protocol.HttpClientContext)
-     * @date 2018年3月27日
      */
     @Override
     public HttpClientResult doGet(String url,String coding, Map<String, String> params,Map<String, String> headers,Map<String, String> cookies,HttpClientContext httpClientContext) throws URISyntaxException, IOException ,IllegalArgumentException{
@@ -210,7 +207,6 @@ public class HttpClientServiceImpl implements HttpClientService {
      * @throws IOException
      * @throws IllegalArgumentException
      * @overridden @see com.aimspeed.gatherer.service.httpclient.HttpClientService#doPost(java.lang.String, java.lang.String, org.apache.http.client.protocol.HttpClientContext)
-     * @date 2018年3月27日
      */
     public HttpClientResult doPost(String url,String coding,HttpClientContext httpClientContext) throws ClientProtocolException,IOException ,IllegalArgumentException {
     	return doPost(url,null,null,httpClientContext);
@@ -228,7 +224,6 @@ public class HttpClientServiceImpl implements HttpClientService {
      * @throws IOException
      * @throws IllegalArgumentException
      * @overridden @see com.aimspeed.gatherer.service.httpclient.HttpClientService#doPost(java.lang.String, java.lang.String, java.util.Map, org.apache.http.client.protocol.HttpClientContext)
-     * @date 2018年3月27日
      */
     public HttpClientResult doPost(String url,String coding, Map<String, String> param,HttpClientContext httpClientContext) throws ClientProtocolException,IOException ,IllegalArgumentException {
     	return doPost(url,coding,param,null,null,httpClientContext);
@@ -247,7 +242,6 @@ public class HttpClientServiceImpl implements HttpClientService {
      * @throws IOException
      * @throws IllegalArgumentException
      * @overridden @see com.aimspeed.gatherer.service.httpclient.HttpClientService#doPost(java.lang.String, java.lang.String, java.util.Map, java.util.Map, org.apache.http.client.protocol.HttpClientContext)
-     * @date 2018年3月27日
      */
 	@Override
 	public HttpClientResult doPost(String url, String coding, Map<String, String> param, Map<String, String> headers,
@@ -269,7 +263,6 @@ public class HttpClientServiceImpl implements HttpClientService {
 	 * @throws IOException
 	 * @throws IllegalArgumentException
 	 * @overridden @see com.aimspeed.gatherer.service.httpclient.HttpClientService#doPost(java.lang.String, java.lang.String, java.util.Map, java.util.Map, java.util.Map, org.apache.http.client.protocol.HttpClientContext)
-	 * @date 2018年3月27日
 	 */
     public HttpClientResult doPost(String url, 
     						 String coding,
@@ -360,7 +353,6 @@ public class HttpClientServiceImpl implements HttpClientService {
      * @throws IOException
      * @throws IllegalArgumentException
      * @overridden @see com.aimspeed.gatherer.service.httpclient.HttpClientService#doPostJson(java.lang.String, java.lang.String, java.lang.String, org.apache.http.client.protocol.HttpClientContext)
-     * @date 2018年3月27日
      */
     @Override
     public HttpClientResult doPostJson(String url,String coding, String json,HttpClientContext httpClientContext) throws ClientProtocolException, IOException ,IllegalArgumentException {
@@ -416,7 +408,6 @@ public class HttpClientServiceImpl implements HttpClientService {
      * @throws IOException
      * @throws IllegalArgumentException
      * @overridden @see com.aimspeed.gatherer.service.httpclient.HttpClientService#getResultOfMethod(java.lang.String, java.lang.String, java.lang.String, java.util.Map, java.util.Map, org.apache.http.client.protocol.HttpClientContext)
-     * @date 2018年3月27日
      */
 	@Override
 	public HttpClientResult getResultOfMethod(String url, String coding, String method, Map<String, String> params,
@@ -440,7 +431,6 @@ public class HttpClientServiceImpl implements HttpClientService {
 	 * @throws IOException
 	 * @throws IllegalArgumentException
 	 * @overridden @see com.aimspeed.gatherer.service.httpclient.HttpClientService#getResultOfMethod(java.lang.String, java.lang.String, java.lang.String, java.util.Map, java.util.Map, java.util.Map, org.apache.http.client.protocol.HttpClientContext)
-	 * @date 2018年3月27日
 	 */
 	@Override
 	public HttpClientResult getResultOfMethod(String url,String coding, String method, Map<String, String> params,
@@ -464,15 +454,14 @@ public class HttpClientServiceImpl implements HttpClientService {
 	 * @return
 	 * @throws IOException
 	 * @overridden @see com.aimspeed.gatherer.service.httpclient.HttpClientService#downloadImg(java.lang.String, java.lang.String)
-	 * @date 2018年3月27日
 	 */
 	@Override
 	public HttpClientResult downloadImg(String url, String filePathName) throws IOException {
 		CloseableHttpResponse response = null;
 		HttpGet httpget = new HttpGet(url);
 		//HttpPost httpget = new HttpPost(url);
-		//伪装成google浏览器
-		httpget.setHeader("User-Agent", "Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)");
+		//伪装成浏览器
+		httpget.setHeader("User-Agent", HttpRequestUtils.getRandomBrowserVersion());
 		try {
 			response = client.execute(httpget);
 			if (response.getStatusLine().getStatusCode() == 200) {
@@ -510,6 +499,45 @@ public class HttpClientServiceImpl implements HttpClientService {
 			e.printStackTrace();
 		}finally {
 			response.close();
+		}
+		return null;
+	}
+	
+	/*
+	 * 获取到图片流
+	 * @author AimSpeed
+	 * @param url
+	 * @return
+	 * @overridden @see com.aimspeed.gatherer.service.httpclient.HttpClientService#getImgInputStream(java.lang.String)
+	 */
+	@Override
+	public byte[] getImgByte(String url) {
+		CloseableHttpResponse response = null;
+		HttpGet httpget = new HttpGet(url);
+		//伪装成浏览器
+		httpget.setHeader("User-Agent", HttpRequestUtils.getRandomBrowserVersion());
+		try {
+			response = client.execute(httpget);
+			if (response.getStatusLine().getStatusCode() == 200) {
+            	
+				 // 得到网络资源的字节流
+				 HttpEntity entity = response.getEntity();
+				 if (entity != null) {
+//					InputStream instream = entity.getContent();
+					byte[] byteArray = EntityUtils.toByteArray(entity);
+					if(null != byteArray && byteArray.length > 0) {
+						return byteArray;
+					}
+				 }
+			 }
+		} catch (IOException e) {
+			e.printStackTrace();
+		}finally {
+			try {
+				response.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
 		return null;
 	}

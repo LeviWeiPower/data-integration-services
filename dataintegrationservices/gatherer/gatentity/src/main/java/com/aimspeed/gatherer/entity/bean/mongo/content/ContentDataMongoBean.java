@@ -6,7 +6,7 @@ import javax.persistence.Id;
 
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import com.aimspeed.gatherer.entity.bean.mongo.BaseMongoBean;
+import com.aimspeed.mongodb.BaseMongoBean;
 
 /**
  *  内容数据
@@ -20,7 +20,6 @@ public class ContentDataMongoBean extends BaseMongoBean {
 	
 	/** 
 	 * @author AimSpeed
-	 * @date 2018年8月3日 
 	 */
 	private static final long serialVersionUID = -5358330146635852806L;
 
@@ -44,7 +43,7 @@ public class ContentDataMongoBean extends BaseMongoBean {
 	private Map<String,Object> content;
 
 	/**数据盐值**/
-	private String contentSaltingVal;
+//	private String contentSaltingVal;
 	
 	/**数据uuid**/
 	private String dataUuid;

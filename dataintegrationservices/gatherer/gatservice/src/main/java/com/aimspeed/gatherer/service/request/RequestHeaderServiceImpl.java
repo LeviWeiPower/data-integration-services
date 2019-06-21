@@ -11,12 +11,12 @@ import com.aimspeed.common.datatype.StringUtils;
 import com.aimspeed.common.enums.HttpRequestHeaderEnum;
 import com.aimspeed.common.enums.HttpResponseEnum;
 import com.aimspeed.common.enums.IsDeleteEnum;
-import com.aimspeed.gatherer.common.http.RequestPacketUtil;
+import com.aimspeed.common.http.HttpRequestUtils;
+import com.aimspeed.common.vo.ResultVo;
 import com.aimspeed.gatherer.entity.bean.mysql.request.CookieMySqlBean;
 import com.aimspeed.gatherer.entity.bean.mysql.request.RequestHeaderMySqlBean;
 import com.aimspeed.gatherer.entity.bean.mysql.request.RequestParamMySqlBean;
 import com.aimspeed.gatherer.entity.bean.mysql.user.UserMySqlBean;
-import com.aimspeed.gatherer.entity.vo.result.ResultVo;
 import com.aimspeed.gatherer.entity.vo.rule.RequestPacketVo;
 import com.aimspeed.mysql.BaseMySqlServiceImpl;
 
@@ -35,12 +35,10 @@ public class RequestHeaderServiceImpl extends BaseMySqlServiceImpl<RequestHeader
 	/*
 	 * 添加请求包头配置信息、Cookie信息、Session信息e
 	 * @author AimSpeed
-	 * @Title addRequestPacketMsg
 	 * @param sysUserBean
 	 * @param reqMsgVo
 	 * @return
 	 * @overridden @see com.aimspeed.gatherer.service.request.RequestHeaderBeanService#addRequestPacketMsg(com.aimspeed.gatherer.entity.bean.system.SysUserBean, com.aimspeed.gatherer.entity.vo.rule.RequestPacketVo)
-	 * @date 2018年3月27日
 	 */
 	@Override
 	public ResultVo addRequestPacketMsg(UserMySqlBean sysUserBean, RequestPacketVo reqMsgVo) {
@@ -83,7 +81,7 @@ public class RequestHeaderServiceImpl extends BaseMySqlServiceImpl<RequestHeader
 			}
 		}
 
-		return new ResultVo(HttpResponseEnum.SUCCESS.getCode(), HttpResponseEnum.SUCCESS.getValue());
+		return new ResultVo();
 	}
 
 	/*
@@ -91,11 +89,9 @@ public class RequestHeaderServiceImpl extends BaseMySqlServiceImpl<RequestHeader
 	 * 如果查找结果为空那么则添加上默认的请求包头信息。
 	 * 如果查找结果不为空，那么则按照结果进行转换为Map对象，并添加上一些必要的包头信息
 	 * @author AimSpeed
-	 * @Title headerToMap
 	 * @param reqHeaderMsgBeans
 	 * @return
 	 * @overridden @see com.aimspeed.gatherer.service.request.RequestHeaderBeanService#headerToMap(java.util.List)
-	 * @date 2018年3月27日
 	 */
 	@Override
 	public Map<String, String> headerToMap(List<RequestHeaderMySqlBean> reqHeaderMsgBeans) {
@@ -117,7 +113,7 @@ public class RequestHeaderServiceImpl extends BaseMySqlServiceImpl<RequestHeader
 			result.put(HttpRequestHeaderEnum.CONNECTION.getKey(), HttpRequestHeaderEnum.CONNECTION.getValue());
 		}
 		//改变浏览器伪装
-		result.put(HttpRequestHeaderEnum.USER_AGENT.getKey(), RequestPacketUtil.getRandomBrowserVersion());
+		result.put(HttpRequestHeaderEnum.USER_AGENT.getKey(), HttpRequestUtils.getRandomBrowserVersion());
 		return result;
 	}
 

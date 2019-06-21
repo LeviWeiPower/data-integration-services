@@ -1,0 +1,58 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>com.aimspeed.gatherer</groupId>
+    <artifactId>gatherer</artifactId>
+    <version>1.0-SNAPSHOT</version>
+  </parent>
+  <artifactId>gatcore</artifactId>
+  <description>项目核心包，包含配置内容，拦截器等</description>
+  
+  	<dependencies>
+  		
+  		<!-- 业务处理层 -->
+	  	<dependency>
+	  	  <groupId>com.aimspeed.gatherer</groupId>
+		  <artifactId>gatservice</artifactId>
+    	  <version>1.0-SNAPSHOT</version>
+	  	</dependency>
+  	
+  		<!-- API层 -->
+	  	<!-- <dependency>
+	  	  <groupId>com.aimspeed.gatherer</groupId>
+		  <artifactId>gatapi</artifactId>
+    	  <version>1.0-SNAPSHOT</version>
+	  	</dependency> -->
+  	
+  		<!-- AOP切面 -->
+	    <dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-aop</artifactId>
+		</dependency>
+  		
+  		<!-- Feign -->
+		<dependency>
+		    <groupId>org.springframework.cloud</groupId>
+		    <artifactId>spring-cloud-starter-openfeign</artifactId>
+		</dependency>
+		
+		<dependency>
+		    <groupId>io.github.openfeign.form</groupId>
+		    <artifactId>feign-form</artifactId>
+		</dependency>
+		<dependency>
+		    <groupId>io.github.openfeign.form</groupId>
+		    <artifactId>feign-form-spring</artifactId>
+		</dependency>
+		
+		<!-- Eureka -->
+		<!-- <dependency>
+	         <groupId>org.springframework.cloud</groupId>
+	         <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
+	     </dependency> -->
+  		
+  	</dependencies>
+  
+  
+  
+</project>

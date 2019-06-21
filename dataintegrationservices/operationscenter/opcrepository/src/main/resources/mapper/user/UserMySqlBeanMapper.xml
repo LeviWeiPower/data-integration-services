@@ -1,0 +1,856 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aimspeed.operations.repository.mysql.user.UserMySqlBeanMapper">
+
+	<!--实体映射-->
+	<resultMap id="BaseResultMap" type="com.aimspeed.operations.entity.bean.mysql.user.UserMySqlBean">
+		<!---->
+		<id column="id" jdbcType="INTEGER" property="id" />
+		<!--昵称-->
+		<id column="nickname" jdbcType="VARCHAR" property="nickname" />
+		<!--账号-->
+		<id column="account" jdbcType="VARCHAR" property="account" />
+		<!--密码（md5加密）-->
+		<id column="password" jdbcType="VARCHAR" property="password" />
+		<!--角色id-->
+		<id column="role_id" jdbcType="INTEGER" property="roleId" />
+		<!--最近登录时间-->
+		<id column="last_login_time" jdbcType="TIMESTAMP" property="lastLoginTime" />
+		<!--最近登录ip-->
+		<id column="last_login_ip" jdbcType="VARCHAR" property="lastLoginIp" />
+		<!--账户状态（0-正常、1-禁用）-->
+		<id column="status" jdbcType="TINYINT" property="status" />
+		<!--是否删除，N未删除，Y已删除 - 默认N-->
+		<id column="is_delete" jdbcType="CHAR" property="isDelete" />
+		<!--创建时间-->
+		<id column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+		<!--创建人-->
+		<id column="creator" jdbcType="VARCHAR" property="creator" />
+		<!--更新时间-->
+		<id column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+		<!--更新人-->
+		<id column="updator" jdbcType="VARCHAR" property="updator" />
+	</resultMap>
+
+
+	<!-- 通用的字段 -->
+	<sql id="Base_Column_List">
+		 id,	nickname,	account,	password,	role_id,	last_login_time,	last_login_ip,	status,	is_delete,	create_time,	creator,	update_time,	updator
+	</sql>
+
+	<!-- 根据对象的不为null的值作为条件进行查找，并且确定值找出一个值 -->
+	<select id="selectOnlyOfSelective" resultMap="BaseResultMap" parameterType="com.aimspeed.operations.entity.bean.mysql.user.UserMySqlBean">
+		 SELECT
+		 <include refid="Base_Column_List" />
+		 FROM user
+		 WHERE 1 = 1 
+			<if test="id != null">
+				 and id = #{id, jdbcType=INTEGER}
+			</if>
+			<if test="nickname != null">
+				 and nickname = #{nickname, jdbcType=VARCHAR}
+			</if>
+			<if test="account != null">
+				 and account = #{account, jdbcType=VARCHAR}
+			</if>
+			<if test="password != null">
+				 and password = #{password, jdbcType=VARCHAR}
+			</if>
+			<if test="roleId != null">
+				 and role_id = #{roleId, jdbcType=INTEGER}
+			</if>
+			<if test="lastLoginTime != null">
+				 and last_login_time = #{lastLoginTime, jdbcType=TIMESTAMP}
+			</if>
+			<if test="lastLoginIp != null">
+				 and last_login_ip = #{lastLoginIp, jdbcType=VARCHAR}
+			</if>
+			<if test="status != null">
+				 and status = #{status, jdbcType=TINYINT}
+			</if>
+			<if test="isDelete != null">
+				 and is_delete = #{isDelete, jdbcType=CHAR}
+			</if>
+			<if test="createTime != null">
+				 and create_time = #{createTime, jdbcType=TIMESTAMP}
+			</if>
+			<if test="creator != null">
+				 and creator = #{creator, jdbcType=VARCHAR}
+			</if>
+			<if test="updateTime != null">
+				 and update_time = #{updateTime, jdbcType=TIMESTAMP}
+			</if>
+			<if test="updator != null">
+				 and updator = #{updator, jdbcType=VARCHAR}
+			</if>
+
+	</select>
+
+	<!-- 根据对象的不为null的值作为条件进行查找 -->
+	<select id="selectSelective" resultMap="BaseResultMap" parameterType="com.aimspeed.operations.entity.bean.mysql.user.UserMySqlBean">
+		 SELECT
+		 <include refid="Base_Column_List" />
+		 FROM user
+		 WHERE 1 = 1 
+			<if test="id != null">
+				 and id = #{id, jdbcType=INTEGER}
+			</if>
+			<if test="nickname != null">
+				 and nickname = #{nickname, jdbcType=VARCHAR}
+			</if>
+			<if test="account != null">
+				 and account = #{account, jdbcType=VARCHAR}
+			</if>
+			<if test="password != null">
+				 and password = #{password, jdbcType=VARCHAR}
+			</if>
+			<if test="roleId != null">
+				 and role_id = #{roleId, jdbcType=INTEGER}
+			</if>
+			<if test="lastLoginTime != null">
+				 and last_login_time = #{lastLoginTime, jdbcType=TIMESTAMP}
+			</if>
+			<if test="lastLoginIp != null">
+				 and last_login_ip = #{lastLoginIp, jdbcType=VARCHAR}
+			</if>
+			<if test="status != null">
+				 and status = #{status, jdbcType=TINYINT}
+			</if>
+			<if test="isDelete != null">
+				 and is_delete = #{isDelete, jdbcType=CHAR}
+			</if>
+			<if test="createTime != null">
+				 and create_time = #{createTime, jdbcType=TIMESTAMP}
+			</if>
+			<if test="creator != null">
+				 and creator = #{creator, jdbcType=VARCHAR}
+			</if>
+			<if test="updateTime != null">
+				 and update_time = #{updateTime, jdbcType=TIMESTAMP}
+			</if>
+			<if test="updator != null">
+				 and updator = #{updator, jdbcType=VARCHAR}
+			</if>
+
+	</select>
+
+	<!-- 动态分页，筛选条件 - 默认为最新时间排序 -->
+	<select id="selectPageSelective" resultMap="BaseResultMap" parameterType="com.aimspeed.mysql.vo.PageVo" >
+		 SELECT
+		 <include refid="Base_Column_List" />
+		 FROM user
+		 <where> 
+
+			 <if test="pageVo.likeFiltrate != null">
+				 <foreach item="value" index="key" collection="pageVo.likeFiltrate.entrySet()" >
+					 <if test="value != null and value != '' ">
+						 or ${key} like CONCAT('%',#{value},'%')
+					 </if>
+				 </foreach>
+			 </if>
+
+			 <if test="pageVo.filtrate != null">
+				 <foreach item="value" index="key" collection="pageVo.filtrate.entrySet()" >
+					 <if test="value != null and value != '' ">
+						 and ${key} = #{value}
+					 </if>
+				 </foreach>
+			 </if>
+
+			 and 1 = 1
+		 </where> 
+
+			<!-- 排序字段 -->
+			<if test="null != pageVo.orderField ">
+				ORDER BY
+				${pageVo.orderField}
+				<!-- 排序规则 -->
+				<choose>
+					<when test="null != pageVo.orderingRule ">
+					${pageVo.orderingRule}
+					</when>
+					<otherwise>
+					DESC
+					</otherwise>
+				</choose>
+			</if>
+
+		LIMIT #{pageVo.curPageCountSize},#{pageVo.pageSize}
+	</select>
+
+	<!-- 根据对象的不为null的值作为条件进行查找 -->
+	<select id="selectDataCountSize" resultType="java.lang.Integer">
+		 SELECT
+		 count(id)
+		 FROM user
+		 <where> 
+
+			 <if test="likeCondition != null">
+				 <foreach item="value" index="key" collection="likeCondition.entrySet()" >
+					 <if test="value != null and value != '' ">
+						 or ${key} like CONCAT('%',#{value},'%')
+					 </if>
+				 </foreach>
+			 </if>
+
+			 <if test="condition != null">
+				 <foreach item="value" index="key" collection="condition.entrySet()" >
+					 <if test="value != null and value != '' ">
+						 and ${key} = #{value}
+					 </if>
+				 </foreach>
+			 </if>
+
+			 and 1 = 1
+		 </where> 
+
+	</select>
+
+	<!-- 根据Id进行查询 -->
+	<select id="selectOfId" resultMap="BaseResultMap" parameterType="com.aimspeed.operations.entity.bean.mysql.user.UserMySqlBean">
+		 SELECT
+		 <include refid="Base_Column_List" />
+		 FROM user
+		 WHERE 1 = 1 
+		 <if test="id != null">
+			 and id = #{id, jdbcType=INTEGER}
+		 </if>
+
+	</select>
+
+	<!-- 根据多Id进行查询 -->
+	<select id="selectOfIds" resultMap="BaseResultMap" parameterType="com.aimspeed.operations.entity.bean.mysql.user.UserMySqlBean">
+		 SELECT
+		 <include refid="Base_Column_List" />
+		 FROM user
+		 WHERE 1 = 1 
+		 <if	test="ids != null and ids.size > 0">
+			 and id in 
+			 <foreach collection ="ids" item="id" index= "index" open="(" separator="," close=")">
+				 #{id}
+			 </foreach>
+		 </if>
+
+	</select>
+
+	<!-- 根据Id范围进查询 -->
+	<select id="selectOfIdScopes" resultMap="BaseResultMap" parameterType="com.aimspeed.operations.entity.bean.mysql.user.UserMySqlBean">
+		 SELECT
+		 <include refid="Base_Column_List" />
+		 FROM user
+		 WHERE 1 = 1 
+		 <if test="lessId != null">
+			 and id <![CDATA[ > ]]> #{lessId, jdbcType=INTEGER}
+		 </if>
+		 <if test="largeId != null">
+			 and id <![CDATA[ < ]]> #{largeId, jdbcType=INTEGER}
+		 </if>
+
+	</select>
+
+	<!-- 根据多条件值进行查询 -->
+	<select id="selectSelectiveMany" resultMap="BaseResultMap" parameterType="com.aimspeed.operations.entity.bean.mysql.user.UserMySqlBean">
+		 SELECT
+		 <include refid="Base_Column_List" />
+		 FROM user
+		 WHERE 1 = 1 
+		 <foreach collection ="batchField" item="bean" index= "index" >
+			<if test="id != null">
+				 and id = #{bean.id, jdbcType=INTEGER}
+			</if>
+			<if test="nickname != null">
+				 and nickname = #{bean.nickname, jdbcType=VARCHAR}
+			</if>
+			<if test="account != null">
+				 and account = #{bean.account, jdbcType=VARCHAR}
+			</if>
+			<if test="password != null">
+				 and password = #{bean.password, jdbcType=VARCHAR}
+			</if>
+			<if test="roleId != null">
+				 and role_id = #{bean.roleId, jdbcType=INTEGER}
+			</if>
+			<if test="lastLoginTime != null">
+				 and last_login_time = #{bean.lastLoginTime, jdbcType=TIMESTAMP}
+			</if>
+			<if test="lastLoginIp != null">
+				 and last_login_ip = #{bean.lastLoginIp, jdbcType=VARCHAR}
+			</if>
+			<if test="status != null">
+				 and status = #{bean.status, jdbcType=TINYINT}
+			</if>
+			<if test="isDelete != null">
+				 and is_delete = #{bean.isDelete, jdbcType=CHAR}
+			</if>
+			<if test="createTime != null">
+				 and create_time = #{bean.createTime, jdbcType=TIMESTAMP}
+			</if>
+			<if test="creator != null">
+				 and creator = #{bean.creator, jdbcType=VARCHAR}
+			</if>
+			<if test="updateTime != null">
+				 and update_time = #{bean.updateTime, jdbcType=TIMESTAMP}
+			</if>
+			<if test="updator != null">
+				 and updator = #{bean.updator, jdbcType=VARCHAR}
+			</if>
+
+		 </foreach>
+
+	</select>
+
+	<!-- 根据条件进行查询去重 -->
+	<select id="selectSelectiveOfDistince" resultMap="BaseResultMap" parameterType="com.aimspeed.operations.entity.bean.mysql.user.UserMySqlBean">
+		 SELECT
+		 DISTINCT <include refid="Base_Column_List" />
+		 FROM user
+		 WHERE 1 = 1 
+			<if test="id != null">
+				 and id = #{id, jdbcType=INTEGER}
+			</if>
+			<if test="nickname != null">
+				 and nickname = #{nickname, jdbcType=VARCHAR}
+			</if>
+			<if test="account != null">
+				 and account = #{account, jdbcType=VARCHAR}
+			</if>
+			<if test="password != null">
+				 and password = #{password, jdbcType=VARCHAR}
+			</if>
+			<if test="roleId != null">
+				 and role_id = #{roleId, jdbcType=INTEGER}
+			</if>
+			<if test="lastLoginTime != null">
+				 and last_login_time = #{lastLoginTime, jdbcType=TIMESTAMP}
+			</if>
+			<if test="lastLoginIp != null">
+				 and last_login_ip = #{lastLoginIp, jdbcType=VARCHAR}
+			</if>
+			<if test="status != null">
+				 and status = #{status, jdbcType=TINYINT}
+			</if>
+			<if test="isDelete != null">
+				 and is_delete = #{isDelete, jdbcType=CHAR}
+			</if>
+			<if test="createTime != null">
+				 and create_time = #{createTime, jdbcType=TIMESTAMP}
+			</if>
+			<if test="creator != null">
+				 and creator = #{creator, jdbcType=VARCHAR}
+			</if>
+			<if test="updateTime != null">
+				 and update_time = #{updateTime, jdbcType=TIMESTAMP}
+			</if>
+			<if test="updator != null">
+				 and updator = #{updator, jdbcType=VARCHAR}
+			</if>
+
+	</select>
+
+	<!-- 根据多条件值进行去重查询 -->
+	<select id="selectSelectiveManyOfDistince" resultMap="BaseResultMap" parameterType="com.aimspeed.operations.entity.bean.mysql.user.UserMySqlBean">
+		 SELECT
+		 DISTINCT <include refid="Base_Column_List" />
+		 FROM user
+		 WHERE 1 = 1 
+		 <foreach collection ="batchField" item="bean" index= "index" >
+			<if test="id != null">
+				 and id = #{bean.id, jdbcType=INTEGER}
+			</if>
+			<if test="nickname != null">
+				 and nickname = #{bean.nickname, jdbcType=VARCHAR}
+			</if>
+			<if test="account != null">
+				 and account = #{bean.account, jdbcType=VARCHAR}
+			</if>
+			<if test="password != null">
+				 and password = #{bean.password, jdbcType=VARCHAR}
+			</if>
+			<if test="roleId != null">
+				 and role_id = #{bean.roleId, jdbcType=INTEGER}
+			</if>
+			<if test="lastLoginTime != null">
+				 and last_login_time = #{bean.lastLoginTime, jdbcType=TIMESTAMP}
+			</if>
+			<if test="lastLoginIp != null">
+				 and last_login_ip = #{bean.lastLoginIp, jdbcType=VARCHAR}
+			</if>
+			<if test="status != null">
+				 and status = #{bean.status, jdbcType=TINYINT}
+			</if>
+			<if test="isDelete != null">
+				 and is_delete = #{bean.isDelete, jdbcType=CHAR}
+			</if>
+			<if test="createTime != null">
+				 and create_time = #{bean.createTime, jdbcType=TIMESTAMP}
+			</if>
+			<if test="creator != null">
+				 and creator = #{bean.creator, jdbcType=VARCHAR}
+			</if>
+			<if test="updateTime != null">
+				 and update_time = #{bean.updateTime, jdbcType=TIMESTAMP}
+			</if>
+			<if test="updator != null">
+				 and updator = #{bean.updator, jdbcType=VARCHAR}
+			</if>
+
+		 </foreach>
+
+	</select>
+
+	<!-- 根据对象中不为null的值进行删除 -->
+	<delete id="deleteSelective" parameterType="com.aimspeed.operations.entity.bean.mysql.user.UserMySqlBean">
+		 DELETE FROM user
+		 WHERE 1 = 1 
+			<if test="id != null">
+				 and id = #{id, jdbcType=INTEGER}
+			</if>
+			<if test="nickname != null">
+				 and nickname = #{nickname, jdbcType=VARCHAR}
+			</if>
+			<if test="account != null">
+				 and account = #{account, jdbcType=VARCHAR}
+			</if>
+			<if test="password != null">
+				 and password = #{password, jdbcType=VARCHAR}
+			</if>
+			<if test="roleId != null">
+				 and role_id = #{roleId, jdbcType=INTEGER}
+			</if>
+			<if test="lastLoginTime != null">
+				 and last_login_time = #{lastLoginTime, jdbcType=TIMESTAMP}
+			</if>
+			<if test="lastLoginIp != null">
+				 and last_login_ip = #{lastLoginIp, jdbcType=VARCHAR}
+			</if>
+			<if test="status != null">
+				 and status = #{status, jdbcType=TINYINT}
+			</if>
+			<if test="isDelete != null">
+				 and is_delete = #{isDelete, jdbcType=CHAR}
+			</if>
+			<if test="createTime != null">
+				 and create_time = #{createTime, jdbcType=TIMESTAMP}
+			</if>
+			<if test="creator != null">
+				 and creator = #{creator, jdbcType=VARCHAR}
+			</if>
+			<if test="updateTime != null">
+				 and update_time = #{updateTime, jdbcType=TIMESTAMP}
+			</if>
+			<if test="updator != null">
+				 and updator = #{updator, jdbcType=VARCHAR}
+			</if>
+	</delete>
+
+	<!-- 根据对象中不为null的值进行删除 -->
+	<delete id="deleteSelectiveOfId" parameterType="com.aimspeed.operations.entity.bean.mysql.user.UserMySqlBean">
+		 DELETE FROM user
+		 WHERE 1 = 1 
+		 <if test="id != null">
+			 and id = #{id, jdbcType=INTEGER}
+		 </if>
+
+	</delete>
+	<!-- 根据对象中不为null的值进行删除 -->
+	<delete id="deleteSelectiveOfIds" parameterType="com.aimspeed.operations.entity.bean.mysql.user.UserMySqlBean">
+		 DELETE FROM user
+		 WHERE 1 = 1 
+		 <if	test="ids != null and ids.size > 0">
+			 and id in 
+			 <foreach collection ="ids" item="id" index= "index" open="(" separator="," close=")">
+				 #{id}
+			 </foreach>
+		 </if>
+
+	</delete>
+
+
+	<!-- 添加 （匹配有值的字段）并且返回添加之后的数据记录Id（直接调用回对应的插入类.id），
+		  如果这个类没有id字段，那么请把Xml中的[useGeneratedKeys=true keyProperty=id keyColumn=id]这段代码删除-->
+	<insert id="insertSelective" parameterType="com.aimspeed.operations.entity.bean.mysql.user.UserMySqlBean" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+		 INSERT INTO user
+		 <trim prefix="(" suffix=")" suffixOverrides="," >
+			<if test="id != null">
+				 id,
+			</if>
+			<if test="nickname != null">
+				 nickname,
+			</if>
+			<if test="account != null">
+				 account,
+			</if>
+			<if test="password != null">
+				 password,
+			</if>
+			<if test="roleId != null">
+				 role_id,
+			</if>
+			<if test="lastLoginTime != null">
+				 last_login_time,
+			</if>
+			<if test="lastLoginIp != null">
+				 last_login_ip,
+			</if>
+			<if test="status != null">
+				 status,
+			</if>
+			<if test="isDelete != null">
+				 is_delete,
+			</if>
+			<if test="createTime != null">
+				 create_time,
+			</if>
+			<if test="creator != null">
+				 creator,
+			</if>
+			<if test="updateTime != null">
+				 update_time,
+			</if>
+			<if test="updator != null">
+				 updator,
+			</if>
+
+		 </trim>
+		 <trim prefix="values (" suffix=")" suffixOverrides="," >
+			<if test="id!=null">
+				 #{id},
+			</if>
+			<if test="nickname!=null">
+				 #{nickname},
+			</if>
+			<if test="account!=null">
+				 #{account},
+			</if>
+			<if test="password!=null">
+				 #{password},
+			</if>
+			<if test="roleId!=null">
+				 #{roleId},
+			</if>
+			<if test="lastLoginTime!=null">
+				 #{lastLoginTime},
+			</if>
+			<if test="lastLoginIp!=null">
+				 #{lastLoginIp},
+			</if>
+			<if test="status!=null">
+				 #{status},
+			</if>
+			<if test="isDelete!=null">
+				 #{isDelete},
+			</if>
+			<if test="createTime!=null">
+				 #{createTime},
+			</if>
+			<if test="creator!=null">
+				 #{creator},
+			</if>
+			<if test="updateTime!=null">
+				 #{updateTime},
+			</if>
+			<if test="updator!=null">
+				 #{updator},
+			</if>
+		 </trim>
+	</insert>
+
+	 <!-- 批量添加数据，添加所有字段的数据-->
+	 <insert id="batchInsert" parameterType="com.aimspeed.operations.entity.bean.mysql.user.UserMySqlBean">
+		 INSERT INTO user(nickname,account,password,role_id,last_login_time,last_login_ip,status,is_delete,create_time,creator,update_time,updator)
+		 VALUES
+		 <foreach collection ="batchField" item="bean" index= "index" separator =",">
+			 (
+				 #{bean.nickname},
+				 #{bean.account},
+				 #{bean.password},
+				 #{bean.roleId},
+				 #{bean.lastLoginTime},
+				 #{bean.lastLoginIp},
+				 #{bean.status},
+				 #{bean.isDelete},
+				 #{bean.createTime},
+				 #{bean.creator},
+				 #{bean.updateTime},
+				 #{bean.updator}
+			 )
+		</foreach >
+	</insert>
+
+	<!-- 批量添加数据，添加动态字段的数据，建议每次100条 -->
+	<insert id="batchInsertSelective" parameterType="com.aimspeed.operations.entity.bean.mysql.user.UserMySqlBean">
+		 <foreach collection ="batchField" item="bean" index= "index" separator =",">
+			 INSERT INTO user
+			 <trim prefix="(" suffix=")" suffixOverrides="," >
+				<if test="bean.id != null">
+					 id,
+				</if>
+				<if test="bean.nickname != null">
+					 nickname,
+				</if>
+				<if test="bean.account != null">
+					 account,
+				</if>
+				<if test="bean.password != null">
+					 password,
+				</if>
+				<if test="bean.roleId != null">
+					 role_id,
+				</if>
+				<if test="bean.lastLoginTime != null">
+					 last_login_time,
+				</if>
+				<if test="bean.lastLoginIp != null">
+					 last_login_ip,
+				</if>
+				<if test="bean.status != null">
+					 status,
+				</if>
+				<if test="bean.isDelete != null">
+					 is_delete,
+				</if>
+				<if test="bean.createTime != null">
+					 create_time,
+				</if>
+				<if test="bean.creator != null">
+					 creator,
+				</if>
+				<if test="bean.updateTime != null">
+					 update_time,
+				</if>
+				<if test="bean.updator != null">
+					 updator,
+				</if>
+
+			 </trim>
+			 <trim prefix="values (" suffix=")" suffixOverrides="," >
+				<if test="bean.id!=null">
+					 #{bean.id},
+				</if>
+				<if test="bean.nickname!=null">
+					 #{bean.nickname},
+				</if>
+				<if test="bean.account!=null">
+					 #{bean.account},
+				</if>
+				<if test="bean.password!=null">
+					 #{bean.password},
+				</if>
+				<if test="bean.roleId!=null">
+					 #{bean.roleId},
+				</if>
+				<if test="bean.lastLoginTime!=null">
+					 #{bean.lastLoginTime},
+				</if>
+				<if test="bean.lastLoginIp!=null">
+					 #{bean.lastLoginIp},
+				</if>
+				<if test="bean.status!=null">
+					 #{bean.status},
+				</if>
+				<if test="bean.isDelete!=null">
+					 #{bean.isDelete},
+				</if>
+				<if test="bean.createTime!=null">
+					 #{bean.createTime},
+				</if>
+				<if test="bean.creator!=null">
+					 #{bean.creator},
+				</if>
+				<if test="bean.updateTime!=null">
+					 #{bean.updateTime},
+				</if>
+				<if test="bean.updator!=null">
+					 #{bean.updator},
+				</if>
+			 </trim>
+		</foreach >	</insert>
+
+	<!-- 动态更新-->
+	<update id="updateSelective" parameterType="com.aimspeed.operations.entity.bean.mysql.user.UserMySqlBean">
+		 UPDATE user
+ 		 <set> 
+			<if test="updateRecord != null and updateRecord.nickname != null">
+				 nickname = #{updateRecord.nickname},
+			</if>
+			<if test="updateRecord != null and updateRecord.account != null">
+				 account = #{updateRecord.account},
+			</if>
+			<if test="updateRecord != null and updateRecord.password != null">
+				 password = #{updateRecord.password},
+			</if>
+			<if test="updateRecord != null and updateRecord.roleId != null">
+				 role_id = #{updateRecord.roleId},
+			</if>
+			<if test="updateRecord != null and updateRecord.lastLoginTime != null">
+				 last_login_time = #{updateRecord.lastLoginTime},
+			</if>
+			<if test="updateRecord != null and updateRecord.lastLoginIp != null">
+				 last_login_ip = #{updateRecord.lastLoginIp},
+			</if>
+			<if test="updateRecord != null and updateRecord.status != null">
+				 status = #{updateRecord.status},
+			</if>
+			<if test="updateRecord != null and updateRecord.isDelete != null">
+				 is_delete = #{updateRecord.isDelete},
+			</if>
+			<if test="updateRecord != null and updateRecord.createTime != null">
+				 create_time = #{updateRecord.createTime},
+			</if>
+			<if test="updateRecord != null and updateRecord.creator != null">
+				 creator = #{updateRecord.creator},
+			</if>
+			<if test="updateRecord != null and updateRecord.updateTime != null">
+				 update_time = #{updateRecord.updateTime},
+			</if>
+			<if test="updateRecord != null and updateRecord.updator != null">
+				 updator = #{updateRecord.updator},
+			</if>
+
+ 		 </set>
+		 WHERE 1 = 1 
+			<if test="conditionRecord != null and conditionRecord.id != null">
+				 and id = #{conditionRecord.id, jdbcType=INTEGER}
+			</if>
+			<if test="conditionRecord != null and conditionRecord.nickname != null">
+				 and nickname = #{conditionRecord.nickname, jdbcType=VARCHAR}
+			</if>
+			<if test="conditionRecord != null and conditionRecord.account != null">
+				 and account = #{conditionRecord.account, jdbcType=VARCHAR}
+			</if>
+			<if test="conditionRecord != null and conditionRecord.password != null">
+				 and password = #{conditionRecord.password, jdbcType=VARCHAR}
+			</if>
+			<if test="conditionRecord != null and conditionRecord.roleId != null">
+				 and role_id = #{conditionRecord.roleId, jdbcType=INTEGER}
+			</if>
+			<if test="conditionRecord != null and conditionRecord.lastLoginTime != null">
+				 and last_login_time = #{conditionRecord.lastLoginTime, jdbcType=TIMESTAMP}
+			</if>
+			<if test="conditionRecord != null and conditionRecord.lastLoginIp != null">
+				 and last_login_ip = #{conditionRecord.lastLoginIp, jdbcType=VARCHAR}
+			</if>
+			<if test="conditionRecord != null and conditionRecord.status != null">
+				 and status = #{conditionRecord.status, jdbcType=TINYINT}
+			</if>
+			<if test="conditionRecord != null and conditionRecord.isDelete != null">
+				 and is_delete = #{conditionRecord.isDelete, jdbcType=CHAR}
+			</if>
+			<if test="conditionRecord != null and conditionRecord.createTime != null">
+				 and create_time = #{conditionRecord.createTime, jdbcType=TIMESTAMP}
+			</if>
+			<if test="conditionRecord != null and conditionRecord.creator != null">
+				 and creator = #{conditionRecord.creator, jdbcType=VARCHAR}
+			</if>
+			<if test="conditionRecord != null and conditionRecord.updateTime != null">
+				 and update_time = #{conditionRecord.updateTime, jdbcType=TIMESTAMP}
+			</if>
+			<if test="conditionRecord != null and conditionRecord.updator != null">
+				 and updator = #{conditionRecord.updator, jdbcType=VARCHAR}
+			</if>
+	</update>
+
+
+	<!-- 根据批量Id进行更新 -->
+	<update id="batchUpdateOfIds" parameterType="com.aimspeed.operations.entity.bean.mysql.user.UserMySqlBean">
+		 UPDATE user
+ 		 <set> 
+			<if test="updateRecord != null and updateRecord.nickname != null">
+				 nickname = #{updateRecord.nickname},
+			</if>
+			<if test="updateRecord != null and updateRecord.account != null">
+				 account = #{updateRecord.account},
+			</if>
+			<if test="updateRecord != null and updateRecord.password != null">
+				 password = #{updateRecord.password},
+			</if>
+			<if test="updateRecord != null and updateRecord.roleId != null">
+				 role_id = #{updateRecord.roleId},
+			</if>
+			<if test="updateRecord != null and updateRecord.lastLoginTime != null">
+				 last_login_time = #{updateRecord.lastLoginTime},
+			</if>
+			<if test="updateRecord != null and updateRecord.lastLoginIp != null">
+				 last_login_ip = #{updateRecord.lastLoginIp},
+			</if>
+			<if test="updateRecord != null and updateRecord.status != null">
+				 status = #{updateRecord.status},
+			</if>
+			<if test="updateRecord != null and updateRecord.isDelete != null">
+				 is_delete = #{updateRecord.isDelete},
+			</if>
+			<if test="updateRecord != null and updateRecord.createTime != null">
+				 create_time = #{updateRecord.createTime},
+			</if>
+			<if test="updateRecord != null and updateRecord.creator != null">
+				 creator = #{updateRecord.creator},
+			</if>
+			<if test="updateRecord != null and updateRecord.updateTime != null">
+				 update_time = #{updateRecord.updateTime},
+			</if>
+			<if test="updateRecord != null and updateRecord.updator != null">
+				 updator = #{updateRecord.updator},
+			</if>
+
+ 		 </set>
+		 WHERE 1 = 1 
+			 <if	test="ids != null and ids.size > 0">
+				 and id in 
+				 <foreach collection ="ids" item="id" index= "index" open="(" separator="," close=")">
+					 #{id}
+				 </foreach>
+			 </if>
+	</update>
+
+
+	<!-- 根据Id进行更新 -->
+	<update id="updateSelectiveOfId" parameterType="com.aimspeed.operations.entity.bean.mysql.user.UserMySqlBean">
+		 UPDATE user
+ 		 <set> 
+			<if test="updateRecord != null and updateRecord.nickname != null">
+				 nickname = #{updateRecord.nickname},
+			</if>
+			<if test="updateRecord != null and updateRecord.account != null">
+				 account = #{updateRecord.account},
+			</if>
+			<if test="updateRecord != null and updateRecord.password != null">
+				 password = #{updateRecord.password},
+			</if>
+			<if test="updateRecord != null and updateRecord.roleId != null">
+				 role_id = #{updateRecord.roleId},
+			</if>
+			<if test="updateRecord != null and updateRecord.lastLoginTime != null">
+				 last_login_time = #{updateRecord.lastLoginTime},
+			</if>
+			<if test="updateRecord != null and updateRecord.lastLoginIp != null">
+				 last_login_ip = #{updateRecord.lastLoginIp},
+			</if>
+			<if test="updateRecord != null and updateRecord.status != null">
+				 status = #{updateRecord.status},
+			</if>
+			<if test="updateRecord != null and updateRecord.isDelete != null">
+				 is_delete = #{updateRecord.isDelete},
+			</if>
+			<if test="updateRecord != null and updateRecord.createTime != null">
+				 create_time = #{updateRecord.createTime},
+			</if>
+			<if test="updateRecord != null and updateRecord.creator != null">
+				 creator = #{updateRecord.creator},
+			</if>
+			<if test="updateRecord != null and updateRecord.updateTime != null">
+				 update_time = #{updateRecord.updateTime},
+			</if>
+			<if test="updateRecord != null and updateRecord.updator != null">
+				 updator = #{updateRecord.updator},
+			</if>
+
+ 		 </set>
+		 WHERE 1 = 1 		 <if test="updateRecord != null and updateRecord.id != null">
+			 and id = #{updateRecord.id, jdbcType=INTEGER}
+		 </if>
+
+	</update>
+
+
+</mapper>

@@ -8,16 +8,17 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.aimspeed.common.vo.ResultVo;
 import com.aimspeed.gatherer.controller.BaseController;
 import com.aimspeed.gatherer.entity.bean.mysql.rule.CrawlerMySqlBean;
 import com.aimspeed.gatherer.entity.bean.mysql.user.UserMySqlBean;
-import com.aimspeed.gatherer.entity.vo.result.ResultVo;
 import com.aimspeed.gatherer.service.rule.CrawlerService;
 
 /**
- * 执行过的URL控制层
+ * 采集者控制层
  * @author AimSpeed
  */
 @Controller
@@ -30,7 +31,19 @@ public class CrawlerController extends BaseController<CrawlerMySqlBean> {
 	
 	@Autowired
 	private CrawlerService crawlerBeanService;
-
+	
+	/**
+	 * 用于测试
+	 * @author AimSpeed
+	 * @param id
+	 * @return ResultVo
+	 */
+	@RequestMapping(value="/sum",method = {RequestMethod.GET,RequestMethod.POST})
+	@ResponseBody
+	public ResultVo sum(@RequestParam("id") Integer id){
+		return new ResultVo("11111111111111");
+	}
+	
 	/**
 	 * 跳转到列表首页
 	 * @param request
@@ -43,7 +56,7 @@ public class CrawlerController extends BaseController<CrawlerMySqlBean> {
 	}
 	
 	/**
-	 * 跳转到规则配置首页
+	 * 跳转到添加规则配置
 	 * @param request
 	 * @param response
 	 * @return
@@ -52,16 +65,25 @@ public class CrawlerController extends BaseController<CrawlerMySqlBean> {
 	public String addBaseRuleView(HttpServletRequest request,HttpServletResponse response){
 		return "/rule/crawler";
 	}
+
+	/**
+	 * 跳转到是否异步配置页
+	 * @param request
+	 * @param response
+	 * @return
+	 */
+	@RequestMapping(value="/isAsyncPage",method = {RequestMethod.GET,RequestMethod.POST})
+	public String isAsyncView(HttpServletRequest request,HttpServletResponse response){
+		return "/rule/is_async";
+	}
 	
 	/**
 	 * 运行采集任务
-	 * @Title run 
 	 * @param request
 	 * @param response
 	 * @param id
 	 * @param flag
 	 * @return ResultVo  
-	 * @date 2018年3月9日 下午4:34:03
 	 */
 	@RequestMapping(value = "/run", method = {RequestMethod.GET,RequestMethod.POST})
 	@ResponseBody
@@ -74,12 +96,10 @@ public class CrawlerController extends BaseController<CrawlerMySqlBean> {
 	
 	/*
 	 * 添加爬虫规则，添加成功后返回添加的id
-	 * @Title save 
 	 * @param request
 	 * @param response
 	 * @param t
 	 * @return
-	 * @date 2018年4月10日 下午9:25:36
 	 * @overridden @see com.aimspeed.gatherer.controller.BaseController#save(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse, java.lang.Object)
 	 */
 	public ResultVo save(HttpServletRequest request, HttpServletResponse response,CrawlerMySqlBean t) {
@@ -102,5 +122,21 @@ public class CrawlerController extends BaseController<CrawlerMySqlBean> {
 		return resultVo;
 	}
 	
+	/**
+	 * 页面是否是异步
+	 * @author AimSpeed
+	 * @param request
+	 * @param response
+	 * @param sequence
+	 * @param templateUrl
+	 * @return ResultVo
+	 */
+	/*@RequestMapping(value="/isAsync",method = {RequestMethod.GET,RequestMethod.POST})
+	@ResponseBody
+	public ResultVo isAsync(HttpServletRequest request,HttpServletResponse response,
+										String sequence,String isAsync){
+		ResultVo resultVo = crawlerBeanService.isAsync(sequence, isAsync);
+		return resultVo;
+	}*/
 	
 }

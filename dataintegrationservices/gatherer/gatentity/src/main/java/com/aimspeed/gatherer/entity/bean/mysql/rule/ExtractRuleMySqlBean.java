@@ -1,6 +1,6 @@
 package com.aimspeed.gatherer.entity.bean.mysql.rule;
 
-import com.aimspeed.gatherer.entity.bean.mysql.BaseMySqlBean;
+import com.aimspeed.mysql.BaseMySqlBean;
 
 /**
  * 数据提取规则
@@ -9,7 +9,6 @@ import com.aimspeed.gatherer.entity.bean.mysql.BaseMySqlBean;
 public class ExtractRuleMySqlBean extends BaseMySqlBean {
 
 	/**
-	 * @date 2018年6月20日 上午12:07:49
 	 * @reason 修改原因
 	 */ 
 	private static final long serialVersionUID = -2078903395852629282L;

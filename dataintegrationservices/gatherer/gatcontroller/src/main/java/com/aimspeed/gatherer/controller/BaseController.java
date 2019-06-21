@@ -9,6 +9,8 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -21,18 +23,25 @@ import com.aimspeed.common.enums.DefFieldNameEnum;
 import com.aimspeed.common.enums.HttpResponseCurdEnum;
 import com.aimspeed.common.enums.HttpResponseEnum;
 import com.aimspeed.common.enums.IsDeleteEnum;
-import com.aimspeed.gatherer.entity.bean.mysql.BaseMySqlBean;
+import com.aimspeed.common.vo.ResultVo;
 import com.aimspeed.gatherer.entity.bean.mysql.user.UserMySqlBean;
-import com.aimspeed.gatherer.entity.vo.result.ResultVo;
+import com.aimspeed.mysql.BaseMySqlBean;
 import com.aimspeed.mysql.BaseMySqlService;
-import com.aimspeed.mysql.vo.MySqlPageVo;
+import com.aimspeed.mysql.vo.PageVo;
 
+/**
+ * 
+ * @author AimSpeed
+ */
 /**
  * 控制层基础类
  * @author AimSpeed
+ * @param <T> 如果有多个泛型就增加多个，改为<T extends BaseMySqlBean,M extends BaseMongoBean>
  */
 public class BaseController<T extends BaseMySqlBean> {
-
+	
+	protected Logger logger = LoggerFactory.getLogger(this.getClass());
+	
 	@Autowired
 	private BaseMySqlService<T> baseService;
 	
@@ -96,9 +105,9 @@ public class BaseController<T extends BaseMySqlBean> {
     protected ResultVo getData(HttpServletRequest request, HttpServletResponse response,T t) {
 		List<T> ts = baseService.selectSelective(t);
 		if(null != ts && ts.size() > 0) {
-			return new ResultVo(HttpResponseEnum.SUCCESS.getCode(),HttpResponseEnum.SUCCESS.getValue(),ts.get(0));
+			return ResultVo.getSuccess(HttpResponseEnum.SUCCESS.getValue(),ts.get(0));
 		}
-		return new ResultVo(HttpResponseEnum.SUCCESS.getCode(),HttpResponseEnum.SUCCESS.getValue(),null);
+		return ResultVo.getSuccess(HttpResponseEnum.SUCCESS.getValue());
     }
 
 	/**
@@ -117,6 +126,7 @@ public class BaseController<T extends BaseMySqlBean> {
 			ReflectUtils.setFieldDefVal(t,DefFieldNameEnum.IS_DELETE.getValue(),IsDeleteEnum.N.getValue());
 		} catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e) {
 			e.printStackTrace();
+			logger.error(e.getMessage());
 		}
 		
 		List<T> ts = baseService.selectSelective(t);
@@ -145,6 +155,7 @@ public class BaseController<T extends BaseMySqlBean> {
 			ReflectUtils.setFieldDefVal(t,DefFieldNameEnum.IS_DELETE.getValue(),IsDeleteEnum.N.getValue());
 		} catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e) {
 			e.printStackTrace();
+			logger.error(e.getMessage());
 		}
 		
 		List<T> ts = baseService.selectSelective(t);
@@ -172,9 +183,10 @@ public class BaseController<T extends BaseMySqlBean> {
 			ReflectUtils.setFieldDefVal(t,DefFieldNameEnum.IS_DELETE.getValue(),IsDeleteEnum.N.getValue());
 		} catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e) {
 			e.printStackTrace();
+			logger.error(e.getMessage());
 		}
 		List<T> ts = baseService.selectSelective(t);
-		return new ResultVo(HttpResponseEnum.SUCCESS.getCode(),HttpResponseEnum.SUCCESS.getValue(),ts);
+		return ResultVo.getSuccess(HttpResponseEnum.SUCCESS.getValue(),ts);
     }
 
 	/**
@@ -187,7 +199,7 @@ public class BaseController<T extends BaseMySqlBean> {
 	@RequestMapping(value = "/getSumCountSize", method = {RequestMethod.GET,RequestMethod.POST})
 	@ResponseBody
 	protected ResultVo getSumCountSize(HttpServletRequest request, HttpServletResponse response) {
-		return new ResultVo(HttpResponseEnum.SUCCESS.getCode(),HttpResponseEnum.SUCCESS.getValue(),baseService.selectDataCountSize(null, null));
+		return ResultVo.getSuccess(HttpResponseEnum.SUCCESS.getValue(),baseService.selectDataCountSize(null, null));
 	}
 	
 	/**
@@ -201,7 +213,7 @@ public class BaseController<T extends BaseMySqlBean> {
 	@RequestMapping(value = "/getCountSize", method = {RequestMethod.GET,RequestMethod.POST})
 	@ResponseBody
 	protected ResultVo getCountSize(HttpServletRequest request, HttpServletResponse response,@RequestParam Map<String, Object> condition) {
-		return new ResultVo(HttpResponseEnum.SUCCESS.getCode(),HttpResponseEnum.SUCCESS.getValue(),baseService.selectDataCountSize(condition, null));
+		return ResultVo.getSuccess(HttpResponseEnum.SUCCESS.getValue(),baseService.selectDataCountSize(condition, null));
 	}
 	
 	/**
@@ -216,11 +228,11 @@ public class BaseController<T extends BaseMySqlBean> {
 	 */
 	@RequestMapping(value = "/getPagingList", method = {RequestMethod.GET,RequestMethod.POST})
 	@ResponseBody
-    protected ResultVo getPagingList(HttpServletRequest request, HttpServletResponse response,MySqlPageVo<T> pageVo,Integer pageSize, Integer pageNumber) {
+    protected ResultVo getPagingList(HttpServletRequest request, HttpServletResponse response,PageVo<T> pageVo,Integer pageSize, Integer pageNumber) {
 		pageVo.setPageSize(pageSize);
 		pageVo.setCurPage(pageNumber);
-		MySqlPageVo<T> pageVoResult = baseService.selectPageSelective(pageVo.getCurPage(),pageVo.getPageSize(),pageVo.getOrderField(),pageVo.getOrderingRule(),pageVo.getFiltrate(),pageVo.getLikeFiltrate());
-		ResultVo resultVo = new ResultVo(HttpResponseEnum.SUCCESS.getCode(),HttpResponseEnum.SUCCESS.getValue(),pageVoResult);
+		PageVo<T> pageVoResult = baseService.selectPageSelective(pageVo.getCurPage(),pageVo.getPageSize(),pageVo.getOrderField(),pageVo.getOrderingRule(),pageVo.getFiltrate(),pageVo.getLikeFiltrate());
+		ResultVo resultVo = ResultVo.getSuccess(HttpResponseEnum.SUCCESS.getValue(),pageVoResult);
 		resultVo.setTotalCount(pageVoResult.getTotalCount());
 		resultVo.setResult(pageVoResult.getPageData());
 		return resultVo;
@@ -243,11 +255,12 @@ public class BaseController<T extends BaseMySqlBean> {
 			ReflectUtils.setFieldDefVal(t,DefFieldNameEnum.UPDATOR.getValue(),userBean.getAccount());
 			ReflectUtils.setFieldDefVal(t,DefFieldNameEnum.IS_DELETE.getValue(),IsDeleteEnum.N.getValue());
 			int len = baseService.insertSelective(t);
-			return new ResultVo(HttpResponseEnum.SUCCESS.getCode(),HttpResponseCurdEnum.SAVE_SUCCESS.getValue(),len);
+			return ResultVo.getSuccess(HttpResponseCurdEnum.SAVE_SUCCESS.getValue(),len);
 		} catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e) {
 			e.printStackTrace();
+			logger.error(e.getMessage());
 		}
-		return new ResultVo(HttpResponseEnum.FAIL.getCode(),HttpResponseCurdEnum.SAVE_FAIL.getValue());
+		return ResultVo.getSystemError(HttpResponseCurdEnum.SAVE_FAIL.getValue());
 	}
 	
 	/**
@@ -266,11 +279,12 @@ public class BaseController<T extends BaseMySqlBean> {
 			ReflectUtils.setFieldDefVal(t,DefFieldNameEnum.UPDATOR.getValue(),userBean.getAccount());
 			ReflectUtils.setFieldDefVal(t,DefFieldNameEnum.UPDATE_TIME.getValue(),new Date().toString());
 			int len = baseService.updateSelectiveOfId(t);
-			return new ResultVo(HttpResponseEnum.SUCCESS.getCode(),HttpResponseCurdEnum.UPDATE_SUCCESS.getValue(),len);
+			return ResultVo.getSuccess(HttpResponseCurdEnum.UPDATE_SUCCESS.getValue(),len);
 		} catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e) {
 			e.printStackTrace();
+			logger.error(e.getMessage());
 		}
-		return new ResultVo(HttpResponseEnum.FAIL.getCode(),HttpResponseCurdEnum.UPDATE_FAIL.getValue());
+		return ResultVo.getSystemError(HttpResponseCurdEnum.UPDATE_FAIL.getValue());
 	}
 	
 	/**
@@ -290,11 +304,12 @@ public class BaseController<T extends BaseMySqlBean> {
 			ReflectUtils.setFieldDefVal(t,DefFieldNameEnum.UPDATOR.getValue(),userBean.getAccount());
 			ReflectUtils.setFieldDefVal(t,DefFieldNameEnum.UPDATE_TIME.getValue(),new Date().toString());
 			int len = baseService.updateSelectiveOfId(t);
-			return new ResultVo(HttpResponseEnum.SUCCESS.getCode(),HttpResponseCurdEnum.DELETE_SUCCESS.getValue(),len);
+			return ResultVo.getSuccess(HttpResponseCurdEnum.DELETE_SUCCESS.getValue(),len);
 		} catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e) {
 			e.printStackTrace();
+			logger.error(e.getMessage());
 		}
-		return new ResultVo(HttpResponseEnum.FAIL.getCode(),HttpResponseCurdEnum.DELETE_FAIL.getValue());
+		return ResultVo.getSystemError(HttpResponseCurdEnum.DELETE_FAIL.getValue());
 	}
 	
 	/**
@@ -325,11 +340,12 @@ public class BaseController<T extends BaseMySqlBean> {
 				ReflectUtils.setFieldDefVal(t,DefFieldNameEnum.ID.getValue(),ids);
 				len = baseService.updateSelectiveOfId(t);
 			}
-			return new ResultVo(HttpResponseEnum.SUCCESS.getCode(),HttpResponseCurdEnum.DELETE_SUCCESS.getValue(),len);
+			return ResultVo.getSuccess(HttpResponseCurdEnum.DELETE_SUCCESS.getValue(),len);
 		} catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e) {
 			e.printStackTrace();
+			logger.error(e.getMessage());
 		}
-		return new ResultVo(HttpResponseEnum.FAIL.getCode(),HttpResponseCurdEnum.DELETE_FAIL.getValue());
+		return ResultVo.getSystemError(HttpResponseCurdEnum.DELETE_FAIL.getValue());
 	}
 
 	/**
