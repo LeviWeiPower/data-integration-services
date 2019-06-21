@@ -1,0 +1,24 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>com.aimspeed.plugins</groupId>
+    <artifactId>common-plugins</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+  </parent>
+  <artifactId>klutz</artifactId>
+  	
+  	<dependencies>
+  	
+  		<!-- 添加MySQL数据库驱动依赖包. -->
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <!-- 如果数据库连接是8.0，则需要修改对应的版本 -->
+            <!-- <version>8.0.11</version> -->
+            <!-- <version>5.1.38</version> -->
+        </dependency>
+  	
+  	</dependencies>
+  
+  
+</project>

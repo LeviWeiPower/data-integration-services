@@ -1,0 +1,53 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>com.aimspeed.plugins</groupId>
+    <artifactId>common-plugins</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+  </parent>
+  <artifactId>test</artifactId>
+  <description>对插件代码进行测试</description>
+  
+  
+  <dependencies>
+		
+		<!-- ES -->
+		<dependency>
+		    <groupId>com.aimspeed.plugins</groupId>
+		  	<artifactId>elasticsearch</artifactId>
+    		<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+
+		<!-- MongoDB -->
+		<dependency>
+		    <groupId>com.aimspeed.plugins</groupId>
+		  	<artifactId>mongodb</artifactId>
+    		<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+		  		
+  		<!-- SpringBoot启动，不是Web的方式 -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter</artifactId>
+		</dependency>
+		
+		<!-- 测试用例 -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+		
+    </dependencies>
+  
+</project>
