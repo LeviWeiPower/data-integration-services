@@ -406,7 +406,7 @@
             <dependency>
                 <groupId>org.apache.poi</groupId>
                 <artifactId>poi</artifactId>
-                <version>3.9</version>
+                <version>3.17</version>
             </dependency>
             <!-- 提供了对office的word、excel、visio及ppt的操作。 -->
             <dependency>
