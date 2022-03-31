@@ -34,7 +34,7 @@
         <springframework.version>5.0.6.RELEASE</springframework.version>
 		
         <!-- SpringBoot版本 -->
-        <springboot.version>2.0.2.RELEASE</springboot.version>
+        <springboot.version>2.5.12</springboot.version>
 
         <!-- SpringCloud版本 -->
         <springcloud.version>Finchley.SR1</springcloud.version>
