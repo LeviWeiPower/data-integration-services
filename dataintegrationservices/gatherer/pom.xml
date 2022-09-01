@@ -27,7 +27,7 @@
     
     <properties>
 		<httpclient.version>4.5.5</httpclient.version>
-		<jsoup.version>1.8.3</jsoup.version>
+		<jsoup.version>1.15.3</jsoup.version>
 		<commons.httpclient.version>3.0.1</commons.httpclient.version>
     </properties>
     
